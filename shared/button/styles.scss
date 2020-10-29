@@ -1,0 +1,14 @@
+@import '../styles/index';
+
+.btn {
+  padding: 5px 20px;
+  transition: .5s $ease;
+
+  .txt {
+    display: none;
+  }
+
+  svg {
+    height: 25px;
+  }
+}
