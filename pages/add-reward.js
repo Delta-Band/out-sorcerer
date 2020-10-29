@@ -48,31 +48,20 @@ export default function AddReward() {
 
   return (
     <div className={classes.root}>
-      <Grid
-        container
-        spacing={3}
-        direction='column'
-        // alignItems='center'
-        // justify='center'
-      >
-        <Grid item xs={12}>
-          <TextField
-            label='Reward'
-            value={value}
-            onChange={handleChange}
-            name='reward'
-            id='reward-input'
-            InputProps={{
-              inputComponent: NumberFormatCustom
-            }}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Button variant='contained' color='primary' onClick={submitReward}>
-            Primary
-          </Button>
-        </Grid>
-      </Grid>
+      <TextField
+        label='Reward'
+        value={value}
+        onChange={handleChange}
+        name='reward'
+        id='reward-input'
+        InputProps={{
+          inputComponent: NumberFormatCustom
+        }}
+      />
+      <br />
+      <Button variant='contained' color='primary' onClick={submitReward}>
+        Primary
+      </Button>
     </div>
   );
 }
