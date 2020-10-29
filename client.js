@@ -18,9 +18,10 @@ const powerUpConfig = {
                 {
                   text: 'Publish',
                   callback: function (t, opt) {
-                    console.log('publish');
-                    console.log(t);
-                    console.log(opt);
+                    t.popup({
+                      title: 'Add Reward',
+                      url: 'https://out-sorcerer.vercel.app/'
+                    });
                   }
                 }
               ]
