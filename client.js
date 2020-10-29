@@ -6,6 +6,9 @@ var BLACK_ROCKET_ICON =
 const powerUpConfig = {
   // Start adding handlers for your capabilities here!
   'card-buttons': function (t, options) {
+    var context = t.getContext();
+    console.log(context);
+    console.log(JSON.stringify(context, null, 2));
     return [
       {
         icon: BLACK_ROCKET_ICON,
@@ -21,12 +24,6 @@ const powerUpConfig = {
                     title: 'Add Rerward',
                     url: 'https://out-sorcerer.vercel.app/add-reward'
                   });
-                }
-              },
-              {
-                text: 'Log Data',
-                callback: function (t, opt) {
-                  console.log(t.getContext());
                 }
               }
             ]
