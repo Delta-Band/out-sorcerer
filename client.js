@@ -26,7 +26,7 @@ const powerUpConfig = {
               {
                 text: 'Log Data',
                 callback: function (t, opt) {
-                  console.log(t);
+                  console.log(t.getContext());
                 }
               }
             ]
