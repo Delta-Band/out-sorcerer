@@ -52,9 +52,8 @@ export default function AddReward() {
         container
         spacing={3}
         direction='column'
-        alignItems='center'
-        justify='center'
-        // style={{ minHeight: '100vh' }}
+        // alignItems='center'
+        // justify='center'
       >
         <Grid item xs={12}>
           <TextField
