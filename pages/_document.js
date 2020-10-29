@@ -12,6 +12,11 @@ class MyDocument extends Document {
     return (
       <Html lang='en-US'>
         <Head>
+          {/* <link
+            rel='stylesheet'
+            type='text/css'
+            href='https://p.trellocdn.com/power-up.css'
+          /> */}
           <script src='https://p.trellocdn.com/power-up.min.js'></script>
         </Head>
         <body>

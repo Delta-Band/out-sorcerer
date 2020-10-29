@@ -6,36 +6,34 @@ var BLACK_ROCKET_ICON =
 const powerUpConfig = {
   // Start adding handlers for your capabilities here!
   'card-buttons': function (t, options) {
-    return t.set('member', 'shared', 'hello', 'world').then(function () {
-      return [
-        {
-          icon: BLACK_ROCKET_ICON,
-          text: 'Out Sorcerer',
-          callback: function (t) {
-            return t.popup({
-              title: 'Actions',
-              items: [
-                {
-                  text: 'Add Reward',
-                  callback: function (t, opt) {
-                    t.popup({
-                      title: 'Add Rerward',
-                      url: 'https://out-sorcerer.vercel.app/add-reward'
-                    });
-                  }
+    return [
+      {
+        icon: BLACK_ROCKET_ICON,
+        text: 'Out Sorcerer',
+        callback: function (t) {
+          return t.popup({
+            title: 'Actions',
+            items: [
+              {
+                text: 'Add Reward',
+                callback: function (t, opt) {
+                  t.popup({
+                    title: 'Add Rerward',
+                    url: 'https://out-sorcerer.vercel.app/add-reward'
+                  });
                 }
-                // {
-                //   text: 'Publish',
-                //   callback: function (t, opt) {
-                //     console.log(t);
-                //   }
-                // }
-              ]
-            });
-          }
+              },
+              {
+                text: 'Log Data',
+                callback: function (t, opt) {
+                  console.log(t);
+                }
+              }
+            ]
+          });
         }
-      ];
-    });
+      }
+    ];
   }
 };
 
