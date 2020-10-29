@@ -22,7 +22,10 @@ const powerUpConfig = {
                 callback: function (t, opt) {
                   t.popup({
                     title: 'Add Rerward',
-                    url: 'https://out-sorcerer.vercel.app/add-reward'
+                    url: 'https://out-sorcerer.vercel.app/add-reward',
+                    callback: function (t, opt) {
+                      console.log('callback fired from parent');
+                    }
                   });
                 }
               }
