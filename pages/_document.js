@@ -11,11 +11,12 @@ class MyDocument extends Document {
   render() {
     return (
       <Html lang='en-US'>
-        <Head />
+        <Head>
+          <script src='https://p.trellocdn.com/power-up.min.js'></script>
+        </Head>
         <body>
           <Main />
           <NextScript />
-          <script src='https://p.trellocdn.com/power-up.min.js'></script>
         </body>
       </Html>
     );
