@@ -16,14 +16,20 @@ const powerUpConfig = {
               title: 'Actions',
               items: [
                 {
-                  text: 'Publish',
+                  text: 'Add Reward',
                   callback: function (t, opt) {
                     t.popup({
-                      title: 'Add Reward',
-                      url: 'https://out-sorcerer.vercel.app/'
+                      title: 'Add Rerward',
+                      url: 'https://out-sorcerer.vercel.app/add-reward'
                     });
                   }
                 }
+                // {
+                //   text: 'Publish',
+                //   callback: function (t, opt) {
+                //     console.log(t);
+                //   }
+                // }
               ]
             });
           }
