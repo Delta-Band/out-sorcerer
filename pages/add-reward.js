@@ -47,7 +47,7 @@ export default function AddReward() {
     setValue(event.target.value);
   }
 
-  function submitReward() {
+  function submit() {
     t.set('card', 'shared', 'reward', value);
     t.notifyParent('done', { value });
   }
@@ -65,7 +65,7 @@ export default function AddReward() {
         }}
       />
       <br />
-      <Button variant='contained' color='primary' onClick={submitReward}>
+      <Button variant='contained' color='primary' onClick={submit}>
         Submit
       </Button>
     </div>

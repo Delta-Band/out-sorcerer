@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 // import { useSelector, useDispatch } from 'react-redux';
 import cx from 'classnames';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Grid } from '@material-ui/core';
 import { CheckCircle as Check } from '@styled-icons/boxicons-solid/CheckCircle';
 import { ErrorCircle as Error } from '@styled-icons/boxicons-solid/ErrorCircle';
+import { FormatListNumbered } from 'styled-icons/material-twotone';
 // import { card } from '../store';
 
 const useStyles = makeStyles((theme) => ({
@@ -31,11 +32,17 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Publish() {
   const classes = useStyles();
-  // const cardData = useSelector(card.selectors.data);
-  // const dispatch = useDispatch();
+  const [published, setPublished] = useState(FormatListNumbered);
+  let t;
+
+  useEffect(() => {
+    t = window.TrelloPowerUp.iframe();
+    setPublished(t.arg('published'));
+  }, []);
 
   function confirm() {
-    window.TrelloPowerUp.iframe().notifyParent('done');
+    t.set('card', 'shared', 'published', published);
+    t.notifyParent('done');
   }
 
   return (
@@ -66,7 +73,7 @@ export default function Publish() {
         onClick={confirm}
         disabled={false}
       >
-        Submit
+        {published ? 'Unpublish' : 'Publish'}
       </Button>
     </div>
   );
