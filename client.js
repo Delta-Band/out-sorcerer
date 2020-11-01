@@ -72,7 +72,7 @@ const powerUpConfig = {
     badges.push({
       icon: LOGO,
       title: 'Reward',
-      text: formatter(parseInt(reward, 10)),
+      text: formatter.format(parseInt(reward, 10)),
       color: reward > 0 ? 'green' : 'red'
     });
     badges.push({
