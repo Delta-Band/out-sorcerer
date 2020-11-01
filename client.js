@@ -15,7 +15,7 @@ const powerUpConfig = {
     console.log('published:', published);
     const items = [
       {
-        text: reward ? 'Change Reward' : 'Add Reward',
+        text: reward === 0 ? 'Change Reward' : 'Add Reward',
         callback: function (t, opt) {
           t.popup({
             title: 'Change Rerward',

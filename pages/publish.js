@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
-// import { useSelector, useDispatch } from 'react-redux';
 import cx from 'classnames';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Button, Grid } from '@material-ui/core';
 import { CheckCircle as Check } from '@styled-icons/boxicons-solid/CheckCircle';
 import { ErrorCircle as Error } from '@styled-icons/boxicons-solid/ErrorCircle';
-import { FormatListNumbered } from 'styled-icons/material-twotone';
-// import { card } from '../store';
 
 const useStyles = makeStyles((theme) => ({
   checkList: {

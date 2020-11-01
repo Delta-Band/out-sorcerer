@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { TextField, Button } from '@material-ui/core';
 import NumberFormat from 'react-number-format';
+
+const useStyles = makeStyles((theme) => ({
+  input: {
+    marginBottom: theme.spacing(2)
+  }
+}));
 
 function NumberFormatCustom(props) {
   const { inputRef, onChange, ...other } = props;
@@ -26,6 +32,7 @@ function NumberFormatCustom(props) {
 }
 
 export default function AddReward() {
+  const classes = useStyles();
   const [value, setValue] = useState(0);
   const [t, setT] = useState();
   const theme = useTheme();
@@ -53,6 +60,7 @@ export default function AddReward() {
         onChange={handleChange}
         name='reward'
         id='reward-input'
+        className={classes.input}
         InputProps={{
           inputComponent: NumberFormatCustom
         }}
