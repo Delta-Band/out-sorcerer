@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-import { TextField, Grid, Button } from '@material-ui/core';
+import { TextField, Button } from '@material-ui/core';
 import NumberFormat from 'react-number-format';
+import { card } from '../store';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,14 +37,15 @@ function NumberFormatCustom(props) {
 
 export default function AddReward() {
   const classes = useStyles();
-  const [value, setValue] = useState(1320);
+  const reward = useSelector(card.selectors.reward);
+  const dispatch = useDispatch();
 
   function handleChange(event) {
-    setValue(event.target.value);
+    dispatch(card.actions.update({ reward: event.target.value }));
   }
 
   function submitReward() {
-    window.TrelloPowerUp.iframe().set('card', 'shared', 'reward', value);
+    window.TrelloPowerUp.iframe().set('card', 'shared', 'reward', reward);
     window.TrelloPowerUp.iframe().notifyParent('done');
   }
 
@@ -50,7 +53,7 @@ export default function AddReward() {
     <div className={classes.root}>
       <TextField
         label='Reward'
-        value={value}
+        value={reward}
         onChange={handleChange}
         name='reward'
         id='reward-input'

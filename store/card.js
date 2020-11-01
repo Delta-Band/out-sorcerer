@@ -1,12 +1,12 @@
 const reducer = (
   state = {
-    tabTitle: 'Sanoclis - MIMS',
-    metaDescription: 'Sanoculis MIMS Device'
+    reward: 0,
+    id: null
   },
   action
 ) => {
   switch (action.type) {
-    case 'HOME:UPDATE':
+    case 'CARD:UPDATE':
       return action.data;
     default:
       return state;
@@ -16,13 +16,13 @@ const reducer = (
 const actions = {
   update: (data) => (dispatch) =>
     dispatch({
-      type: 'HOME:UPDATE',
+      type: 'CARD:UPDATE',
       data
     })
 };
 
 const selectors = {
-  data: (state) => state.helmet
+  data: (state) => state.card
 };
 
 export default {

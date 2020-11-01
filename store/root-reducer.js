@@ -1,10 +1,8 @@
 import { combineReducers } from 'redux';
-import { contact, footer, video } from './index';
+import { card } from './index';
 
 const rootReducer = combineReducers({
-  contact: contact.reducer,
-  footer: footer.reducer,
-  video: video.reducer
+  card: card.reducer
 });
 
 export default rootReducer;
