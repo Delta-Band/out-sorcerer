@@ -49,8 +49,8 @@ export default function AddReward() {
   function submitReward() {
     const t = window.TrelloPowerUp.iframe();
     t.set('card', 'shared', 'reward', value);
-    // t.notifyParent('done');
-    // t.closePopup();
+    t.notifyParent('done');
+    t.closePopup();
   }
 
   return (

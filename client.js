@@ -1,6 +1,3 @@
-// import { useDispatch } from 'react-redux';
-// import { card } from './store';
-
 // var Promise = TrelloPowerUp.Promise;
 
 var BLACK_ROCKET_ICON =
@@ -9,14 +6,13 @@ var BLACK_ROCKET_ICON =
 const powerUpConfig = {
   // Start adding handlers for your capabilities here!
   'card-buttons': async function (t, options) {
-    // const dispatch = useDispatch();
+    console.log('initializig card butons');
     const context = t.getContext();
     console.log('context:', context);
     const reward = await t.get(context.card, 'shared', 'reward', 0);
     console.log('reward:', reward);
     const published = await t.get(context.card, 'shared', 'published', false);
     console.log('published:', published);
-    // dispatch(card.actions.update({ reward, id: context.card }));
     const items = [
       {
         text: reward ? 'Change Reward' : 'Add Reward',
@@ -27,6 +23,7 @@ const powerUpConfig = {
             args: { reward },
             callback: function (t, opt) {
               console.log('callback fired from parent');
+              t.initialize();
             }
           });
         }
@@ -44,6 +41,7 @@ const powerUpConfig = {
               url: 'https://out-sorcerer.vercel.app/publish',
               callback: function (t, opt) {
                 t.set('card', 'shared', 'published', true);
+                t.initialize();
               }
             });
           }
