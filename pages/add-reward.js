@@ -48,10 +48,8 @@ export default function AddReward() {
   }
 
   function submitReward() {
-    console.log('settiing reward: ', value);
     t.set('card', 'shared', 'reward', value);
     t.notifyParent('done', { value });
-    t.closePopup();
   }
 
   return (

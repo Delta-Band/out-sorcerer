@@ -23,7 +23,7 @@ const powerUpConfig = {
             args: { reward },
             callback: function (t, opt) {
               console.log('callback fired from parent');
-              console.log(opt);
+              t.closePopup();
             }
           });
         }
