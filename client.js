@@ -67,13 +67,13 @@ const powerUpConfig = {
       icon: LOGO,
       title: 'Reward',
       text: `$${reward}`,
-      color: 'purple'
+      color: reward > 0 ? 'green' : 'red'
     });
     badges.push({
       icon: LOGO,
       title: 'Published',
       text: published ? 'Published' : 'Not Published',
-      color: 'purple'
+      color: published ? 'green' : 'red'
     });
     return badges;
   }
