@@ -23,7 +23,6 @@ const powerUpConfig = {
             args: { reward },
             callback: function (t, opt) {
               console.log('callback fired from parent');
-              t.initialize();
             }
           });
         }
@@ -41,7 +40,6 @@ const powerUpConfig = {
               url: 'https://out-sorcerer.vercel.app/publish',
               callback: function (t, opt) {
                 t.set('card', 'shared', 'published', true);
-                t.initialize();
               }
             });
           }
