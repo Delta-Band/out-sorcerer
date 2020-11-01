@@ -14,7 +14,8 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   checkList: {
-    lineHeight: '2em'
+    lineHeight: '2em',
+    width: 150
   },
   icon: {
     width: 25,
@@ -49,13 +50,13 @@ export default function Publish() {
         <Grid item xs={10}>
           Reward
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs='auto'>
           <Check className={cx(classes.icon, classes.green)} />
         </Grid>
         <Grid item xs={10}>
           Video
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs='auto'>
           <Error className={cx(classes.icon, classes.red)} />
         </Grid>
       </Grid>

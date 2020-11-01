@@ -40,8 +40,10 @@ export default function AddReward() {
   async function getReward() {
     const t = window.TrelloPowerUp.iframe();
     const context = t.getContext();
-    const reward = await t.get(context.card, 'shared', 'reward', 0);
-    setValue(reward);
+    if (context) {
+      const reward = await t.get(context.card, 'shared', 'reward', 0);
+      setValue(reward);
+    }
   }
 
   useEffect(() => {
