@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "esw ./pages ./services ./shared ./components ./*.js",
-    "lint-watch": "esw ./pages ./services ./shared ./components ./*.js -w"
+    "lint-watch": "esw ./pages ./shared ./store ./*.js -w"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
