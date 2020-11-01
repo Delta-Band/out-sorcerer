@@ -68,7 +68,7 @@ export default function AddReward() {
       />
       <br />
       <Button variant='contained' color='primary' onClick={submitReward}>
-        Primary
+        Add Reward
       </Button>
     </div>
   );

@@ -32,6 +32,7 @@
     "redux-immutable": "^4.0.0",
     "redux-thunk": "^2.3.0",
     "styled-components": "^5.2.0",
+    "styled-icons": "^10.22.0",
     "usescript-hook": "^1.0.5"
   },
   "devDependencies": {

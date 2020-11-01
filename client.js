@@ -31,16 +31,21 @@ const powerUpConfig = {
     ];
     if (reward) {
       items.push({
-        text: 'Publish',
+        text: published ? 'Unpublish' : 'Publish',
         callback: function (t, opt) {
-          t.popup({
-            title: 'Publish',
-            // url: 'https://out-sorcerer.vercel.app/add-reward',
-            callback: function (t, opt) {
-              t.set('card', 'shared', 'published', true);
-              dispatch(card.actions.update({ published: true }));
-            }
-          });
+          if (published) {
+            t.set('card', 'shared', 'published', false);
+            dispatch(card.actions.update({ published: false }));
+          } else {
+            t.popup({
+              title: 'Publish',
+              url: 'https://out-sorcerer.vercel.app/publish',
+              callback: function (t, opt) {
+                t.set('card', 'shared', 'published', true);
+                dispatch(card.actions.update({ published: true }));
+              }
+            });
+          }
         }
       });
     }
