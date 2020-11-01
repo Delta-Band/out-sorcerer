@@ -10,7 +10,7 @@ const defaultTheme = createMuiTheme();
 
 const theme = createMuiTheme({
   frameWrapper: {
-    width: 304,
+    width: 280,
     boxSizing: 'border-box',
     padding: defaultTheme.spacing(1)
   },

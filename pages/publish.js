@@ -11,7 +11,6 @@ import { FormatListNumbered } from 'styled-icons/material-twotone';
 const useStyles = makeStyles((theme) => ({
   checkList: {
     lineHeight: '2em',
-    width: 150,
     marginBottom: theme.spacing(2)
   },
   icon: {
@@ -33,8 +32,9 @@ export default function Publish() {
   const [t, setT] = useState();
 
   useEffect(() => {
-    setT(window.TrelloPowerUp.iframe());
-    setPublished(t.arg('published'));
+    const _t = window.TrelloPowerUp.iframe();
+    setT(_t);
+    setPublished(_t.arg('published'));
   }, []);
 
   const confirm = () => {
