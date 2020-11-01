@@ -33,18 +33,14 @@ const powerUpConfig = {
       items.push({
         text: published ? 'Unpublish' : 'Publish',
         callback: function (t, opt) {
-          if (published) {
-            t.set('card', 'shared', 'published', false);
-          } else {
-            t.popup({
-              title: 'Publish',
-              url: 'https://out-sorcerer.vercel.app/publish',
-              args: { published },
-              callback: function (t, opt) {
-                t.closePopup();
-              }
-            });
-          }
+          t.popup({
+            title: 'Publish',
+            url: 'https://out-sorcerer.vercel.app/publish',
+            args: { published },
+            callback: function (t, opt) {
+              t.closePopup();
+            }
+          });
         }
       });
     }

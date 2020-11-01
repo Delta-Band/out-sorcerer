@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Publish() {
   const classes = useStyles();
   const theme = useTheme();
-  const [published, setPublished] = useState(FormatListNumbered);
+  const [published, setPublished] = useState(false);
   const [t, setT] = useState();
 
   useEffect(() => {
