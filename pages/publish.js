@@ -38,7 +38,7 @@ export default function Publish() {
   }, []);
 
   const confirm = () => {
-    t.set('card', 'shared', 'published', published);
+    t.set('card', 'shared', 'published', !published);
     t.notifyParent('done');
   };
 
