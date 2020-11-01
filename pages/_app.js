@@ -6,7 +6,14 @@ import { Provider } from 'react-redux';
 import { store } from '../store/store';
 import '../styles/globals.css';
 
+const defaultTheme = createMuiTheme();
+
 const theme = createMuiTheme({
+  frameWrapper: {
+    width: 304,
+    boxSizing: 'border-box',
+    padding: defaultTheme.spacing(1)
+  },
   palette: {
     primary: {
       main: '#5668FF'

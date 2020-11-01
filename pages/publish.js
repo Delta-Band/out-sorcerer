@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // import { useSelector, useDispatch } from 'react-redux';
 import cx from 'classnames';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Button, Grid } from '@material-ui/core';
 import { CheckCircle as Check } from '@styled-icons/boxicons-solid/CheckCircle';
 import { ErrorCircle as Error } from '@styled-icons/boxicons-solid/ErrorCircle';
@@ -9,14 +9,10 @@ import { FormatListNumbered } from 'styled-icons/material-twotone';
 // import { card } from '../store';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    '& > *': {
-      margin: theme.spacing(1)
-    }
-  },
   checkList: {
     lineHeight: '2em',
-    width: 150
+    width: 150,
+    marginBottom: theme.spacing(2)
   },
   icon: {
     width: 25,
@@ -32,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Publish() {
   const classes = useStyles();
+  const theme = useTheme();
   const [published, setPublished] = useState(FormatListNumbered);
   let t;
 
@@ -46,7 +43,7 @@ export default function Publish() {
   };
 
   return (
-    <div className={classes.root}>
+    <div style={theme.frameWrapper}>
       <Grid
         container
         direction='row'
