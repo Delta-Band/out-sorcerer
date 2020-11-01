@@ -63,22 +63,18 @@ const powerUpConfig = {
     const reward = await t.get(context.card, 'shared', 'reward', 0);
     const published = await t.get(context.card, 'shared', 'published', false);
     const badges = [];
-    if (reward > 0) {
-      badges.push({
-        icon: LOGO,
-        title: 'Reward',
-        text: `$${reward}`,
-        color: 'purple'
-      });
-    }
-    if (published) {
-      badges.push({
-        icon: LOGO,
-        title: 'Published',
-        text: `$${published}`,
-        color: 'purple'
-      });
-    }
+    badges.push({
+      icon: LOGO,
+      title: 'Reward',
+      text: `$${reward}`,
+      color: 'purple'
+    });
+    badges.push({
+      icon: LOGO,
+      title: 'Published',
+      text: published ? 'Published' : 'Not Published',
+      color: 'purple'
+    });
     return badges;
   }
 };
