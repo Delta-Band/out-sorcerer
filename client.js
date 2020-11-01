@@ -78,7 +78,7 @@ const powerUpConfig = {
     badges.push({
       icon: LOGO,
       title: 'Published',
-      text: published ? 'Published' : 'Not Published',
+      text: published ? 'YES' : 'NO',
       color: published ? 'green' : 'red'
     });
     return badges;
