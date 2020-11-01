@@ -63,10 +63,14 @@ const powerUpConfig = {
     const reward = await t.get(context.card, 'shared', 'reward', 0);
     const published = await t.get(context.card, 'shared', 'published', false);
     const badges = [];
+    const formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    });
     badges.push({
       icon: LOGO,
       title: 'Reward',
-      text: `$${reward}`,
+      text: formatter(parseInt(reward, 10)),
       color: reward > 0 ? 'green' : 'red'
     });
     badges.push({
