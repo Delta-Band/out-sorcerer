@@ -13,6 +13,7 @@ const powerUpConfig = {
     const context = t.getContext();
     console.log('context:', context);
     const reward = await t.get(context.card, 'shared', 'reward', 0);
+    debugger;
     const published = await t.get(context.card, 'shared', 'published', false);
     dispatch(card.actions.update({ reward, id: context.card, published }));
     const items = [
