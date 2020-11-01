@@ -31,8 +31,9 @@ export default function AddReward() {
   const theme = useTheme();
 
   useEffect(() => {
-    setT(window.TrelloPowerUp.iframe());
-    setValue(t.arg('reward'));
+    const _t = window.TrelloPowerUp.iframe();
+    setT(_t);
+    setValue(_t.arg('reward'));
   }, []);
 
   function handleChange(event) {
