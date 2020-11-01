@@ -50,7 +50,7 @@ export default function AddReward() {
     const t = window.TrelloPowerUp.iframe();
     console.log('settiing reward: ', value);
     t.set('card', 'shared', 'reward', value);
-    t.notifyParent('done');
+    t.notifyParent('done', { value });
     t.closePopup();
   }
 
