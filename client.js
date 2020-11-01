@@ -7,9 +7,9 @@ const powerUpConfig = {
   // Start adding handlers for your capabilities here!
   'card-buttons': function (t, options) {
     const context = t.getContext();
+    console.log('context:', context);
     const reward = t.get(context.card, 'shared', 'reward');
     console.log('reward: ', reward);
-    console.log('context:', context);
     return [
       {
         icon: BLACK_ROCKET_ICON,
