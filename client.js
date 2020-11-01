@@ -1,7 +1,7 @@
 // var Promise = TrelloPowerUp.Promise;
 
-var BLACK_ROCKET_ICON =
-  'https://cdn.glitch.com/1b42d7fe-bda8-4af8-a6c8-eff0cea9e08a%2Frocket-ship.png?1494946700421';
+var LOGO =
+  'https://www.pinclipart.com/picdir/middle/1-18715_wizard-dog-cliparts-magician-cap-clipart-png-download.png';
 
 const powerUpConfig = {
   // Start adding handlers for your capabilities here!
@@ -46,7 +46,7 @@ const powerUpConfig = {
     }
     return [
       {
-        icon: BLACK_ROCKET_ICON,
+        icon: LOGO,
         text: 'Out Sorcerer',
         callback: function (t) {
           return t.popup({
@@ -65,16 +65,18 @@ const powerUpConfig = {
     const badges = [];
     if (reward > 0) {
       badges.push({
+        icon: LOGO,
         title: 'Reward',
         text: `$${reward}`,
-        color: '#32094d'
+        color: 'purple'
       });
     }
     if (published) {
       badges.push({
+        icon: LOGO,
         title: 'Published',
         text: `$${published}`,
-        color: '#4d0947'
+        color: 'purple'
       });
     }
     return badges;
