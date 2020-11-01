@@ -61,6 +61,7 @@ export default function AddReward() {
         name='reward'
         id='reward-input'
         className={classes.input}
+        fullWidth
         InputProps={{
           inputComponent: NumberFormatCustom
         }}
