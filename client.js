@@ -24,6 +24,7 @@ const powerUpConfig = {
           t.popup({
             title: 'Change Rerward',
             url: 'https://out-sorcerer.vercel.app/add-reward',
+            args: { reward },
             callback: function (t, opt) {
               console.log('callback fired from parent');
             }

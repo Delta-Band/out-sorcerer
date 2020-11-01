@@ -37,17 +37,9 @@ export default function AddReward() {
   const classes = useStyles();
   const [value, setValue] = useState(0);
 
-  async function getReward() {
-    const t = window.TrelloPowerUp.iframe();
-    const context = t.getContext();
-    if (context) {
-      const reward = await t.get(context.card, 'shared', 'reward', 0);
-      setValue(reward);
-    }
-  }
-
   useEffect(() => {
-    getReward();
+    const t = window.TrelloPowerUp.iframe();
+    setValue(t.arg('reward'));
   }, []);
 
   function handleChange(event) {
@@ -55,8 +47,9 @@ export default function AddReward() {
   }
 
   function submitReward() {
-    window.TrelloPowerUp.iframe().set('card', 'shared', 'reward', value);
-    window.TrelloPowerUp.iframe().notifyParent('done');
+    const t = window.TrelloPowerUp.iframe();
+    t.set('card', 'shared', 'reward', value);
+    t.notifyParent('done');
   }
 
   return (
