@@ -64,7 +64,7 @@ export default function Publish() {
         variant='contained'
         color='primary'
         onClick={confirm}
-        disabled={true}
+        disabled={false}
       >
         Submit
       </Button>
