@@ -40,10 +40,10 @@ export default function Publish() {
     setPublished(t.arg('published'));
   }, []);
 
-  function confirm() {
+  const confirm = () => {
     t.set('card', 'shared', 'published', published);
     t.notifyParent('done');
-  }
+  };
 
   return (
     <div className={classes.root}>

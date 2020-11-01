@@ -47,10 +47,10 @@ export default function AddReward() {
     setValue(event.target.value);
   }
 
-  function submit() {
+  const submit = () => {
     t.set('card', 'shared', 'reward', value);
     t.notifyParent('done', { value });
-  }
+  };
 
   return (
     <div className={classes.root}>
