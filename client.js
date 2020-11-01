@@ -13,7 +13,9 @@ const powerUpConfig = {
     const context = t.getContext();
     console.log('context:', context);
     const reward = await t.get(context.card, 'shared', 'reward', 0);
-    // const published = await t.get(context.card, 'shared', 'published', false);
+    console.log('reward:', reward);
+    const published = await t.get(context.card, 'shared', 'published', false);
+    console.log('published:', published);
     // dispatch(card.actions.update({ reward, id: context.card }));
     const items = [
       {
@@ -29,26 +31,24 @@ const powerUpConfig = {
         }
       }
     ];
-    // if (reward) {
-    //   items.push({
-    //     text: published ? 'Unpublish' : 'Publish',
-    //     callback: function (t, opt) {
-    //       if (published) {
-    //         t.set('card', 'shared', 'published', false);
-    //         dispatch(card.actions.update({ published: false }));
-    //       } else {
-    //         t.popup({
-    //           title: 'Publish',
-    //           url: 'https://out-sorcerer.vercel.app/publish',
-    //           callback: function (t, opt) {
-    //             t.set('card', 'shared', 'published', true);
-    //             dispatch(card.actions.update({ published: true }));
-    //           }
-    //         });
-    //       }
-    //     }
-    //   });
-    // }
+    if (reward) {
+      items.push({
+        text: published ? 'Unpublish' : 'Publish',
+        callback: function (t, opt) {
+          if (published) {
+            t.set('card', 'shared', 'published', false);
+          } else {
+            t.popup({
+              title: 'Publish',
+              url: 'https://out-sorcerer.vercel.app/publish',
+              callback: function (t, opt) {
+                t.set('card', 'shared', 'published', true);
+              }
+            });
+          }
+        }
+      });
+    }
     return [
       {
         icon: BLACK_ROCKET_ICON,

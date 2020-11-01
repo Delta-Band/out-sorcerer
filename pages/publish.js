@@ -65,7 +65,7 @@ export default function Publish() {
         onClick={confirm}
         disabled={true}
       >
-        Publish
+        Submit
       </Button>
     </div>
   );

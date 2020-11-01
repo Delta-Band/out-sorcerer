@@ -1,9 +1,7 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField, Button } from '@material-ui/core';
 import NumberFormat from 'react-number-format';
-import { card } from '../store';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,20 +35,25 @@ function NumberFormatCustom(props) {
 
 export default function AddReward() {
   const classes = useStyles();
-  const cardData = useSelector(card.selectors.data);
-  const dispatch = useDispatch();
+  const [value, setValue] = useState(0);
+
+  async function getReward() {
+    const t = window.TrelloPowerUp.iframe();
+    const context = t.getContext();
+    const reward = await t.get(context.card, 'shared', 'reward', 0);
+    setValue(reward);
+  }
+
+  useEffect(() => {
+    getReward();
+  }, []);
 
   function handleChange(event) {
-    dispatch(card.actions.update({ reward: parseInt(event.target.value, 10) }));
+    setValue(event.target.value);
   }
 
   function submitReward() {
-    window.TrelloPowerUp.iframe().set(
-      'card',
-      'shared',
-      'reward',
-      cardData.reward
-    );
+    window.TrelloPowerUp.iframe().set('card', 'shared', 'reward', value);
     window.TrelloPowerUp.iframe().notifyParent('done');
   }
 
@@ -58,7 +61,7 @@ export default function AddReward() {
     <div className={classes.root}>
       <TextField
         label='Reward'
-        value={cardData.reward}
+        value={value}
         onChange={handleChange}
         name='reward'
         id='reward-input'
@@ -68,7 +71,7 @@ export default function AddReward() {
       />
       <br />
       <Button variant='contained' color='primary' onClick={submitReward}>
-        Add Reward
+        Submit
       </Button>
     </div>
   );
