@@ -57,22 +57,26 @@ const powerUpConfig = {
       }
     ];
   },
-  'card-detail-badges': function (t, opts) {
+  'card-detail-badges': async function (t, opts) {
+    console.log('initializig card-detail-badges butons');
+    const context = t.getContext();
+    const reward = await t.get(context.card, 'shared', 'reward', 0);
+    const published = await t.get(context.card, 'shared', 'published', false);
+    const badges = [];
+    if (reward > 0) {
+      badges.push({
+        title: 'Reward',
+        text: `$${reward}`,
+        color: '#32094d',
+      });
+    if (published) {
+      badges.push({
+        title: 'Published',
+        text: `$${published}`,
+        color: '#4d0947',
+      });
+    }
     return [
-      {
-        // dynamic badges can have their function rerun after a set number
-        // of seconds defined by refresh. Minimum of 10 seconds.
-        dynamic: function () {
-          // we could also return a Promise that resolves to this
-          // as well if we needed to do something async first
-          return {
-            title: 'Detail Badge',
-            text: 'Dynamic ' + (Math.random() * 100).toFixed(0).toString(),
-            color: randomBadgeColor(),
-            refresh: 10 // in seconds
-          };
-        }
-      },
       {
         // its best to use static badges unless you need your badges
         // to refresh you can mix and match between static and dynamic
