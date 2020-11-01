@@ -27,11 +27,11 @@ function NumberFormatCustom(props) {
 
 export default function AddReward() {
   const [value, setValue] = useState(0);
+  const [t, setT] = useState();
   const theme = useTheme();
-  let t;
 
   useEffect(() => {
-    t = window.TrelloPowerUp.iframe();
+    setT(window.TrelloPowerUp.iframe());
     setValue(t.arg('reward'));
   }, []);
 

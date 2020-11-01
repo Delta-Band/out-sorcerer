@@ -30,10 +30,10 @@ export default function Publish() {
   const classes = useStyles();
   const theme = useTheme();
   const [published, setPublished] = useState(FormatListNumbered);
-  let t;
+  const [t, setT] = useState();
 
   useEffect(() => {
-    t = window.TrelloPowerUp.iframe();
+    setT(window.TrelloPowerUp.iframe());
     setPublished(t.arg('published'));
   }, []);
 
