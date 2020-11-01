@@ -13,9 +13,40 @@ const powerUpConfig = {
   'card-buttons': async function (t, options) {
     const context = t.getContext();
     console.log('context:', context);
+    const cardData = await t.get(context.card, 'shared');
+    console.log('cardData: ', cardData);
     const reward = await t.get(context.card, 'shared', 'reward');
     dispatch(card.actions.update({ reward, id: context.card }));
     console.log('reward: ', reward);
+    const items = [
+      {
+        text: reward ? 'Change Reward' : 'Add Reward',
+        callback: function (t, opt) {
+          t.popup({
+            title: 'Change Rerward',
+            url: 'https://out-sorcerer.vercel.app/add-reward',
+            callback: function (t, opt) {
+              console.log('callback fired from parent');
+            }
+          });
+        }
+      }
+    ];
+    if (reward) {
+      items.push({
+        text: 'Publish',
+        callback: function (t, opt) {
+          t.popup({
+            title: 'Publish',
+            // url: 'https://out-sorcerer.vercel.app/add-reward',
+            callback: function (t, opt) {
+              t.set('card', 'shared', 'published', true);
+              dispatch(card.actions.update({ published: true }));
+            }
+          });
+        }
+      });
+    }
     return [
       {
         icon: BLACK_ROCKET_ICON,
@@ -23,20 +54,7 @@ const powerUpConfig = {
         callback: function (t) {
           return t.popup({
             title: 'Out Sorcerer',
-            items: [
-              {
-                text: reward ? 'Change Reward' : 'Add Reward',
-                callback: function (t, opt) {
-                  t.popup({
-                    title: 'Change Rerward',
-                    url: 'https://out-sorcerer.vercel.app/add-reward',
-                    callback: function (t, opt) {
-                      console.log('callback fired from parent');
-                    }
-                  });
-                }
-              }
-            ]
+            items: items
           });
         }
       }
