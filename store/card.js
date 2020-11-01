@@ -1,4 +1,4 @@
-var merge = require('merge-deep');
+import merge from 'deepmerge';
 
 const reducer = (
   state = {

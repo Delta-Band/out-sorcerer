@@ -37,15 +37,20 @@ function NumberFormatCustom(props) {
 
 export default function AddReward() {
   const classes = useStyles();
-  const reward = useSelector(card.selectors.reward);
+  const cardData = useSelector(card.selectors.data);
   const dispatch = useDispatch();
 
   function handleChange(event) {
-    dispatch(card.actions.update({ reward: event.target.value }));
+    dispatch(card.actions.update({ reward: parseInt(event.target.value, 10) }));
   }
 
   function submitReward() {
-    window.TrelloPowerUp.iframe().set('card', 'shared', 'reward', reward);
+    window.TrelloPowerUp.iframe().set(
+      'card',
+      'shared',
+      'reward',
+      cardData.reward
+    );
     window.TrelloPowerUp.iframe().notifyParent('done');
   }
 
@@ -53,7 +58,7 @@ export default function AddReward() {
     <div className={classes.root}>
       <TextField
         label='Reward'
-        value={reward}
+        value={cardData.reward}
         onChange={handleChange}
         name='reward'
         id='reward-input'
