@@ -6,7 +6,9 @@ var BLACK_ROCKET_ICON =
 const powerUpConfig = {
   // Start adding handlers for your capabilities here!
   'card-buttons': function (t, options) {
-    var context = t.getContext();
+    const context = t.getContext();
+    const reward = t.get('card', 'shared', 'reward');
+    console.log(reward);
     console.log(context);
     console.log(JSON.stringify(context, null, 2));
     return [
@@ -15,7 +17,7 @@ const powerUpConfig = {
         text: 'Out Sorcerer',
         callback: function (t) {
           return t.popup({
-            title: 'Actions',
+            title: 'Out Sorcerer',
             items: [
               {
                 text: 'Add Reward',
