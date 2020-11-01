@@ -41,6 +41,7 @@ const powerUpConfig = {
               url: 'https://out-sorcerer.vercel.app/publish',
               callback: function (t, opt) {
                 t.set('card', 'shared', 'published', true);
+                t.closePopup();
               }
             });
           }

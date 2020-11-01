@@ -36,9 +36,10 @@ function NumberFormatCustom(props) {
 export default function AddReward() {
   const classes = useStyles();
   const [value, setValue] = useState(0);
+  let t;
 
   useEffect(() => {
-    const t = window.TrelloPowerUp.iframe();
+    t = window.TrelloPowerUp.iframe();
     setValue(t.arg('reward'));
   }, []);
 
@@ -47,7 +48,6 @@ export default function AddReward() {
   }
 
   function submitReward() {
-    const t = window.TrelloPowerUp.iframe();
     console.log('settiing reward: ', value);
     t.set('card', 'shared', 'reward', value);
     t.notifyParent('done', { value });
