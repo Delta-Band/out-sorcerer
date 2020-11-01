@@ -68,6 +68,7 @@ export default function Publish() {
         </Grid>
       </Grid>
       <Button
+        fullWidth
         variant='contained'
         color='primary'
         onClick={confirm}

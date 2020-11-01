@@ -65,7 +65,7 @@ export default function AddReward() {
         }}
       />
       <br />
-      <Button variant='contained' color='primary' onClick={submit}>
+      <Button variant='contained' color='primary' onClick={submit} fullWidth>
         Submit
       </Button>
     </div>
