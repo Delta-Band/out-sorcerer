@@ -14,7 +14,7 @@ const powerUpConfig = {
     console.log('reward:', reward);
     const published = await t.get(context.card, 'shared', 'published', false);
     console.log('published:', published);
-    const timebox = await t.get(context.card, 'shared', 'timebox', 5);
+    const timebox = await t.get(context.card, 'shared', 'timebox', null);
     console.log('published:', published);
     const items = [
       {
@@ -37,7 +37,7 @@ const powerUpConfig = {
           t.popup({
             title: timebox ? 'Change Timebox' : 'Add Timebox',
             url: 'https://out-sorcerer.vercel.app/timebox',
-            args: { timebox },
+            args: { timebox: 5 },
             callback: function (t, opt) {
               console.log('callback fired from parent');
               t.closePopup();
