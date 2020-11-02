@@ -4,7 +4,7 @@ const settings = {
     // const context = t.getContext();
     const userType = await t.get('board', 'shared', 'userType', 'pusher');
     return t.popup({
-      title: 'Ouy Sourcer Settings',
+      title: 'Out-Sourcer Settings',
       url: 'https://out-sorcerer.vercel.app/settings',
       height: 170,
       args: { userType },
