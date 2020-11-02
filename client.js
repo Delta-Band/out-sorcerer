@@ -36,7 +36,7 @@ const powerUpConfig = {
         callback: function (t, opt) {
           t.popup({
             title: timebox ? 'Change Timebox' : 'Add Timebox',
-            url: 'https://out-sorcerer.vercel.app/add-reward',
+            url: 'https://out-sorcerer.vercel.app/timebox',
             args: { timebox },
             callback: function (t, opt) {
               console.log('callback fired from parent');
