@@ -56,20 +56,21 @@ export default function Publish() {
           Reward
         </Grid>
         <Grid item xs='auto'>
-          <Check
-            className={cx(
-              classes.icon,
-              reward > 0 ? classes.green : classes.red
-            )}
-          />
+          {reward > 0 ? (
+            <Check className={cx(classes.icon, classes.green)} />
+          ) : (
+            <Error className={cx(classes.icon, classes.red)} />
+          )}
         </Grid>
         <Grid item xs={10}>
           Timebox
         </Grid>
         <Grid item xs='auto'>
-          <Error
-            className={cx(classes.icon, timebox ? classes.green : classes.red)}
-          />
+          {timebox > 0 ? (
+            <Check className={cx(classes.icon, classes.green)} />
+          ) : (
+            <Error className={cx(classes.icon, classes.red)} />
+          )}
         </Grid>
       </Grid>
       <Button
