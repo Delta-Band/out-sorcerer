@@ -11,12 +11,14 @@ const cardButtons = {
     console.log('published:', published);
     const timebox = await t.get(context.card, 'shared', 'timebox', null);
     console.log('timebox:', timebox);
+    const userType = await t.get('board', 'shared', 'userType', 'pusher');
     if ((parseInt(reward, 10) === 0 || !timebox) && published) {
       console.log('setting published to false');
       t.set('card', 'shared', 'published', false);
     }
-    const items = [
-      {
+    const items = [];
+    if (userType === 'publisher') {
+      items.push({
         text: reward > 0 ? 'Change Reward' : 'Add Reward',
         callback: function (t, opt) {
           t.popup({
@@ -30,8 +32,8 @@ const cardButtons = {
             }
           });
         }
-      },
-      {
+      });
+      items.push({
         text: timebox ? 'Change Timebox' : 'Add Timebox',
         callback: function (t, opt) {
           t.popup({
@@ -45,24 +47,24 @@ const cardButtons = {
             }
           });
         }
-      }
-    ];
-    if (reward) {
-      items.push({
-        text: published ? 'Unpublish' : 'Publish',
-        callback: function (t, opt) {
-          published
-            ? t.set('card', 'shared', 'published', false)
-            : t.popup({
-                title: 'Publish',
-                url: 'https://out-sorcerer.vercel.app/publish',
-                args: { published, reward: parseInt(reward, 10), timebox },
-                callback: function (t, opt) {
-                  t.closePopup();
-                }
-              });
-        }
       });
+      if (reward) {
+        items.push({
+          text: published ? 'Unpublish' : 'Publish',
+          callback: function (t, opt) {
+            published
+              ? t.set('card', 'shared', 'published', false)
+              : t.popup({
+                  title: 'Publish',
+                  url: 'https://out-sorcerer.vercel.app/publish',
+                  args: { published, reward: parseInt(reward, 10), timebox },
+                  callback: function (t, opt) {
+                    t.closePopup();
+                  }
+                });
+          }
+        });
+      }
     }
     return [
       {

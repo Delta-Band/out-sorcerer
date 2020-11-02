@@ -66,9 +66,9 @@ export default function Timebox() {
           label='Pusher'
         />
         <FormControlLabel
-          value='provider'
+          value='publisher'
           control={<BlueRadio />}
-          label='Provide'
+          label='Publisher'
         />
       </RadioGroup>
       <Button
