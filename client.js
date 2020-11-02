@@ -37,6 +37,7 @@ const powerUpConfig = {
           t.popup({
             title: timebox ? 'Change Timebox' : 'Add Timebox',
             url: 'https://out-sorcerer.vercel.app/timebox',
+            height: 210,
             args: { timebox: 5 },
             callback: function (t, opt) {
               console.log('callback fired from parent');
