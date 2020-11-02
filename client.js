@@ -1,4 +1,5 @@
 // var Promise = TrelloPowerUp.Promise;
+import fetch from 'fetch';
 
 var LOGO =
   'https://cdn.glitch.com/1b42d7fe-bda8-4af8-a6c8-eff0cea9e08a%2Frocket-ship.png?1494946700421';
@@ -13,14 +14,30 @@ const powerUpConfig = {
     console.log('reward:', reward);
     const published = await t.get(context.card, 'shared', 'published', false);
     console.log('published:', published);
+    const timebox = await t.get(context.card, 'shared', 'timebox', 5);
+    console.log('published:', published);
     const items = [
       {
         text: reward > 0 ? 'Change Reward' : 'Add Reward',
         callback: function (t, opt) {
           t.popup({
-            title: 'Change Rerward',
+            title: reward > 0 ? 'Change Reward' : 'Add Reward',
             url: 'https://out-sorcerer.vercel.app/add-reward',
             args: { reward },
+            callback: function (t, opt) {
+              console.log('callback fired from parent');
+              t.closePopup();
+            }
+          });
+        }
+      },
+      {
+        text: timebox ? 'Change Timebox' : 'Add Timebox',
+        callback: function (t, opt) {
+          t.popup({
+            title: timebox ? 'Change Timebox' : 'Add Timebox',
+            url: 'https://out-sorcerer.vercel.app/add-reward',
+            args: { timebox },
             callback: function (t, opt) {
               console.log('callback fired from parent');
               t.closePopup();
@@ -64,7 +81,11 @@ const powerUpConfig = {
     const context = t.getContext();
     const reward = await t.get(context.card, 'shared', 'reward', 0);
     const published = await t.get(context.card, 'shared', 'published', false);
+    const timebox = await t.get(context.card, 'shared', 'timebox', null);
     const badges = [];
+    await fetch(
+      'https://api.trello.com/1/cards?key=0471642aefef5fa1fa76530ce1ba4c85&token=9eb76d9a9d02b8dd40c2f3e5df18556c831d4d1fadbe2c45f8310e6c93b5c548&idList=5abbe4b7ddc1b351ef961414'
+    );
     const formatter = new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
@@ -72,13 +93,16 @@ const powerUpConfig = {
       maximumFractionDigits: 0
     });
     badges.push({
-      icon: LOGO,
       title: 'Reward',
       text: formatter.format(parseInt(reward, 10)),
       color: reward > 0 ? 'green' : 'red'
     });
     badges.push({
-      icon: LOGO,
+      title: 'Timebox',
+      text: timebox ? `${timebox} Work Days` : 'Required!',
+      color: timebox ? 'green' : 'red'
+    });
+    badges.push({
       title: 'Published',
       text: published ? 'YES' : 'NO',
       color: published ? 'green' : 'red'
