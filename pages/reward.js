@@ -31,7 +31,7 @@ function NumberFormatCustom(props) {
   );
 }
 
-export default function AddReward() {
+export default function Reward() {
   const classes = useStyles();
   const [value, setValue] = useState(0);
   const [t, setT] = useState();
