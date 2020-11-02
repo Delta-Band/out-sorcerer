@@ -18,19 +18,13 @@ const boardButtons = {
     }
     const items = [];
     items.push({
-      icon: LOGO,
-      text: 'Out-Sorcerer Market',
-      callback: function (t, opt) {
-        t.modal({
-          title: reward > 0 ? 'Change Reward' : 'Add Reward',
-          url: 'https://out-sorcerer.vercel.app/market',
-          fullscreen: true,
-          callback: function (t, opt) {
-            console.log('callback fired from parent');
-            t.closePopup();
-          }
-        });
-      }
+      icon: {
+        dark: LOGO,
+        light: LOGO
+      },
+      text: 'OS Market',
+      url: 'https://out-sorcerer.vercel.app/market',
+      fullscreen: true
     });
     return items;
   }
