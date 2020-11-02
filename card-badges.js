@@ -28,7 +28,7 @@ const cardDetailBadges = {
     }
     if (published) {
       badges.push({
-        icon: 'https://out-sorcerer.vercel.app/timebox.png',
+        icon: 'https://out-sorcerer.vercel.app/published.png',
         text: 'Published',
         color: 'green'
       });
