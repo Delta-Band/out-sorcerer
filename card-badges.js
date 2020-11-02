@@ -12,21 +12,24 @@ const cardDetailBadges = {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
     });
-    badges.push({
-      title: 'Reward',
-      text: formatter.format(parseInt(reward, 10)),
-      color: reward > 0 ? 'green' : 'red'
-    });
-    badges.push({
-      title: 'Timebox',
-      text: timebox ? `${timebox} Work Days` : 'Required!',
-      color: timebox ? 'green' : 'red'
-    });
-    badges.push({
-      title: 'Published',
-      text: published ? 'YES' : 'NO',
-      color: published ? 'green' : 'red'
-    });
+    if (reward > 0) {
+      badges.push({
+        icon: 'Reward',
+        text: formatter.format(parseInt(reward, 10))
+      });
+    }
+    if (timebox) {
+      badges.push({
+        icon: 'Timebox',
+        text: timebox ? `${timebox} Work Days` : 'Required!'
+      });
+    }
+    if (published) {
+      badges.push({
+        icon: 'Published',
+        text: published ? 'YES' : 'NO'
+      });
+    }
     return badges;
   }
 };
