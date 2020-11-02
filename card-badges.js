@@ -15,19 +15,22 @@ const cardDetailBadges = {
     if (reward > 0) {
       badges.push({
         icon: 'https://out-sorcerer.vercel.app/reward.png',
-        text: formatter.format(parseInt(reward, 10))
+        text: formatter.format(parseInt(reward, 10)),
+        color: 'purple'
       });
     }
     if (timebox) {
       badges.push({
         icon: 'https://out-sorcerer.vercel.app/timebox.png',
-        text: `${timebox} Work Days`
+        text: `${timebox} Work Days`,
+        color: 'sky'
       });
     }
     if (published) {
       badges.push({
         icon: 'https://out-sorcerer.vercel.app/timebox.png',
-        text: 'Published'
+        text: 'Published',
+        color: 'lime'
       });
     }
     return badges;
