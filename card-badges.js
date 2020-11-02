@@ -21,13 +21,13 @@ const cardDetailBadges = {
     if (timebox) {
       badges.push({
         icon: 'https://out-sorcerer.vercel.app/timebox.png',
-        text: timebox ? `${timebox} Work Days` : 'Required!'
+        text: `${timebox} Work Days`
       });
     }
     if (published) {
       badges.push({
         icon: 'https://out-sorcerer.vercel.app/timebox.png',
-        text: published ? 'YES' : 'NO'
+        text: 'Published'
       });
     }
     return badges;
