@@ -61,12 +61,12 @@ export default function Timebox() {
         className={classes.radioGroup}
       >
         <FormControlLabel
-          value='Pusher'
+          value='pusher'
           control={<BlueRadio />}
           label='Pusher'
         />
         <FormControlLabel
-          value='Provider'
+          value='provider'
           control={<BlueRadio />}
           label='Provide'
         />
