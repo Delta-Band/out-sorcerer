@@ -26,12 +26,16 @@ export default function Publish() {
   const classes = useStyles();
   const theme = useTheme();
   const [published, setPublished] = useState(false);
+  const [reward, setReward] = useState(null);
+  const [timebox, setTimebox] = useState(null);
   const [t, setT] = useState();
 
   useEffect(() => {
     const _t = window.TrelloPowerUp.iframe();
     setT(_t);
     setPublished(_t.arg('published'));
+    setReward(_t.arg('reward'));
+    setTimebox(_t.arg('timebox'));
   }, []);
 
   const confirm = () => {
@@ -52,13 +56,20 @@ export default function Publish() {
           Reward
         </Grid>
         <Grid item xs='auto'>
-          <Check className={cx(classes.icon, classes.green)} />
+          <Check
+            className={cx(
+              classes.icon,
+              reward > 0 ? classes.green : classes.red
+            )}
+          />
         </Grid>
         <Grid item xs={10}>
-          Video
+          Timebox
         </Grid>
         <Grid item xs='auto'>
-          <Error className={cx(classes.icon, classes.red)} />
+          <Error
+            className={cx(classes.icon, timebox ? classes.green : classes.red)}
+          />
         </Grid>
       </Grid>
       <Button

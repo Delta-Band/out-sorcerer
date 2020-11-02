@@ -57,7 +57,7 @@ const cardButtons = {
             : t.popup({
                 title: 'Publish',
                 url: 'https://out-sorcerer.vercel.app/publish',
-                args: { published },
+                args: { published, reward: parseInt(reward, 10), timebox },
                 callback: function (t, opt) {
                   t.closePopup();
                 }

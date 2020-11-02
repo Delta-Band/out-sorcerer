@@ -30,7 +30,7 @@ const cardDetailBadges = {
       badges.push({
         icon: 'https://out-sorcerer.vercel.app/timebox.png',
         text: 'Published',
-        color: 'lime'
+        color: 'green'
       });
     }
     return badges;
