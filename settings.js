@@ -6,7 +6,7 @@ const settings = {
     return t.popup({
       title: 'Ouy Sourcer Settings',
       url: 'https://out-sorcerer.vercel.app/settings',
-      height: 210,
+      height: 170,
       args: { userType },
       callback: function (t, opt) {
         console.log('callback fired from parent');

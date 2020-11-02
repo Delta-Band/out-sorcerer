@@ -11,7 +11,7 @@ import {
 
 const useStyles = makeStyles((theme) => ({
   radioGroup: {
-    marginBottom: theme.spacing(2)
+    marginBottom: theme.spacing(1)
   }
 }));
 
