@@ -14,19 +14,19 @@ const cardDetailBadges = {
     });
     if (reward > 0) {
       badges.push({
-        icon: 'Reward',
+        icon: 'https://out-sorcerer.vercel.app/reward.png',
         text: formatter.format(parseInt(reward, 10))
       });
     }
     if (timebox) {
       badges.push({
-        icon: 'Timebox',
+        icon: 'https://out-sorcerer.vercel.app/timebox.png',
         text: timebox ? `${timebox} Work Days` : 'Required!'
       });
     }
     if (published) {
       badges.push({
-        icon: 'Published',
+        icon: 'https://out-sorcerer.vercel.app/timebox.png',
         text: published ? 'YES' : 'NO'
       });
     }
