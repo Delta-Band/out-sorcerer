@@ -1,18 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
+import { green } from '@material-ui/core/colors';
 import {
   Button,
   FormControl,
-  InputLabel,
-  Select,
-  MenuItem
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio
 } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
-  selectBox: {
+  radioGroup: {
     marginBottom: theme.spacing(2)
   }
 }));
+
+const BlueRadio = withStyles(
+  (theme) => ({
+    root: {
+      // color: green[400],
+      '&$checked': {
+        color: theme.palette.primary.main
+      }
+    },
+    checked: {}
+  }),
+  { withTheme: true }
+)((props) => <Radio color='default' {...props} />);
 
 export default function Timebox() {
   const classes = useStyles();
@@ -33,23 +48,35 @@ export default function Timebox() {
   };
 
   function handleChange(e) {
-    setTimebox(e.target.value);
+    setTimebox(parseInt(e.target.value, 10));
   }
 
   return (
     <FormControl style={theme.frameWrapper}>
-      <InputLabel id='demo-simple-select-label'>Timebox</InputLabel>
-      <Select
-        labelId='demo-simple-select-label'
-        id='demo-simple-select'
+      <FormLabel component='label'>Timebox</FormLabel>
+      <RadioGroup
+        aria-label='timebox'
+        name='timebox'
         value={timebox}
         onChange={handleChange}
-        className={classes.selectBox}
+        className={classes.radioGroup}
       >
-        <MenuItem value={5}>5 Work Days</MenuItem>
-        <MenuItem value={10}>10 Work Days</MenuItem>
-        <MenuItem value={15}>15 Work Days</MenuItem>
-      </Select>
+        <FormControlLabel
+          value={5}
+          control={<BlueRadio />}
+          label='5 Work Days'
+        />
+        <FormControlLabel
+          value={10}
+          control={<BlueRadio />}
+          label='10 Work Days'
+        />
+        <FormControlLabel
+          value={15}
+          control={<BlueRadio />}
+          label='15 Work Days'
+        />
+      </RadioGroup>
       <Button
         fullWidth
         variant='contained'
