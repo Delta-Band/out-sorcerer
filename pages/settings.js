@@ -47,7 +47,7 @@ export default function Timebox() {
   };
 
   function handleChange(e) {
-    setUserType(parseInt(e.target.value, 10));
+    setUserType(e.target.value);
   }
 
   return (
