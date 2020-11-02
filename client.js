@@ -1,5 +1,5 @@
 // var Promise = TrelloPowerUp.Promise;
-import fetch from 'fetch';
+// import fetch from 'fetch';
 
 var LOGO =
   'https://cdn.glitch.com/1b42d7fe-bda8-4af8-a6c8-eff0cea9e08a%2Frocket-ship.png?1494946700421';
@@ -83,9 +83,6 @@ const powerUpConfig = {
     const published = await t.get(context.card, 'shared', 'published', false);
     const timebox = await t.get(context.card, 'shared', 'timebox', null);
     const badges = [];
-    await fetch(
-      'https://api.trello.com/1/cards?key=0471642aefef5fa1fa76530ce1ba4c85&token=9eb76d9a9d02b8dd40c2f3e5df18556c831d4d1fadbe2c45f8310e6c93b5c548&idList=5abbe4b7ddc1b351ef961414'
-    );
     const formatter = new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
