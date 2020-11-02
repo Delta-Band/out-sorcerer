@@ -17,6 +17,7 @@ const powerUpConfig = {
     const timebox = await t.get(context.card, 'shared', 'timebox', null);
     console.log('timebox:', timebox);
     if ((reward === 0 || !timebox) && published) {
+      console.log('setting published to false');
       t.set('card', 'shared', 'published', false);
     }
     const items = [
