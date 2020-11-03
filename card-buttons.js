@@ -66,6 +66,24 @@ const cardButtons = {
         });
       }
     }
+    if (userType === 'pusher') {
+      items.push({
+        text: 'Claim'
+        // callback: function (t, opt) {
+        //   published
+        //     ? t.set('card', 'shared', 'claim', false)
+        //     : t.popup({
+        //         title: 'Publish',
+        //         url: 'https://out-sorcerer.vercel.app/publish',
+        //         args: { published, reward: parseInt(reward, 10), timebox },
+        //         callback: function (t, opt) {
+        //           t.closePopup();
+        //         }
+        //       });
+        // }
+      });
+    }
+
     return [
       {
         icon: LOGO,
