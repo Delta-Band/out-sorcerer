@@ -242,7 +242,7 @@ export default function Settings() {
           variant='contained'
           color='primary'
           onClick={save}
-          disabled={hasChanged()}
+          disabled={!hasChanged()}
         >
           SAVE
         </Button>
