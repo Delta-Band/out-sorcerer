@@ -169,6 +169,7 @@ export default function Settings() {
   }
 
   function hasChanged() {
+    console.log('check has changed');
     return t && t.arg('userType') !== userType;
   }
 
