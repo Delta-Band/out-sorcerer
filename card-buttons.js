@@ -17,7 +17,7 @@ const cardButtons = {
       t.set('card', 'shared', 'published', false);
     }
     const items = [];
-    if (userType === 'publisher') {
+    if (userType === 'provider') {
       items.push({
         text: reward > 0 ? 'Change Reward' : 'Add Reward',
         callback: function (t, opt) {
