@@ -5,11 +5,11 @@ import { AnimatePresence } from 'framer-motion';
 import { Provider } from 'react-redux';
 import { store } from '../store/store';
 import firebase from 'firebase';
-import { FB_API_KEY } from '../secrets';
+// import { FB_API_KEY } from '../secrets';
 import '../styles/globals.css';
 
 const firebaseConfig = {
-  apiKey: FB_API_KEY,
+  apiKey: 'FIREBASE_API_KEY',
   authDomain: 'out-sorcerer.firebaseapp.com',
   databaseURL: 'https://out-sorcerer.firebaseio.com',
   projectId: 'out-sorcerer',
