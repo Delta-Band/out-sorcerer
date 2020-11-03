@@ -12,7 +12,10 @@ const settings = {
       'marketPlaceBoardName',
       ''
     );
-    console.log(userType);
+    console.log('userType', userType);
+    console.log('webPage', webPage);
+    console.log('marketName', marketName);
+    console.log('logo', logo);
     return t.modal({
       title: 'Out-Sourcer Settings',
       url: 'https://out-sorcerer.vercel.app/settings',
