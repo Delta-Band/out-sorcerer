@@ -49,6 +49,9 @@ const useStyles = makeStyles((theme) => ({
   active: {
     borderColor: theme.palette.secondary.main,
     color: theme.palette.secondary.main
+  },
+  padingTopCompensationForFooter: {
+    paddingTop: '84px'
   }
 }));
 
@@ -70,7 +73,10 @@ function TabPanel(props) {
           display='flex'
           alignItems='center'
           justifyContent='center'
-          className={classes.fullHeight}
+          className={cx(
+            classes.fullHeight,
+            classes.padingTopCompensationForFooter
+          )}
         >
           {children}
         </Box>
@@ -212,32 +218,21 @@ export default function Settings() {
           >
             <PusherIcon />
           </TypeBox>
-          {/* <FormLabel component='label' color='secondary'>
-            User Type
-          </FormLabel>
-          <RadioGroup
-            aria-label='timebox'
-            name='timebox'
-            value={userType}
-            onChange={handleChange}
-            className={classes.radioGroup}
-          >
-            <FormControlLabel
-              value='pusher'
-              control={<BlueRadio />}
-              label='Pusher'
-            />
-            <FormControlLabel
-              value='publisher'
-              control={<BlueRadio />}
-              label='Publisher'
-            />
-          </RadioGroup> */}
         </TabPanel>
-        <TabPanel value={tab} index={1} dir={theme.direction}>
+        <TabPanel
+          value={tab}
+          index={1}
+          dir={theme.direction}
+          className={classes.fullHeight}
+        >
           Item Two
         </TabPanel>
-        <TabPanel value={tab} index={2} dir={theme.direction}>
+        <TabPanel
+          value={tab}
+          index={2}
+          dir={theme.direction}
+          className={classes.fullHeight}
+        >
           Item Three
         </TabPanel>
       </SwipeableViews>
