@@ -68,7 +68,8 @@ const cardButtons = {
     }
     if (userType === 'pusher') {
       items.push({
-        text: 'Claim'
+        text: 'Claim',
+        condition: 'always'
         // callback: function (t, opt) {
         //   published
         //     ? t.set('card', 'shared', 'claim', false)
