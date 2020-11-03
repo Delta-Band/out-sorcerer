@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import SwipeableViews from 'react-swipeable-views';
+import cx from 'classnames';
 import PropTypes from 'prop-types';
 import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
+import { UserNinja as PusherIcon } from '@styled-icons/fa-solid/UserNinja';
+import { UserTie as ProviderIcon } from '@styled-icons/fa-solid/UserTie';
 import {
   Button,
-  FormControl,
-  FormLabel,
-  RadioGroup,
-  FormControlLabel,
+  // FormControl,
+  // FormLabel,
+  // RadioGroup,
+  // FormControlLabel,
   Radio,
   Tabs,
   Tab,
@@ -27,12 +30,31 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1)
   },
   swipeableViews: {
+    height: '100%',
+    '& .react-swipeable-view-container': {
+      height: '100%'
+    }
+  },
+  fullHeight: {
     height: '100%'
+  },
+  typeBox: {
+    cursor: 'pointer',
+    transition: '.5s ease-in-out'
+    // '&:hover': {
+    //   borderColor: theme.palette.secondary.main,
+    //   color: theme.palette.secondary.main
+    // }
+  },
+  active: {
+    borderColor: theme.palette.secondary.main,
+    color: theme.palette.secondary.main
   }
 }));
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
+  const classes = useStyles();
 
   return (
     <div
@@ -43,11 +65,47 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
+        <Box
+          p={3}
+          display='flex'
+          alignItems='center'
+          justifyContent='center'
+          className={classes.fullHeight}
+        >
+          {children}
         </Box>
       )}
     </div>
+  );
+}
+
+function TypeBox(props) {
+  const { title, children, active, onClick } = props;
+  const classes = useStyles();
+
+  return (
+    <Box
+      p={3}
+      m={3}
+      border={2}
+      borderColor='grey.500'
+      borderRadius='50%'
+      width={120}
+      height={120}
+      boxShadow={3}
+      justifyContent='center'
+      alignItems='center'
+      display='flex'
+      flexDirection='column'
+      bgcolor='grey.900'
+      className={cx(classes.typeBox, { [classes.active]: active })}
+      onClick={onClick}
+    >
+      {children}
+      <Typography variant='caption' style={{ marginTop: '6px' }}>
+        {title}
+      </Typography>
+    </Box>
   );
 }
 
@@ -80,7 +138,7 @@ const BlueRadio = withStyles(
 export default function Settings() {
   const classes = useStyles();
   const theme = useTheme();
-  const [userType, setUserType] = useState(5);
+  const [userType, setUserType] = useState('pusher');
   const [tab, setTab] = useState(0);
   const [t, setT] = useState();
   console.log('timebox');
@@ -88,17 +146,13 @@ export default function Settings() {
   useEffect(() => {
     const _t = window.TrelloPowerUp.iframe();
     setT(_t);
-    setUserType(_t.arg('userType') || 5);
+    setUserType(_t.arg('userType') || 'pusher');
   }, []);
 
   const save = () => {
     t.set('board', 'shared', 'userType', userType);
     t.notifyParent('done');
   };
-
-  function handleChange(e) {
-    setUserType(e.target.value);
-  }
 
   function handleChangeTabOnSwipe(index) {
     setTab(index);
@@ -132,10 +186,33 @@ export default function Settings() {
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
         index={tab}
         onChangeIndex={handleChangeTabOnSwipe}
-        className={classes.swipeableViews}
+        className={cx(classes.swipeableViews, classes.fullHeight)}
       >
-        <TabPanel value={tab} index={0} dir={theme.direction}>
-          <FormLabel component='label' color='secondary'>
+        <TabPanel
+          value={tab}
+          index={0}
+          dir={theme.direction}
+          className={classes.fullHeight}
+        >
+          <TypeBox
+            title='PROVIDER'
+            active={userType === 'provider'}
+            onClick={() => {
+              setUserType('provider');
+            }}
+          >
+            <ProviderIcon />
+          </TypeBox>
+          <TypeBox
+            title='PUSHER'
+            active={userType === 'pusher'}
+            onClick={() => {
+              setUserType('pusher');
+            }}
+          >
+            <PusherIcon />
+          </TypeBox>
+          {/* <FormLabel component='label' color='secondary'>
             User Type
           </FormLabel>
           <RadioGroup
@@ -155,7 +232,7 @@ export default function Settings() {
               control={<BlueRadio />}
               label='Publisher'
             />
-          </RadioGroup>
+          </RadioGroup> */}
         </TabPanel>
         <TabPanel value={tab} index={1} dir={theme.direction}>
           Item Two

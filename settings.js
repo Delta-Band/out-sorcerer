@@ -6,7 +6,7 @@ const settings = {
     return t.modal({
       title: 'Out-Sourcer Settings',
       url: 'https://out-sorcerer.vercel.app/settings',
-      height: 170,
+      height: 460,
       args: { userType },
       callback: function (t, opt) {
         console.log('callback fired from parent');
