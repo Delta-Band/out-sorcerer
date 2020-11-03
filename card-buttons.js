@@ -66,7 +66,7 @@ const cardButtons = {
         });
       }
     }
-    if (userType === 'pusher') {
+    if (userType === 'pusher' && published) {
       items.push({
         text: 'Claim',
         condition: 'always'
