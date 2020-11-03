@@ -276,7 +276,7 @@ export default function Settings() {
   }
 
   function marketNameTaken() {
-    if (t.get('marketName') === marketName) return false;
+    if (t.arg('marketName') === marketName) return false;
     const found = marketNames.find((name) => name === marketName.toLowerCase());
     return found;
   }
