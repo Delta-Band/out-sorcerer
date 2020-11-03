@@ -154,6 +154,7 @@ export default function Settings() {
   const [marketName, setMarketName] = useState('');
   const [webPage, setWebPage] = useState('');
   const [logo, setLogo] = useState('');
+  const [saved, setSaved] = useState(false);
   const [marketNames, setMarketNames] = useState([]);
   const [tab, setTab] = useState(1);
   const db = firebase.firestore();
@@ -220,7 +221,7 @@ export default function Settings() {
     t.set('board', 'shared', 'marketName', marketName);
     t.set('board', 'shared', 'webPage', webPage);
     t.set('board', 'shared', 'logo', logo);
-    setTimeout(t.closeModal, 0);
+    setSaved(true);
   }
 
   function handleChangeTabOnSwipe(index) {
@@ -234,16 +235,19 @@ export default function Settings() {
   function handleMarkeNameChange(event) {
     console.log(event.target.value);
     setMarketName(event.target.value);
+    setSaved(false);
   }
 
   function handleWebPageChange(event) {
     console.log(event.target.value);
     setWebPage(event.target.value);
+    setSaved(false);
   }
 
   function handleLogoChange(event) {
     console.log(event.target.value);
     setLogo(event.target.value);
+    setSaved(false);
   }
 
   function hasChanged() {
@@ -420,9 +424,9 @@ export default function Settings() {
           variant='contained'
           color='primary'
           onClick={save}
-          disabled={!hasChanged() || !isValid()}
+          disabled={!hasChanged() || !isValid() || saved}
         >
-          SAVE
+          {saved ? 'SAVED' : 'SAVE'}
         </Button>
       </Box>
     </Box>
