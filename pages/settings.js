@@ -262,7 +262,7 @@ export default function Settings() {
 
   function isValid() {
     const isValid =
-      marketNames.length > 3 &&
+      marketName.length > 3 &&
       urlPattern.test(webPage) &&
       urlPattern.test(logo);
     console.log('isValid', isValid);
