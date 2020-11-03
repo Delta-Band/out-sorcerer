@@ -157,7 +157,7 @@ export default function Settings() {
 
   const save = () => {
     t.set('board', 'shared', 'userType', userType);
-    t.closeModal();
+    // t.closeModal();
   };
 
   function handleChangeTabOnSwipe(index) {
