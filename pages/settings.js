@@ -250,22 +250,23 @@ export default function Settings() {
 
   function hasChanged() {
     console.log('check has changed');
-    return (
+    const hasChanged =
       t &&
       (t.arg('userType') !== userType ||
         t.arg('marketName') !== marketName ||
         t.arg('webPage') !== webPage ||
-        t.arg('logo') !== logo)
-    );
+        t.arg('logo') !== logo);
+    console.log(hasChanged);
+    return hasChanged;
   }
 
   function isValid() {
-    console.log('check is valid');
-    return (
+    const isValid =
       marketNames.length > 3 &&
       urlPattern.test(webPage) &&
-      urlPattern.test(logo)
-    );
+      urlPattern.test(logo);
+    console.log(isValid);
+    return isValid;
   }
 
   function marketNameTaken() {
