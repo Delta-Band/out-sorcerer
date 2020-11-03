@@ -15,11 +15,13 @@ const theme = createMuiTheme({
     padding: defaultTheme.spacing(1)
   },
   palette: {
+    type: 'dark',
     primary: {
-      main: '#5668FF'
+      main: '#b361fe',
+      lighter: ''
     },
     secondary: {
-      main: '#ffffff'
+      main: '#85ff6e'
     }
   }
 });
