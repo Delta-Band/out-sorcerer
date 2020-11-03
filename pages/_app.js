@@ -4,7 +4,24 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { AnimatePresence } from 'framer-motion';
 import { Provider } from 'react-redux';
 import { store } from '../store/store';
+import firebase from 'firebase';
+import { FB_API_KEY } from '../secrets';
 import '../styles/globals.css';
+
+const firebaseConfig = {
+  apiKey: FB_API_KEY,
+  authDomain: 'out-sorcerer.firebaseapp.com',
+  databaseURL: 'https://out-sorcerer.firebaseio.com',
+  projectId: 'out-sorcerer',
+  storageBucket: 'out-sorcerer.appspot.com',
+  messagingSenderId: '88596021654',
+  appId: '1:88596021654:web:4c2cd29a0c32fd3fe85db7',
+  measurementId: 'G-394JKWTMK8'
+};
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 const defaultTheme = createMuiTheme();
 

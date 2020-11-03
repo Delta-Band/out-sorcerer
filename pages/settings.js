@@ -1,23 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import SwipeableViews from 'react-swipeable-views';
+// import fetch from 'node-fetch';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
-import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
+import firebase from 'firebase';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { UserNinja as PusherIcon } from '@styled-icons/fa-solid/UserNinja';
 import { UserTie as ProviderIcon } from '@styled-icons/fa-solid/UserTie';
 import {
   Button,
-  // FormControl,
-  // FormLabel,
-  // RadioGroup,
-  // FormControlLabel,
-  Radio,
+  TextField,
+  // Radio,
   Tabs,
   Tab,
   AppBar,
   Box,
   Typography
+  // InputLabel,
+  // Select,
+  // MenuItem
 } from '@material-ui/core';
+// import { TRELLO_API_KEY, TRELLO_API_TOKEN } from '../secrets';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,6 +55,9 @@ const useStyles = makeStyles((theme) => ({
   },
   padingTopCompensationForFooter: {
     paddingTop: '84px'
+  },
+  input: {
+    marginBottom: theme.spacing(2)
   }
 }));
 
@@ -128,37 +134,96 @@ function a11yProps(index) {
   };
 }
 
-const BlueRadio = withStyles(
-  (theme) => ({
-    root: {
-      // color: green[400],
-      '&$checked': {
-        color: theme.palette.secondary.main
-      }
-    },
-    checked: {}
-  }),
-  { withTheme: true }
-)((props) => <Radio color='default' {...props} />);
+// const BlueRadio = withStyles(
+//   (theme) => ({
+//     root: {
+//       // color: green[400],
+//       '&$checked': {
+//         color: theme.palette.secondary.main
+//       }
+//     },
+//     checked: {}
+//   }),
+//   { withTheme: true }
+// )((props) => <Radio color='default' {...props} />);
 
 export default function Settings() {
   const classes = useStyles();
   const theme = useTheme();
   const [userType, setUserType] = useState('pusher');
-  const [tab, setTab] = useState(0);
+  const [marketName, setMarkeName] = useState('');
+  const [webPage, setWebPage] = useState('');
+  const [logo, setLogo] = useState('');
+  const [marketNames, setMarketNames] = useState([]);
+  const [tab, setTab] = useState(1);
+  const db = firebase.firestore();
   const [t, setT] = useState();
   console.log('timebox');
+  const urlPattern = new RegExp(
+    '^(https?:\\/\\/)?' + // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+      '(\\#[-a-z\\d_]*)?$',
+    'i'
+  );
+
+  // async function getAdmins(_t) {
+  //   const boardId =
+  //     typeof _t.args === 'function'
+  //       ? _t.args('context').board
+  //       : '5f997e95e7a26e14b2b4c3ca';
+  //   const resp = await fetch(
+  //     `https://api.trello.com/1/boards/${boardId}/members?key=${TRELLO_API_KEY}&token=${TRELLO_API_TOKEN}&filter=admins`
+  //   );
+  //   const admins = await resp.json();
+  //   setAdmins(admins);
+  // }
+
+  async function getBoardIds() {
+    const snapshot = await db.collection('boards').get();
+    const _marketNames = snapshot.docs.reduce((accumulator, doc) => {
+      accumulator.push(doc.id);
+      return accumulator;
+    }, []);
+    setMarketNames(_marketNames);
+  }
 
   useEffect(() => {
     const _t = window.TrelloPowerUp.iframe();
     setT(_t);
     setUserType(_t.arg('userType') || 'pusher');
+    setMarkeName(_t.arg('marketName') || '');
+    setWebPage(_t.arg('webPage') || '');
+    setLogo(_t.arg('logo') || '');
+    // getAdmins(_t);
+    getBoardIds();
   }, []);
 
-  const save = () => {
+  async function save() {
+    await db
+      .collection('boards')
+      .doc(marketName.toLowerCase().replace(' ', '_'))
+      .set(
+        {
+          webPage,
+          logo
+        },
+        { merge: true }
+      );
+    if (t.arg('webPage') && t.arg('webPage') !== webPage) {
+      // delete old document
+      await db
+        .collection('boards')
+        .doc(t.arg('webPage').toLowerCase().replace(' ', '_'))
+        .delete();
+    }
     t.set('board', 'shared', 'userType', userType);
-    // t.closeModal();
-  };
+    t.set('board', 'shared', 'marketName', marketName);
+    t.set('board', 'shared', 'webPage', webPage);
+    t.set('board', 'shared', 'logo', logo);
+  }
 
   function handleChangeTabOnSwipe(index) {
     setTab(index);
@@ -168,9 +233,47 @@ export default function Settings() {
     setTab(newValue);
   }
 
+  function handleMarkeNameChange(event) {
+    console.log(event.target.value);
+    setMarkeName(event.target.value);
+  }
+
+  function handleWebPageChange(event) {
+    console.log(event.target.value);
+    setWebPage(event.target.value);
+  }
+
+  function handleLogoChange(event) {
+    console.log(event.target.value);
+    setLogo(event.target.value);
+  }
+
   function hasChanged() {
     console.log('check has changed');
-    return t && t.arg('userType') !== userType;
+    return (
+      t &&
+      (t.arg('userType') !== userType ||
+        t.arg('marketName') !== marketName ||
+        t.arg('webPage') !== webPage ||
+        t.arg('logo') !== logo)
+    );
+  }
+
+  function isValid() {
+    console.log('check is valid');
+    return (
+      marketNames.length > 3 &&
+      urlPattern.test(webPage) &&
+      urlPattern.test(logo)
+    );
+  }
+
+  function marketNameTaken() {
+    console.log(marketNames);
+    const found = marketNames.find(
+      (name) => name === marketName.toLowerCase().replace(' ', '_')
+    );
+    return found;
   }
 
   return (
@@ -226,7 +329,85 @@ export default function Settings() {
           dir={theme.direction}
           className={classes.fullHeight}
         >
-          Item Two
+          <Box width={350}>
+            <TextField
+              label='Market Name'
+              value={marketName}
+              onChange={handleMarkeNameChange}
+              name='marketName'
+              id='marketName'
+              className={classes.input}
+              inputProps={{
+                maxLength: 25
+              }}
+              fullWidth
+              error={
+                marketNameTaken() ||
+                (marketName.length < 4 && marketName.length > 0)
+              }
+              helperText={
+                marketName.length < 4 && marketName.length > 0
+                  ? 'Should be at least 4 charecters'
+                  : marketNameTaken()
+                  ? 'Market Name taken.'
+                  : 'This is your unique board name for the Out-Sourcerer market'
+              }
+            />
+            <br />
+            <TextField
+              label='Product/Company web page'
+              value={webPage}
+              onChange={handleWebPageChange}
+              name='webPage'
+              id='webPage'
+              className={classes.input}
+              fullWidth
+              error={!urlPattern.test(webPage) && webPage.length > 0}
+              helperText={
+                !urlPattern.test(webPage) && webPage.length > 0
+                  ? 'Not a valid url.'
+                  : 'Let pushers get to know your product/company'
+              }
+            />
+            <TextField
+              label='Product/Company logo'
+              value={logo}
+              onChange={handleLogoChange}
+              name='logo'
+              id='logo'
+              className={classes.input}
+              fullWidth
+              error={!urlPattern.test(webPage) && webPage.length > 0}
+              helperText={
+                !urlPattern.test(logo) && logo.length > 0
+                  ? 'Not a valid url.'
+                  : 'Should be a URL to a publicly available image'
+              }
+            />
+            {/* <InputLabel id='demo-simple-select-label'>Age</InputLabel>
+            <Select
+              labelId='demo-simple-select-label'
+              id='handler-simple-select'
+              value={age}
+              onChange={handleHandlerChange}
+            >
+              <MenuItem value={10}>Ten</MenuItem>
+              <MenuItem value={20}>Twenty</MenuItem>
+              <MenuItem value={30}>Thirty</MenuItem>
+            </Select> */}
+            {/* <TextField
+              label='Handler Name'
+              value={marketName}
+              onChange={handleMarkeNameChange}
+              name='marketName'
+              id='marketName'
+              className={classes.input}
+              inputProps={{
+                maxLength: 25
+              }}
+              fullWidth
+            /> */}
+          </Box>
         </TabPanel>
         <TabPanel
           value={tab}
@@ -242,7 +423,7 @@ export default function Settings() {
           variant='contained'
           color='primary'
           onClick={save}
-          disabled={!hasChanged()}
+          disabled={!hasChanged() || !isValid()}
         >
           SAVE
         </Button>
