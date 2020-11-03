@@ -202,27 +202,25 @@ export default function Settings() {
   }, []);
 
   async function save() {
-    await db
-      .collection('boards')
-      .doc(marketName.toLowerCase().replace(' ', '_'))
-      .set(
-        {
-          webPage,
-          logo
-        },
-        { merge: true }
-      );
+    await db.collection('boards').doc(marketName.toLowerCase()).set(
+      {
+        webPage,
+        logo
+      },
+      { merge: true }
+    );
     if (t.arg('webPage') && t.arg('webPage') !== webPage) {
       // delete old document
       await db
         .collection('boards')
-        .doc(t.arg('webPage').toLowerCase().replace(' ', '_'))
+        .doc(t.arg('webPage').toLowerCase())
         .delete();
     }
     t.set('board', 'shared', 'userType', userType);
     t.set('board', 'shared', 'marketName', marketName);
     t.set('board', 'shared', 'webPage', webPage);
     t.set('board', 'shared', 'logo', logo);
+    setTimeout(t.closeModal, 0);
   }
 
   function handleChangeTabOnSwipe(index) {
@@ -271,9 +269,7 @@ export default function Settings() {
 
   function marketNameTaken() {
     console.log(marketNames);
-    const found = marketNames.find(
-      (name) => name === marketName.toLowerCase().replace(' ', '_')
-    );
+    const found = marketNames.find((name) => name === marketName.toLowerCase());
     return found;
   }
 
