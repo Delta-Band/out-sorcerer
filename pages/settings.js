@@ -151,7 +151,7 @@ export default function Settings() {
   const classes = useStyles();
   const theme = useTheme();
   const [userType, setUserType] = useState('pusher');
-  const [marketName, setMarkeName] = useState('');
+  const [marketName, setMarketName] = useState('');
   const [webPage, setWebPage] = useState('');
   const [logo, setLogo] = useState('');
   const [marketNames, setMarketNames] = useState([]);
@@ -194,7 +194,7 @@ export default function Settings() {
     const _t = window.TrelloPowerUp.iframe();
     setT(_t);
     setUserType(_t.arg('userType') || 'pusher');
-    setMarkeName(_t.arg('marketName') || '');
+    setMarketName(_t.arg('marketName') || '');
     setWebPage(_t.arg('webPage') || '');
     setLogo(_t.arg('logo') || '');
     // getAdmins(_t);
@@ -233,7 +233,7 @@ export default function Settings() {
 
   function handleMarkeNameChange(event) {
     console.log(event.target.value);
-    setMarkeName(event.target.value);
+    setMarketName(event.target.value);
   }
 
   function handleWebPageChange(event) {
