@@ -203,13 +203,17 @@ export default function Settings() {
   }, []);
 
   async function save() {
-    await db.collection('boards').doc(marketName.toLowerCase()).set(
-      {
-        webPage,
-        logo
-      },
-      { merge: true }
-    );
+    await db
+      .collection('boards')
+      .doc(marketName.toLowerCase())
+      .set(
+        {
+          webPage,
+          logo,
+          boardId: t.args('context').board
+        },
+        { merge: true }
+      );
     if (t.arg('webPage') && t.arg('webPage') !== webPage) {
       // delete old document
       await db
