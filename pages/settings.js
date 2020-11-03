@@ -256,7 +256,7 @@ export default function Settings() {
         t.arg('marketName') !== marketName ||
         t.arg('webPage') !== webPage ||
         t.arg('logo') !== logo);
-    console.log(hasChanged);
+    console.log('hasChanged', hasChanged);
     return hasChanged;
   }
 
@@ -265,7 +265,7 @@ export default function Settings() {
       marketNames.length > 3 &&
       urlPattern.test(webPage) &&
       urlPattern.test(logo);
-    console.log(isValid);
+    console.log('isValid', isValid);
     return isValid;
   }
 
