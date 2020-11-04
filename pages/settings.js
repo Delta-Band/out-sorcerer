@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import SwipeableViews from 'react-swipeable-views';
 // import fetch from 'node-fetch';
 import cx from 'classnames';
@@ -7,6 +7,8 @@ import firebase from 'firebase';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { UserNinja as PusherIcon } from '@styled-icons/fa-solid/UserNinja';
 import { UserTie as ProviderIcon } from '@styled-icons/fa-solid/UserTie';
+import { ChevronRight } from '@styled-icons/boxicons-regular/ChevronRight';
+import { ChevronLeft } from '@styled-icons/boxicons-regular/ChevronLeft';
 import {
   Button,
   TextField,
@@ -473,6 +475,30 @@ export default function Settings() {
           disabled={!hasChanged() || !isValid() || saved}
         >
           {saved ? 'SAVED' : 'SAVE'}
+        </Button>
+        <Box width={30}></Box>
+        <Button
+          variant='contained'
+          color='primary'
+          disabled={tab === 2}
+          onClick={() => {
+            setTab(tab === 0 ? 1 : 2);
+          }}
+          startIcon={<ChevronRight size={25} />}
+        >
+          Next
+        </Button>
+        <Box width={30}></Box>
+        <Button
+          variant='contained'
+          color='primary'
+          disabled={tab === 0}
+          onClick={() => {
+            setTab(tab === 1 ? 0 : 1);
+          }}
+          startIcon={<ChevronLeft size={25} />}
+        >
+          Prev
         </Button>
       </Box>
     </Box>
