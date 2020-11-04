@@ -230,7 +230,7 @@ export default function Settings() {
   async function save() {
     await db
       .collection(userType === 'provider' ? 'boards' : 'pushers')
-      .doc(marketName.toLowerCase())
+      .doc(marketName.toLowerCase().trim())
       .set(
         {
           webPage,
@@ -250,7 +250,7 @@ export default function Settings() {
         .delete();
     }
     t.set('board', 'shared', 'userType', userType);
-    t.set('board', 'shared', 'marketName', marketName);
+    t.set('board', 'shared', 'marketName', marketName.trim());
     t.set('board', 'shared', 'webPage', webPage);
     t.set('board', 'shared', 'logo', logo);
     setSaved(true);
@@ -265,15 +265,15 @@ export default function Settings() {
   }
 
   function handleMarkeNameChange(event) {
-    setMarketName(event.target.value);
+    setMarketName(event.target.value.replace(/\s\s+/g, ' '));
   }
 
   function handleWebPageChange(event) {
-    setWebPage(event.target.value);
+    setWebPage(event.target.value.trim());
   }
 
   function handleLogoChange(event) {
-    setLogo(event.target.value);
+    setLogo(event.target.value.trim());
   }
 
   function hasChanged() {
@@ -291,7 +291,7 @@ export default function Settings() {
 
   function isValid() {
     const isValid =
-      marketName.length > 3 &&
+      marketName.trim().length > 3 &&
       urlPattern.test(webPage) &&
       urlPattern.test(logo);
     console.log('isValid', isValid);
@@ -299,7 +299,7 @@ export default function Settings() {
   }
 
   function marketNameTaken() {
-    if (!t || t.arg('marketName') === marketName) return false;
+    if (!t || t.arg('marketName') === marketName.trim()) return false;
     const found = usedMarketNames.find(
       (name) => name === marketName.toLowerCase()
     );
