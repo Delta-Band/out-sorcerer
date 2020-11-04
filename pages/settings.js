@@ -486,7 +486,7 @@ export default function Settings() {
           onClick={() => {
             setTab(tab === 0 ? 1 : 2);
           }}
-          startIcon={<ChevronRight size={25} />}
+          endIcon={<ChevronRight size={25} />}
         >
           Next
         </Button>
