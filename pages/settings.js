@@ -156,7 +156,7 @@ export default function Settings() {
   const [webPage, setWebPage] = useState('');
   const [logo, setLogo] = useState('');
   const [saved, setSaved] = useState(false);
-  const [marketNames, setMarketNames] = useState([]);
+  const [usedMarketNames, setUsedMarketNames] = useState([]);
   const [tab, setTab] = useState(1);
   const db = firebase.firestore();
   const [t, setT] = useState();
@@ -183,13 +183,15 @@ export default function Settings() {
   //   setAdmins(admins);
   // }
 
-  async function getBoardIds() {
-    const snapshot = await db.collection('boards').get();
-    const _marketNames = snapshot.docs.reduce((accumulator, doc) => {
+  async function getBoardIds(_t) {
+    const snapshot = await db
+      .collection(_t.arg('userType') === 'provider' ? 'boards' : 'pushers')
+      .get();
+    const _usedMarketNames = snapshot.docs.reduce((accumulator, doc) => {
       accumulator.push(doc.id);
       return accumulator;
     }, []);
-    setMarketNames(_marketNames);
+    setUsedMarketNames(_usedMarketNames);
   }
 
   useEffect(() => {
@@ -200,7 +202,7 @@ export default function Settings() {
     setWebPage(_t.arg('webPage') || '');
     setLogo(_t.arg('logo') || '');
     // getAdmins(_t);
-    getBoardIds();
+    getBoardIds(_t);
   }, []);
 
   useEffect(() => {
@@ -216,6 +218,7 @@ export default function Settings() {
       setWebPage(t.arg('webPage') || '');
       setLogo(t.arg('logo') || '');
     }
+    getBoardIds(t);
   }, [userType]);
 
   async function save() {
@@ -296,7 +299,9 @@ export default function Settings() {
 
   function marketNameTaken() {
     if (!t || t.arg('marketName') === marketName) return false;
-    const found = marketNames.find((name) => name === marketName.toLowerCase());
+    const found = usedMarketNames.find(
+      (name) => name === marketName.toLowerCase()
+    );
     return found;
   }
 
