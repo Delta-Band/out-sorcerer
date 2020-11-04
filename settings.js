@@ -6,12 +6,6 @@ const settings = {
     const webPage = await t.get('board', 'shared', 'webPage', '');
     const marketName = await t.get('board', 'shared', 'marketName', '');
     const logo = await t.get('board', 'shared', 'logo', '');
-    const marketPlaceBoardName = await t.get(
-      'board',
-      'shared',
-      'marketPlaceBoardName',
-      ''
-    );
     console.log('userType', userType);
     console.log('webPage', webPage);
     console.log('marketName', marketName);
@@ -22,7 +16,6 @@ const settings = {
       height: 460,
       args: {
         userType,
-        marketPlaceBoardName,
         context,
         webPage,
         marketName,
