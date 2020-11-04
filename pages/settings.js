@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import SwipeableViews from 'react-swipeable-views';
 // import fetch from 'node-fetch';
 import cx from 'classnames';
@@ -159,7 +159,7 @@ export default function Settings() {
   const [logo, setLogo] = useState('');
   const [saved, setSaved] = useState(false);
   const [usedMarketNames, setUsedMarketNames] = useState([]);
-  const [tab, setTab] = useState(1);
+  const [tab, setTab] = useState(0);
   const db = firebase.firestore();
   const [t, setT] = useState();
   const urlPattern = new RegExp(
@@ -317,7 +317,6 @@ export default function Settings() {
           indicatorColor='primary'
           textColor='primary'
           variant='fullWidth'
-          aria-label='full width tabs example'
         >
           <Tab label='User Type' {...a11yProps(0)} />
           <Tab label='Info' {...a11yProps(1)} />
