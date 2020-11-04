@@ -3,6 +3,7 @@ import Head from 'next/head';
 import SwipeableViews from 'react-swipeable-views';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
+import firebase from 'firebase';
 import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
 import { CollectionFill as AllIcon } from '@styled-icons/bootstrap/CollectionFill';
 import { StarFill as StarIcon } from '@styled-icons/bootstrap/StarFill';
@@ -44,8 +45,6 @@ function TabPanel(props) {
         <Box
           p={3}
           display='flex'
-          alignItems='center'
-          justifyContent='center'
           className={cx(
             classes.fullHeight,
             classes.padingTopCompensationForFooter
@@ -75,6 +74,22 @@ export default function Timebox() {
   const classes = useStyles();
   const theme = useTheme();
   const [tab, setTab] = useState(0);
+  const [boards, setBoards] = useState([]);
+  const db = firebase.firestore();
+
+  async function getBoardIds(_t) {
+    const snapshot = await db.collection('boards').get();
+    const boardIdCollection = snapshot.docs.reduce((accumulator, doc) => {
+      accumulator.push(doc.data().boardId);
+      return accumulator;
+    }, []);
+    setBoards(boardIdCollection);
+    console.log(boardIdCollection);
+  }
+
+  useEffect(() => {
+    getBoardIds();
+  }, []);
 
   function handleChangeTabOnSwipe(index) {
     setTab(index);
