@@ -282,7 +282,11 @@ export default function Settings() {
     if (!t) {
       return false;
     }
+    const found = usedMarketNames.find(
+      (name) => name === marketName.toLowerCase()
+    );
     const hasChanged =
+      !found ||
       t.arg('userType') !== userType ||
       t.arg('marketName') !== marketName ||
       t.arg('webPage') !== webPage ||
