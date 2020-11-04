@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.secondary.main
   },
   padingTopCompensationForFooter: {
-    paddingTop: '84px'
+    paddingTop: '55px'
   },
   input: {
     marginBottom: theme.spacing(2)
