@@ -192,6 +192,7 @@ export default function Settings() {
       accumulator.push(doc.id);
       return accumulator;
     }, []);
+    console.log('_usedMarketNames', _usedMarketNames);
     setUsedMarketNames(_usedMarketNames);
   }
 
