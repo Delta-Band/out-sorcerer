@@ -15,7 +15,7 @@ const boardButtons = {
             fullscreen: true,
             callback: function (t, opt) {
               console.log('modal closed');
-              t.closeModal();
+              // t.closeModal();
             }
           });
         }

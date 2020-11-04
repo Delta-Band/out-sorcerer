@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Head from 'next/head';
 import SwipeableViews from 'react-swipeable-views';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
@@ -85,6 +86,9 @@ export default function Timebox() {
 
   return (
     <Box className={classes.root} display='flex' flexDirection='column'>
+      <Head>
+        <title>OS Market</title>
+      </Head>
       <AppBar position='static' color='default'>
         <Tabs
           value={tab}
