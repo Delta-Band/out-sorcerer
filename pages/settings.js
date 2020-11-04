@@ -244,6 +244,7 @@ export default function Settings() {
         .delete();
     }
     t.set('board', 'shared', 'userType', userType);
+    console.log('set marketName: ', marketName);
     t.set('board', 'shared', 'marketName', marketName);
     t.set('board', 'shared', 'webPage', webPage);
     t.set('board', 'shared', 'logo', logo);
