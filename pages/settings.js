@@ -229,7 +229,7 @@ export default function Settings() {
         {
           webPage,
           logo,
-          boardId: t.args('context').board
+          boardId: t.arg('context').board
         },
         { merge: true }
       );
