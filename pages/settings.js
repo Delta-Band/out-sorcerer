@@ -285,6 +285,7 @@ export default function Settings() {
     const found = usedMarketNames.find(
       (name) => name === marketName.toLowerCase()
     );
+    console.log('found', found);
     const hasChanged =
       !found ||
       t.arg('userType') !== userType ||
