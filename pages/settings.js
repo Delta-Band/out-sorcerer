@@ -231,6 +231,12 @@ export default function Settings() {
   }, [userType, marketName, logo, webPage]);
 
   async function save() {
+    // delete old document
+    await db
+      .collection(t.arg('userType') === 'provider' ? 'boards' : 'pushers')
+      .doc(t.arg('marketName').toLowerCase())
+      .delete();
+    // create new document
     await db
       .collection(userType === 'provider' ? 'boards' : 'pushers')
       .doc(marketName.toLowerCase().trim())
@@ -242,16 +248,6 @@ export default function Settings() {
         },
         { merge: true }
       );
-    if (
-      (t.arg('marketName') && t.arg('marketName') !== marketName) ||
-      (t.arg('userType') && t.arg('userType') !== userType)
-    ) {
-      // delete old document
-      await db
-        .collection(t.arg('userType') === 'provider' ? 'boards' : 'pushers')
-        .doc(t.arg('marketName').toLowerCase())
-        .delete();
-    }
     t.set('board', 'shared', 'userType', userType);
     t.set('board', 'shared', 'marketName', marketName.trim());
     t.set('board', 'shared', 'webPage', webPage);
