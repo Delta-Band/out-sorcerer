@@ -220,6 +220,13 @@ export default function Settings() {
     getBoardIds(t);
   }, [userType]);
 
+  useEffect(() => {
+    if (!t) {
+      return;
+    }
+    setSaved(false);
+  }, [userType, marketName, logo, webPage]);
+
   async function save() {
     await db
       .collection(userType === 'provider' ? 'boards' : 'pushers')
@@ -273,17 +280,12 @@ export default function Settings() {
     if (!t) {
       return false;
     }
-    console.log(t.arg('marketName'));
-    console.log(marketName);
     const hasChanged =
       t.arg('userType') !== userType ||
       t.arg('marketName') !== marketName ||
       t.arg('webPage') !== webPage ||
       t.arg('logo') !== logo;
     console.log('hasChanged', hasChanged);
-    if (hasChanged && saved) {
-      setSaved(false);
-    }
     return hasChanged;
   }
 
