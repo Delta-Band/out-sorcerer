@@ -261,19 +261,16 @@ export default function Settings() {
   function handleMarkeNameChange(event) {
     console.log(event.target.value);
     setMarketName(event.target.value);
-    setSaved(false);
   }
 
   function handleWebPageChange(event) {
     console.log(event.target.value);
     setWebPage(event.target.value);
-    setSaved(false);
   }
 
   function handleLogoChange(event) {
     console.log(event.target.value);
     setLogo(event.target.value);
-    setSaved(false);
   }
 
   function hasChanged() {
@@ -285,6 +282,9 @@ export default function Settings() {
         t.arg('webPage') !== webPage ||
         t.arg('logo') !== logo);
     console.log('hasChanged', hasChanged);
+    if (hasChanged) {
+      setSaved(false);
+    }
     return hasChanged;
   }
 
