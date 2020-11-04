@@ -160,7 +160,6 @@ export default function Settings() {
   const [tab, setTab] = useState(1);
   const db = firebase.firestore();
   const [t, setT] = useState();
-  console.log('timebox');
   const urlPattern = new RegExp(
     '^(https?:\\/\\/)?' + // protocol
       '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
@@ -244,7 +243,6 @@ export default function Settings() {
         .delete();
     }
     t.set('board', 'shared', 'userType', userType);
-    console.log('set marketName: ', marketName);
     t.set('board', 'shared', 'marketName', marketName);
     t.set('board', 'shared', 'webPage', webPage);
     t.set('board', 'shared', 'logo', logo);
@@ -260,28 +258,28 @@ export default function Settings() {
   }
 
   function handleMarkeNameChange(event) {
-    console.log(event.target.value);
     setMarketName(event.target.value);
   }
 
   function handleWebPageChange(event) {
-    console.log(event.target.value);
     setWebPage(event.target.value);
   }
 
   function handleLogoChange(event) {
-    console.log(event.target.value);
     setLogo(event.target.value);
   }
 
   function hasChanged() {
-    console.log('check has changed');
+    if (!t) {
+      return false;
+    }
+    console.log(t.arg('marketName'));
+    console.log(marketName);
     const hasChanged =
-      t &&
-      (t.arg('userType') !== userType ||
-        t.arg('marketName') !== marketName ||
-        t.arg('webPage') !== webPage ||
-        t.arg('logo') !== logo);
+      t.arg('userType') !== userType ||
+      t.arg('marketName') !== marketName ||
+      t.arg('webPage') !== webPage ||
+      t.arg('logo') !== logo;
     console.log('hasChanged', hasChanged);
     if (hasChanged && saved) {
       setSaved(false);
