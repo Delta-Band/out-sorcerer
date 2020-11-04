@@ -282,7 +282,7 @@ export default function Settings() {
         t.arg('webPage') !== webPage ||
         t.arg('logo') !== logo);
     console.log('hasChanged', hasChanged);
-    if (hasChanged) {
+    if (hasChanged && saved) {
       setSaved(false);
     }
     return hasChanged;
