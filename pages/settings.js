@@ -15,7 +15,8 @@ import {
   Tab,
   AppBar,
   Box,
-  Typography
+  Typography,
+  InputAdornment
   // InputLabel,
   // Select,
   // MenuItem
@@ -202,9 +203,24 @@ export default function Settings() {
     getBoardIds();
   }, []);
 
+  useEffect(() => {
+    if (!t) {
+      return;
+    }
+    if (t.arg('userType') !== userType) {
+      setMarketName('');
+      setWebPage('');
+      setLogo('');
+    } else {
+      setMarketName(t.arg('marketName') || '');
+      setWebPage(t.arg('webPage') || '');
+      setLogo(t.arg('logo') || '');
+    }
+  }, [userType]);
+
   async function save() {
     await db
-      .collection('boards')
+      .collection(userType === 'provider' ? 'boards' : 'pushers')
       .doc(marketName.toLowerCase())
       .set(
         {
@@ -214,11 +230,14 @@ export default function Settings() {
         },
         { merge: true }
       );
-    if (t.arg('webPage') && t.arg('webPage') !== webPage) {
+    if (
+      (t.arg('marketName') && t.arg('marketName') !== marketName) ||
+      (t.arg('userType') && t.arg('userType') !== userType)
+    ) {
       // delete old document
       await db
-        .collection('boards')
-        .doc(t.arg('webPage').toLowerCase())
+        .collection(t.arg('userType') === 'provider' ? 'boards' : 'pushers')
+        .doc(t.arg('marketName').toLowerCase())
         .delete();
     }
     t.set('board', 'shared', 'userType', userType);
@@ -343,7 +362,12 @@ export default function Settings() {
               id='marketName'
               className={classes.input}
               inputProps={{
-                maxLength: 25
+                maxLength: 25,
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    {userType === 'pusher' ? <PusherIcon /> : <ProviderIcon />}
+                  </InputAdornment>
+                )
               }}
               fullWidth
               error={
@@ -355,12 +379,18 @@ export default function Settings() {
                   ? 'Should be at least 4 charecters'
                   : marketNameTaken()
                   ? 'Market Name taken.'
+                  : userType === 'pusher'
+                  ? 'This is your unique user-name for the Out-Sourcerer market'
                   : 'This is your unique board name for the Out-Sourcerer market'
               }
             />
             <br />
             <TextField
-              label='Product/Company web page'
+              label={
+                userType === 'pusher'
+                  ? 'Linkedin profile page'
+                  : 'Product/Company web page'
+              }
               value={webPage}
               onChange={handleWebPageChange}
               name='webPage'
@@ -371,11 +401,17 @@ export default function Settings() {
               helperText={
                 !urlPattern.test(webPage) && webPage.length > 0
                   ? 'Not a valid url.'
+                  : userType === 'pusher'
+                  ? 'Let providers get to know you'
                   : 'Let pushers get to know your product/company'
               }
             />
             <TextField
-              label='Product/Company logo'
+              label={
+                userType === 'pusher'
+                  ? 'Profile pic / logo'
+                  : 'Product/Company logo'
+              }
               value={logo}
               onChange={handleLogoChange}
               name='logo'
@@ -420,7 +456,7 @@ export default function Settings() {
           dir={theme.direction}
           className={classes.fullHeight}
         >
-          Item Three
+          TBD...
         </TabPanel>
       </SwipeableViews>
       <Box p={3} display='flex' flexDirection='row-reverse'>
