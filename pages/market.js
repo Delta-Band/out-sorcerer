@@ -4,6 +4,7 @@ import SwipeableViews from 'react-swipeable-views';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 import firebase from 'firebase';
+import filterAsync from 'node-filter-async';
 import fetch from 'node-fetch';
 import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
 import { CollectionFill as AllIcon } from '@styled-icons/bootstrap/CollectionFill';
@@ -82,17 +83,17 @@ export default function Market() {
   const [cards, setCards] = useState([]);
   const db = firebase.firestore();
 
-  async function getBoardIds(_t) {
+  async function getData(_t) {
     const snapshot = await db.collection('boards').get();
     const boardIdCollection = snapshot.docs.reduce((accumulator, doc) => {
       accumulator.push(doc.data().boardId);
       return accumulator;
     }, []);
     setBoards(boardIdCollection);
-    console.log(boardIdCollection);
+    getCards(boardIdCollection);
   }
 
-  function getTickets() {
+  function getCards() {
     let _publishedCards = [];
     let count = 0;
     boards.forEach(async (board) => {
@@ -104,9 +105,8 @@ export default function Market() {
         throw new Error('Bad response from server');
       } else {
         const _cards = await resp.json();
-        const _published = _cards.filter(async (_card) => {
-          const published = await t.get(_card.id, 'shared', 'published', false);
-          return published;
+        const _published = await filterAsync(_cards, async (_card, index) => {
+          return (await t.get(_card.id, 'shared', 'published', false)) === true;
         });
         _publishedCards = _publishedCards.concat(_published);
       }
@@ -130,11 +130,7 @@ export default function Market() {
   }, []);
 
   useEffect(() => {
-    getTickets();
-  }, [boards]);
-
-  useEffect(() => {
-    getBoardIds();
+    getData();
   }, [t]);
 
   function handleChangeTabOnSwipe(index) {
