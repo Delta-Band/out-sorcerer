@@ -65,10 +65,10 @@ export default function Timebox() {
     setTimebox(_t.arg('timebox') || 5);
   }, []);
 
-  async confirm () {
+  async function confirm() {
     await t.set('card', 'shared', 'timebox', timebox);
     t.notifyParent('done');
-  };
+  }
 
   function handleChange(e) {
     setTimebox(parseInt(e.target.value, 10));
