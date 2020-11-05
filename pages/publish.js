@@ -62,6 +62,7 @@ export default function Publish() {
   }, []);
 
   async function confirm() {
+    console.log('setting published: ', published ? null : Date.now());
     t.set('card', 'shared', 'published', published ? null : Date.now());
     t.notifyParent('done');
   }
