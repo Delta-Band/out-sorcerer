@@ -76,48 +76,43 @@ export default function Timebox() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box className={classes.root}>
-        <FormControl>
-          <FormLabel
-            component='label'
-            style={{ color: theme.palette.text.dark }}
-          >
-            Timebox
-          </FormLabel>
-          <RadioGroup
-            aria-label='timebox'
-            name='timebox'
-            value={timebox}
-            onChange={handleChange}
-            className={classes.radioGroup}
-          >
-            <FormControlLabel
-              value={5}
-              control={<BlueRadio />}
-              label='5 Work Days'
-            />
-            <FormControlLabel
-              value={10}
-              control={<BlueRadio />}
-              label='10 Work Days'
-            />
-            <FormControlLabel
-              value={15}
-              control={<BlueRadio />}
-              label='15 Work Days'
-            />
-          </RadioGroup>
-          <Button
-            fullWidth
-            variant='contained'
-            color='primary'
-            onClick={confirm}
-            disabled={false}
-          >
-            Confirm
-          </Button>
-        </FormControl>
-      </Box>
+      <FormControl className={classes.root}>
+        <FormLabel component='label' style={{ color: theme.palette.text.dark }}>
+          Timebox
+        </FormLabel>
+        <RadioGroup
+          aria-label='timebox'
+          name='timebox'
+          value={timebox}
+          onChange={handleChange}
+          className={classes.radioGroup}
+        >
+          <FormControlLabel
+            value={5}
+            control={<BlueRadio />}
+            label='5 Work Days'
+          />
+          <FormControlLabel
+            value={10}
+            control={<BlueRadio />}
+            label='10 Work Days'
+          />
+          <FormControlLabel
+            value={15}
+            control={<BlueRadio />}
+            label='15 Work Days'
+          />
+        </RadioGroup>
+        <Button
+          fullWidth
+          variant='contained'
+          color='primary'
+          onClick={confirm}
+          disabled={false}
+        >
+          Confirm
+        </Button>
+      </FormControl>
     </ThemeProvider>
   );
 }
