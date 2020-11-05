@@ -130,7 +130,9 @@ export default function Market() {
   }, []);
 
   useEffect(() => {
-    getData();
+    if (t) {
+      getData();
+    }
   }, [t]);
 
   function handleChangeTabOnSwipe(index) {

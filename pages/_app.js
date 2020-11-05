@@ -1,5 +1,5 @@
 import React from 'react';
-import { useScript } from '../hooks';
+// import { useScript } from '../hooks';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { AnimatePresence } from 'framer-motion';
 import { Provider } from 'react-redux';
@@ -44,8 +44,6 @@ const theme = createMuiTheme({
 });
 
 function MyApp({ Component, pageProps, router }) {
-  useScript('https://p.trellocdn.com/power-up.min.js');
-
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
