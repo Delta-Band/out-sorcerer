@@ -9,7 +9,7 @@ import firebase from 'firebase';
 import '../styles/globals.css';
 
 const firebaseConfig = {
-  apiKey: 'FIREBASE_API_KEY',
+  apiKey: process.env.FIREBASE_API_KEY,
   authDomain: 'out-sorcerer.firebaseapp.com',
   databaseURL: 'https://out-sorcerer.firebaseio.com',
   projectId: 'out-sorcerer',
