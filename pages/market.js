@@ -11,7 +11,15 @@ import { CollectionFill as AllIcon } from '@styled-icons/bootstrap/CollectionFil
 import { StarFill as StarIcon } from '@styled-icons/bootstrap/StarFill';
 import { HandSparkles as ClaimedIcon } from '@styled-icons/fa-solid/HandSparkles';
 import { Handshake as AproovedIcon } from '@styled-icons/fa-solid/Handshake';
-import { Button, Box, AppBar, Tabs, Tab, TypeBox } from '@material-ui/core';
+import {
+  Button,
+  Box,
+  AppBar,
+  Tabs,
+  Tab,
+  TypeBox,
+  Grid
+} from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+  const { cards, value, index, ...other } = props;
   const classes = useStyles();
 
   return (
@@ -52,7 +60,18 @@ function TabPanel(props) {
             classes.padingTopCompensationForFooter
           )}
         >
-          {children}
+          <Grid
+            container
+            direction='row'
+            justify='flex-start'
+            alignItems='flex-start'
+          >
+            {cards.map((card) => (
+              <Grid item xs={2} key={card.id}>
+                {card.name}
+              </Grid>
+            ))}
+          </Grid>
         </Box>
       )}
     </div>
@@ -60,7 +79,7 @@ function TabPanel(props) {
 }
 
 TabPanel.propTypes = {
-  children: PropTypes.node,
+  cards: PropTypes.arrayOf(PropTypes.object),
   index: PropTypes.any.isRequired,
   value: PropTypes.any.isRequired
 };
@@ -71,8 +90,6 @@ function a11yProps(index) {
     'aria-controls': `simple-tabpanel-${index}`
   };
 }
-
-function TicketGrid() {}
 
 export default function Market() {
   const classes = useStyles();
@@ -194,33 +211,29 @@ export default function Market() {
           index={0}
           dir={theme.direction}
           className={classes.fullHeight}
-        >
-          All
-        </TabPanel>
+          cards={cards}
+        />
         <TabPanel
           value={tab}
           index={1}
           dir={theme.direction}
           className={classes.fullHeight}
-        >
-          Starred
-        </TabPanel>
+          cards={cards}
+        />
         <TabPanel
           value={tab}
           index={2}
           dir={theme.direction}
           className={classes.fullHeight}
-        >
-          Claimed
-        </TabPanel>
+          cards={cards}
+        />
         <TabPanel
           value={tab}
-          index={2}
+          index={3}
           dir={theme.direction}
           className={classes.fullHeight}
-        >
-          Approved
-        </TabPanel>
+          cards={cards}
+        />
       </SwipeableViews>
     </Box>
   );
