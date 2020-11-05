@@ -5,7 +5,7 @@ import cx from 'classnames';
 import PropTypes from 'prop-types';
 import firebase from 'firebase';
 import filterAsync from 'node-filter-async';
-import TimeAgo from 'react-timeago';
+import { format } from 'timeago.js';
 import FastAverageColor from 'fast-average-color';
 import fetch from 'node-fetch';
 import StackGrid from 'react-stack-grid';
@@ -116,7 +116,7 @@ function TabPanel(props) {
                         </IconButton>
                       }
                       title={board.name}
-                      subheader={<TimeAgo date={card.publishDate} />}
+                      subheader={format(card.publishDate)}
                     />
                     <img
                       className={classes.media}
@@ -183,12 +183,7 @@ export default function Market() {
         const _published = await filterAsync(_cards, async (_card, index) => {
           const published = await t.get(_card.id, 'shared', 'published', false);
           if (published) {
-            _cards[index].publishDate = await t.get(
-              _card.id,
-              'shared',
-              'publishDate',
-              null
-            );
+            _cards[index].publishDate = published;
           }
           return published;
         });

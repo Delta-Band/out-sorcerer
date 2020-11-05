@@ -1,9 +1,11 @@
+import { format } from 'timeago.js';
+
 const cardDetailBadges = {
   'card-detail-badges': async function (t, opts) {
     console.log('initializig card-detail-badges butons');
     const context = t.getContext();
     const reward = await t.get(context.card, 'shared', 'reward', 0);
-    const published = await t.get(context.card, 'shared', 'published', false);
+    const published = await t.get(context.card, 'shared', 'published', null);
     const timebox = await t.get(context.card, 'shared', 'timebox', null);
     const badges = [];
     const formatter = new Intl.NumberFormat('en-US', {
@@ -24,7 +26,7 @@ const cardDetailBadges = {
     });
     badges.push({
       title: 'Published',
-      text: published ? 'YES' : 'NO',
+      text: published ? format(published) : '-',
       color: published ? 'green' : 'red',
       cardId: context.card,
       boardId: context.board
