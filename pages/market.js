@@ -114,6 +114,7 @@ export default function Market() {
     let _publishedCards = [];
     let count = 0;
     _boards.forEach(async (board) => {
+      console.log('getting cards for board: ', board);
       ++count;
       const resp = await fetch(
         `https://api.trello.com/1/boards/${board}/cards?key=${process.env.TRELLO_API_KEY}&token=${process.env.TRELLO_API_TOKEN}`
@@ -122,8 +123,11 @@ export default function Market() {
         throw new Error('Bad response from server');
       } else {
         const _cards = await resp.json();
+        console.log('cards', _cards);
         const _published = await filterAsync(_cards, async (_card, index) => {
-          return (await t.get(_card.id, 'shared', 'published', false)) === true;
+          const published = await t.get(_card.id, 'shared', 'published', false);
+          console.log(`card ${_card.id} is published:`, published);
+          return published;
         });
         _publishedCards = _publishedCards.concat(_published);
       }
