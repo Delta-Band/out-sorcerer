@@ -8,8 +8,7 @@ const useStyles = makeStyles((theme) => ({
     width: 280,
     boxSizing: 'border-box',
     padding: theme.spacing(1),
-    backgroundColor: theme.palette.background.paper,
-    color: theme.palette.text.primary
+    color: theme.palette.text.secondary
   },
   input: {
     marginBottom: theme.spacing(2)

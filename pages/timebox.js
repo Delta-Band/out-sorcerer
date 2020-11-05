@@ -15,8 +15,7 @@ const useStyles = makeStyles((theme) => ({
     width: 280,
     boxSizing: 'border-box',
     padding: theme.spacing(1),
-    backgroundColor: theme.palette.background.paper,
-    color: theme.palette.text.primary
+    color: theme.palette.text.secondary
   },
   radioGroup: {
     marginBottom: theme.spacing(2)
@@ -26,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 const BlueRadio = withStyles(
   (theme) => ({
     root: {
-      // color: green[400],
+      color: theme.palette.text.secondary,
       '&$checked': {
         color: theme.palette.primary.main
       }
