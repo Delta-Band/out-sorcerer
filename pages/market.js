@@ -105,7 +105,7 @@ export default function Market() {
       } else {
         const _cards = await resp.json();
         const _published = _cards.filter(async (_card) => {
-          const published = await t.card(_card.id, 'shared', 'published');
+          const published = await t.get(_card.id, 'shared', 'published', false);
           return published;
         });
         _publishedCards = _publishedCards.concat(_published);
@@ -127,12 +127,15 @@ export default function Market() {
   useEffect(() => {
     const _t = window.TrelloPowerUp.iframe();
     setT(_t);
-    getBoardIds();
   }, []);
 
   useEffect(() => {
     getTickets();
   }, [boards]);
+
+  useEffect(() => {
+    getBoardIds();
+  }, [t]);
 
   function handleChangeTabOnSwipe(index) {
     setTab(index);
