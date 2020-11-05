@@ -99,7 +99,9 @@ function TabPanel(props) {
               const board = boards.find(
                 (board) => board.boardId === card.idBoard
               );
-              const coverImg = card.cover.scaled.slice(-1)[0].url;
+              const coverImg = card.cover.scaled
+                ? card.cover.scaled.slice(-1)[0].url
+                : null;
               // const color = fac.getColorAsync(coverImg);
               return (
                 <div key={card.id}>
@@ -118,11 +120,13 @@ function TabPanel(props) {
                       title={board.name}
                       subheader={format(card.publishDate)}
                     />
-                    <img
-                      className={classes.media}
-                      src={coverImg}
-                      // title={card.name}
-                    />
+                    {coverImg && (
+                      <img
+                        className={classes.media}
+                        src={coverImg}
+                        // title={card.name}
+                      />
+                    )}
                   </Card>
                 </div>
               );
