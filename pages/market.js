@@ -5,12 +5,17 @@ import cx from 'classnames';
 import PropTypes from 'prop-types';
 import firebase from 'firebase';
 import filterAsync from 'node-filter-async';
+import TimeAgo from 'react-timeago';
+import FastAverageColor from 'fast-average-color';
 import fetch from 'node-fetch';
+import StackGrid from 'react-stack-grid';
 import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
 import { CollectionFill as AllIcon } from '@styled-icons/bootstrap/CollectionFill';
 import { StarFill as StarIcon } from '@styled-icons/bootstrap/StarFill';
 import { HandSparkles as ClaimedIcon } from '@styled-icons/fa-solid/HandSparkles';
 import { Handshake as AproovedIcon } from '@styled-icons/fa-solid/Handshake';
+import { MoreVertical as KebabIcon } from '@styled-icons/evaicons-solid/MoreVertical';
+import cardsMock from '../mocks/cards.mock';
 import {
   Button,
   Box,
@@ -18,12 +23,22 @@ import {
   Tabs,
   Tab,
   TypeBox,
-  Grid
+  Paper,
+  Grid,
+  Card,
+  CardHeader,
+  CardMedia,
+  CardActions,
+  Avatar,
+  IconButton,
+  Typography
 } from '@material-ui/core';
+
+const fac = new FastAverageColor();
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: '#333',
     color: theme.palette.text.primary,
     width: '100vw',
     height: '100vh'
@@ -36,11 +51,30 @@ const useStyles = makeStyles((theme) => ({
   },
   fullHeight: {
     height: '100%'
+  },
+  card: {
+    '& .MuiCardHeader-title': {
+      textTransform: 'capitalize'
+    }
+    // '& .MuiCardMedia-root': {
+    //   backgroundSize: 'contain'
+    // }
+  },
+  avatar: {
+    objectFit: 'cover',
+    width: '100%',
+    height: '100%'
+  },
+  media: {
+    width: '100%'
+  },
+  grid: {
+    width: '100%'
   }
 }));
 
 function TabPanel(props) {
-  const { cards, value, index, ...other } = props;
+  const { cards, boards, value, index, ...other } = props;
   const classes = useStyles();
 
   return (
@@ -60,18 +94,40 @@ function TabPanel(props) {
             classes.padingTopCompensationForFooter
           )}
         >
-          <Grid
-            container
-            direction='row'
-            justify='flex-start'
-            alignItems='flex-start'
-          >
-            {cards.map((card) => (
-              <Grid item xs={2} key={card.id}>
-                {card.name}
-              </Grid>
-            ))}
-          </Grid>
+          <StackGrid columnWidth={'25%'} className={classes.grid}>
+            {cards.map((card) => {
+              const board = boards.find(
+                (board) => board.boardId === card.idBoard
+              );
+              const coverImg = card.cover.scaled.slice(-1)[0].url;
+              // const color = fac.getColorAsync(coverImg);
+              return (
+                <div key={card.id}>
+                  <Card className={classes.card}>
+                    <CardHeader
+                      avatar={
+                        <Avatar aria-label='recipe'>
+                          <img src={board.logo} className={classes.avatar} />
+                        </Avatar>
+                      }
+                      action={
+                        <IconButton aria-label='settings'>
+                          <KebabIcon />
+                        </IconButton>
+                      }
+                      title={board.name}
+                      subheader={<TimeAgo date={card.publishDate} />}
+                    />
+                    <img
+                      className={classes.media}
+                      src={coverImg}
+                      // title={card.name}
+                    />
+                  </Card>
+                </div>
+              );
+            })}
+          </StackGrid>
         </Box>
       )}
     </div>
@@ -102,22 +158,22 @@ export default function Market() {
 
   async function getData(_t) {
     const snapshot = await db.collection('boards').get();
-    const boardIdCollection = snapshot.docs.reduce((accumulator, doc) => {
-      accumulator.push(doc.data().boardId);
+    const _boards = snapshot.docs.reduce((accumulator, doc) => {
+      accumulator.push({ ...doc.data(), ...{ name: doc.id } });
       return accumulator;
     }, []);
-    setBoards(boardIdCollection);
-    getCards(boardIdCollection);
+    setBoards(_boards);
+    getCards(_boards);
   }
 
   function getCards(_boards) {
     let _publishedCards = [];
     let count = 0;
     _boards.forEach(async (board) => {
-      console.log('getting cards for board: ', board);
+      console.log('getting cards for board: ', board.boardId);
       ++count;
       const resp = await fetch(
-        `https://api.trello.com/1/boards/${board}/cards?key=${process.env.TRELLO_API_KEY}&token=${process.env.TRELLO_API_TOKEN}`
+        `https://api.trello.com/1/boards/${board.boardId}/cards?key=${process.env.TRELLO_API_KEY}&token=${process.env.TRELLO_API_TOKEN}`
       );
       if (resp.status >= 400 && resp.status < 600) {
         throw new Error('Bad response from server');
@@ -126,7 +182,14 @@ export default function Market() {
         console.log('cards', _cards);
         const _published = await filterAsync(_cards, async (_card, index) => {
           const published = await t.get(_card.id, 'shared', 'published', false);
-          console.log(`card ${_card.id} is published:`, published);
+          if (published) {
+            _cards[index].publishDate = await t.get(
+              _card.id,
+              'shared',
+              'publishDate',
+              null
+            );
+          }
           return published;
         });
         _publishedCards = _publishedCards.concat(_published);
@@ -137,6 +200,7 @@ export default function Market() {
         console.log(_publishedCards);
       }
     });
+    setCards(cardsMock);
     // const snapshot = await db.collection('boards').get();
     // const boardIdCollection = snapshot.docs.reduce((accumulator, doc) => {
     //   accumulator.push(doc.data().boardId);
@@ -217,6 +281,7 @@ export default function Market() {
           dir={theme.direction}
           className={classes.fullHeight}
           cards={cards}
+          boards={boards}
         />
         <TabPanel
           value={tab}
@@ -224,6 +289,7 @@ export default function Market() {
           dir={theme.direction}
           className={classes.fullHeight}
           cards={cards}
+          boards={boards}
         />
         <TabPanel
           value={tab}
@@ -231,6 +297,7 @@ export default function Market() {
           dir={theme.direction}
           className={classes.fullHeight}
           cards={cards}
+          boards={boards}
         />
         <TabPanel
           value={tab}
@@ -238,6 +305,7 @@ export default function Market() {
           dir={theme.direction}
           className={classes.fullHeight}
           cards={cards}
+          boards={boards}
         />
       </SwipeableViews>
     </Box>
