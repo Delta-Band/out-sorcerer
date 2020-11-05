@@ -93,10 +93,10 @@ export default function Market() {
     getCards(boardIdCollection);
   }
 
-  function getCards() {
+  function getCards(_boards) {
     let _publishedCards = [];
     let count = 0;
-    boards.forEach(async (board) => {
+    _boards.forEach(async (board) => {
       ++count;
       const resp = await fetch(
         `https://api.trello.com/1/boards/${board}/cards?key=${process.env.TRELLO_API_KEY}&token=${process.env.TRELLO_API_TOKEN}`
