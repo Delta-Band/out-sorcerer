@@ -7,12 +7,11 @@ import {
 } from '@material-ui/core/styles';
 import {
   Button,
+  RadioGroup,
   FormControl,
   FormLabel,
-  RadioGroup,
   FormControlLabel,
-  Radio,
-  Box
+  Radio
 } from '@material-ui/core';
 
 const theme = createMuiTheme({
