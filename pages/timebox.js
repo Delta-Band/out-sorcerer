@@ -65,9 +65,9 @@ export default function Timebox() {
     setTimebox(_t.arg('timebox') || 5);
   }, []);
 
-  const confirm = () => {
-    t.set('card', 'shared', 'timebox', timebox);
-    // t.notifyParent('done');
+  async confirm () {
+    await t.set('card', 'shared', 'timebox', timebox);
+    t.notifyParent('done');
   };
 
   function handleChange(e) {
