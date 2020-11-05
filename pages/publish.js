@@ -1,21 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import cx from 'classnames';
 // import firebase from 'firebase';
-import { makeStyles } from '@material-ui/core/styles';
-import { Button, Grid, Box } from '@material-ui/core';
+import {
+  createMuiTheme,
+  ThemeProvider,
+  makeStyles
+} from '@material-ui/core/styles';
+import { Button, Box } from '@material-ui/core';
 import { CheckCircle as Check } from '@styled-icons/boxicons-solid/CheckCircle';
 import { ErrorCircle as Error } from '@styled-icons/boxicons-solid/ErrorCircle';
+
+const theme = createMuiTheme({
+  palette: {
+    type: 'light',
+    primary: {
+      main: '#b361fe',
+      lighter: ''
+    },
+    secondary: {
+      main: '#85ff6e'
+    }
+  }
+});
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: 280,
     boxSizing: 'border-box',
-    padding: theme.spacing(1),
-    color: theme.palette.text.secondary
+    padding: theme.spacing(1)
   },
   checkList: {
-    lineHeight: '2em',
-    marginBottom: theme.spacing(2)
+    lineHeight: '2em'
   },
   icon: {
     width: 25,
@@ -52,44 +67,53 @@ export default function Publish() {
   }
 
   return (
-    <Box className={classes.root}>
-      <Grid
-        container
-        direction='row'
-        justify='flex-start'
-        alignItems='flex-start'
-        className={classes.checkList}
-      >
-        <Grid item xs={10}>
-          Reward
-        </Grid>
-        <Grid item xs='auto'>
-          {reward > 0 ? (
-            <Check className={cx(classes.icon, classes.green)} />
-          ) : (
-            <Error className={cx(classes.icon, classes.red)} />
-          )}
-        </Grid>
-        <Grid item xs={10}>
-          Timebox
-        </Grid>
-        <Grid item xs='auto'>
-          {timebox > 0 ? (
-            <Check className={cx(classes.icon, classes.green)} />
-          ) : (
-            <Error className={cx(classes.icon, classes.red)} />
-          )}
-        </Grid>
-      </Grid>
-      <Button
-        fullWidth
-        variant='contained'
-        color='primary'
-        onClick={confirm}
-        disabled={false}
-      >
-        {published ? 'Unpublish' : 'Publish'}
-      </Button>
-    </Box>
+    <ThemeProvider theme={theme}>
+      <Box className={classes.root}>
+        <Box
+          fullWidth
+          display='flex'
+          alignItems='center'
+          justifyContent='space-between'
+          className={classes.checkList}
+        >
+          <div>Reward</div>
+          <div item xs='auto'>
+            {reward > 0 ? (
+              <Check className={cx(classes.icon, classes.green)} />
+            ) : (
+              <Error className={cx(classes.icon, classes.red)} />
+            )}
+          </div>
+        </Box>
+        <Box
+          fullWidth
+          display='flex'
+          alignItems='center'
+          justifyContent='space-between'
+          className={classes.checkList}
+          style={{
+            marginBottom: theme.spacing(2)
+          }}
+        >
+          <div>Timebox</div>
+          <div item xs='auto'>
+            {timebox > 0 ? (
+              <Check className={cx(classes.icon, classes.green)} />
+            ) : (
+              <Error className={cx(classes.icon, classes.red)} />
+            )}
+          </div>
+        </Box>
+        <Button
+          fullWidth
+          variant='contained'
+          color='primary'
+          onClick={confirm}
+          disabled={false}
+        >
+          {published ? 'Unpublish' : 'Publish'}
+        </Button>
+      </Box>
+    </ThemeProvider>
   );
 }

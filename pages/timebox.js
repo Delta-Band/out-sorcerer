@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import {
+  makeStyles,
+  withStyles,
+  createMuiTheme,
+  ThemeProvider
+} from '@material-ui/core/styles';
 import {
   Button,
   FormControl,
@@ -10,12 +15,24 @@ import {
   Box
 } from '@material-ui/core';
 
+const theme = createMuiTheme({
+  palette: {
+    type: 'light',
+    primary: {
+      main: '#b361fe',
+      lighter: ''
+    },
+    secondary: {
+      main: '#85ff6e'
+    }
+  }
+});
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: 280,
     boxSizing: 'border-box',
-    padding: theme.spacing(1),
-    color: theme.palette.text.secondary
+    padding: theme.spacing(1)
   },
   radioGroup: {
     marginBottom: theme.spacing(2)
@@ -25,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 const BlueRadio = withStyles(
   (theme) => ({
     root: {
-      color: theme.palette.text.secondary,
+      // color: theme.palette.text.dark,
       '&$checked': {
         color: theme.palette.primary.main
       }
@@ -58,42 +75,49 @@ export default function Timebox() {
   }
 
   return (
-    <Box className={classes.root}>
-      <FormControl>
-        <FormLabel component='label'>Timebox</FormLabel>
-        <RadioGroup
-          aria-label='timebox'
-          name='timebox'
-          value={timebox}
-          onChange={handleChange}
-          className={classes.radioGroup}
-        >
-          <FormControlLabel
-            value={5}
-            control={<BlueRadio />}
-            label='5 Work Days'
-          />
-          <FormControlLabel
-            value={10}
-            control={<BlueRadio />}
-            label='10 Work Days'
-          />
-          <FormControlLabel
-            value={15}
-            control={<BlueRadio />}
-            label='15 Work Days'
-          />
-        </RadioGroup>
-        <Button
-          fullWidth
-          variant='contained'
-          color='primary'
-          onClick={confirm}
-          disabled={false}
-        >
-          Confirm
-        </Button>
-      </FormControl>
-    </Box>
+    <ThemeProvider theme={theme}>
+      <Box className={classes.root}>
+        <FormControl>
+          <FormLabel
+            component='label'
+            style={{ color: theme.palette.text.dark }}
+          >
+            Timebox
+          </FormLabel>
+          <RadioGroup
+            aria-label='timebox'
+            name='timebox'
+            value={timebox}
+            onChange={handleChange}
+            className={classes.radioGroup}
+          >
+            <FormControlLabel
+              value={5}
+              control={<BlueRadio />}
+              label='5 Work Days'
+            />
+            <FormControlLabel
+              value={10}
+              control={<BlueRadio />}
+              label='10 Work Days'
+            />
+            <FormControlLabel
+              value={15}
+              control={<BlueRadio />}
+              label='15 Work Days'
+            />
+          </RadioGroup>
+          <Button
+            fullWidth
+            variant='contained'
+            color='primary'
+            onClick={confirm}
+            disabled={false}
+          >
+            Confirm
+          </Button>
+        </FormControl>
+      </Box>
+    </ThemeProvider>
   );
 }

@@ -1,14 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {
+  createMuiTheme,
+  ThemeProvider,
+  makeStyles
+} from '@material-ui/core/styles';
 import { TextField, Button, Box } from '@material-ui/core';
 import NumberFormat from 'react-number-format';
+
+const theme = createMuiTheme({
+  palette: {
+    type: 'light',
+    primary: {
+      main: '#b361fe',
+      lighter: ''
+    },
+    secondary: {
+      main: '#85ff6e'
+    }
+  }
+});
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: 280,
     boxSizing: 'border-box',
-    padding: theme.spacing(1),
-    color: theme.palette.text.secondary
+    padding: theme.spacing(1)
   },
   input: {
     marginBottom: theme.spacing(2)
@@ -42,6 +58,7 @@ export default function AddReward() {
   const [value, setValue] = useState(0);
   const [t, setT] = useState();
   // const theme = useTheme();
+  // theme.palette.type = 'light';
 
   useEffect(() => {
     const _t = window.TrelloPowerUp.iframe();
@@ -59,23 +76,25 @@ export default function AddReward() {
   };
 
   return (
-    <Box className={classes.root}>
-      <TextField
-        label='Reward'
-        value={value}
-        onChange={handleChange}
-        name='reward'
-        id='reward-input'
-        className={classes.input}
-        fullWidth
-        InputProps={{
-          inputComponent: NumberFormatCustom
-        }}
-      />
-      <br />
-      <Button variant='contained' color='primary' onClick={submit} fullWidth>
-        Submit
-      </Button>
-    </Box>
+    <ThemeProvider theme={theme}>
+      <Box className={classes.root}>
+        <TextField
+          label='Reward'
+          value={value}
+          onChange={handleChange}
+          name='reward'
+          id='reward-input'
+          className={classes.input}
+          fullWidth
+          InputProps={{
+            inputComponent: NumberFormatCustom
+          }}
+        />
+        <br />
+        <Button variant='contained' color='primary' onClick={submit} fullWidth>
+          Submit
+        </Button>
+      </Box>
+    </ThemeProvider>
   );
 }
