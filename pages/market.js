@@ -78,7 +78,8 @@ export default function Market() {
   const theme = useTheme();
   const [tab, setTab] = useState(0);
   const [boards, setBoards] = useState([]);
-  const [tickets, setTickets] = useState([]);
+  const [t, setT] = useState();
+  const [cards, setCards] = useState([]);
   const db = firebase.firestore();
 
   async function getBoardIds(_t) {
@@ -92,24 +93,26 @@ export default function Market() {
   }
 
   function getTickets() {
-    const _allTickets = [];
+    let _publishedCards = [];
     let count = 0;
     boards.forEach(async (board) => {
       ++count;
-      const cards = await db
-        .collection('boards')
-        .doc(board)
-        .collection('cards')
-        .get();
-      const publishedCards = cards.docs.reduce((accumulator, card) => {
-        const cardData = card.data();
-        if (cardData.published) {
-          _allTickets.push(card.data());
-        }
-        return _allTickets;
-      }, _allTickets);
-      if (count === board.length) {
-        setTickets(publishedCards);
+      const resp = await fetch(
+        `https://api.trello.com/1/boards/${board}/cards?key=${process.env.TRELLO_API_KEY}&token=${process.env.TRELLO_API_TOKEN}`
+      );
+      if (resp.status >= 400 && resp.status < 600) {
+        throw new Error('Bad response from server');
+      } else {
+        const _cards = await resp.json();
+        const _published = _cards.filter(async (_card) => {
+          const published = await t.card(_card.id, 'shared', 'published');
+          return published;
+        });
+        _publishedCards = _publishedCards.concat(_published);
+      }
+      if (count === boards.length) {
+        setCards(_publishedCards);
+        console.log(_publishedCards);
       }
     });
     // const snapshot = await db.collection('boards').get();
@@ -122,6 +125,8 @@ export default function Market() {
   }
 
   useEffect(() => {
+    const _t = window.TrelloPowerUp.iframe();
+    setT(_t);
     getBoardIds();
   }, []);
 
