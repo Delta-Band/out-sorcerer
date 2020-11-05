@@ -9,7 +9,7 @@ const cardButtons = {
     console.log('reward:', reward);
     const published = await t.get(context.card, 'shared', 'published', false);
     console.log('published:', published);
-    const timebox = await t.get(context.card, 'shared', 'timebox', null);
+    const timebox = await t.get(context.card, 'shared', 'timebox', 5);
     console.log('timebox:', timebox);
     const userType = await t.get('board', 'shared', 'userType', 'pusher');
     if ((parseInt(reward, 10) === 0 || !timebox) && published) {
@@ -40,7 +40,7 @@ const cardButtons = {
             title: timebox ? 'Change Timebox' : 'Add Timebox',
             url: 'https://out-sorcerer.vercel.app/timebox',
             height: 210,
-            args: { timebox: 5 },
+            args: { timebox },
             callback: function (t, opt) {
               console.log('callback fired from parent');
               t.closePopup();
