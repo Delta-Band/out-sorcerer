@@ -25,7 +25,9 @@ const cardDetailBadges = {
     badges.push({
       title: 'Published',
       text: published ? 'YES' : 'NO',
-      color: published ? 'green' : 'red'
+      color: published ? 'green' : 'red',
+      cardId: context.card,
+      boardId: context.board
     });
     return badges;
   }

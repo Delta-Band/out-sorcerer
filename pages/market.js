@@ -92,13 +92,25 @@ export default function Market() {
   }
 
   function getTickets() {
+    const _allTickets = [];
+    let count = 0;
     boards.forEach(async (board) => {
-      const resp = await fetch(
-        `https://api.trello.com/1/boards/${board}/cards1?key=TRELLO_API_KEY&token=TRELLO_API_TOKEN`
-      );
-      const _tickets = await resp.json();
-      setTickets(tickets.concat(_tickets));
-      console.log(tickets);
+      ++count;
+      const cards = await db
+        .collection('boards')
+        .doc(board)
+        .collection('cards')
+        .get();
+      const publishedCards = cards.docs.reduce((accumulator, card) => {
+        const cardData = card.data();
+        if (cardData.published) {
+          _allTickets.push(card.data());
+        }
+        return _allTickets;
+      }, _allTickets);
+      if (count === board.length) {
+        setTickets(publishedCards);
+      }
     });
     // const snapshot = await db.collection('boards').get();
     // const boardIdCollection = snapshot.docs.reduce((accumulator, doc) => {
