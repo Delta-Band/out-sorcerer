@@ -200,7 +200,7 @@ export default function Market() {
         console.log(_publishedCards);
       }
     });
-    // setCards(cardsMock);
+    setCards(cardsMock);
     // const snapshot = await db.collection('boards').get();
     // const boardIdCollection = snapshot.docs.reduce((accumulator, doc) => {
     //   accumulator.push(doc.data().boardId);
@@ -220,10 +220,6 @@ export default function Market() {
       getData();
     }
   }, [t]);
-
-  function handleChangeTabOnSwipe(index) {
-    setTab(index);
-  }
 
   function handleChangeTab(event, newValue) {
     setTab(newValue);
@@ -269,12 +265,7 @@ export default function Market() {
           />
         </Tabs>
       </AppBar>
-      <SwipeableViews
-        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-        index={tab}
-        onChangeIndex={handleChangeTabOnSwipe}
-        className={cx(classes.swipeableViews, classes.fullHeight)}
-      >
+      <Box className={cx(classes.swipeableViews, classes.fullHeight)}>
         <TabPanel
           value={tab}
           index={0}
@@ -307,7 +298,7 @@ export default function Market() {
           cards={cards}
           boards={boards}
         />
-      </SwipeableViews>
+      </Box>
     </Box>
   );
 }

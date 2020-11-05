@@ -67,7 +67,7 @@ export default function Timebox() {
 
   const confirm = () => {
     t.set('card', 'shared', 'timebox', timebox);
-    t.notifyParent('done');
+    // t.notifyParent('done');
   };
 
   function handleChange(e) {
