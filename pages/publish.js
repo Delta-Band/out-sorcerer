@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import cx from 'classnames';
-import firebase from 'firebase';
+// import firebase from 'firebase';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Button, Grid } from '@material-ui/core';
 import { CheckCircle as Check } from '@styled-icons/boxicons-solid/CheckCircle';
@@ -30,7 +30,7 @@ export default function Publish() {
   const [reward, setReward] = useState(null);
   const [timebox, setTimebox] = useState(null);
   const [t, setT] = useState();
-  const db = firebase.firestore();
+  // const db = firebase.firestore();
 
   useEffect(() => {
     const _t = window.TrelloPowerUp.iframe();
@@ -42,19 +42,6 @@ export default function Publish() {
 
   async function confirm() {
     t.set('card', 'shared', 'published', !published);
-    await db
-      .collection('boards')
-      .doc(t.arg('boardId'))
-      .collection(t.arg('cards'))
-      .doc(t.arg('cardId'))
-      .set(
-        {
-          published: !published
-        },
-        {
-          merge: true
-        }
-      );
     t.notifyParent('done');
   }
 

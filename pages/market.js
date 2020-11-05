@@ -131,7 +131,7 @@ export default function Market() {
         });
         _publishedCards = _publishedCards.concat(_published);
       }
-      console.log(`coun is: ${count}, baords length is: ${_boards.length}`);
+      console.log(`count is: ${count}, baords length is: ${_boards.length}`);
       if (count === _boards.length) {
         setCards(_publishedCards);
         console.log(_publishedCards);
