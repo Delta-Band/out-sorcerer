@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import cx from 'classnames';
 // import firebase from 'firebase';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Button, Grid } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { Button, Grid, Box } from '@material-ui/core';
 import { CheckCircle as Check } from '@styled-icons/boxicons-solid/CheckCircle';
 import { ErrorCircle as Error } from '@styled-icons/boxicons-solid/ErrorCircle';
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    width: 280,
+    boxSizing: 'border-box',
+    padding: theme.spacing(1),
+    backgroundColor: theme.palette.background.paper,
+    color: theme.palette.text.primary
+  },
   checkList: {
     lineHeight: '2em',
     marginBottom: theme.spacing(2)
@@ -25,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Publish() {
   const classes = useStyles();
-  const theme = useTheme();
+  // const theme = useTheme();
   const [published, setPublished] = useState(false);
   const [reward, setReward] = useState(null);
   const [timebox, setTimebox] = useState(null);
@@ -46,7 +53,7 @@ export default function Publish() {
   }
 
   return (
-    <div style={theme.frameWrapper}>
+    <Box className={classes.root}>
       <Grid
         container
         direction='row'
@@ -84,6 +91,6 @@ export default function Publish() {
       >
         {published ? 'Unpublish' : 'Publish'}
       </Button>
-    </div>
+    </Box>
   );
 }

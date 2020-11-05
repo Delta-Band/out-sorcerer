@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { TextField, Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { TextField, Button, Box } from '@material-ui/core';
 import NumberFormat from 'react-number-format';
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    width: 280,
+    boxSizing: 'border-box',
+    padding: theme.spacing(1),
+    backgroundColor: theme.palette.background.paper,
+    color: theme.palette.text.primary
+  },
   input: {
     marginBottom: theme.spacing(2)
   }
@@ -35,7 +42,7 @@ export default function AddReward() {
   const classes = useStyles();
   const [value, setValue] = useState(0);
   const [t, setT] = useState();
-  const theme = useTheme();
+  // const theme = useTheme();
 
   useEffect(() => {
     const _t = window.TrelloPowerUp.iframe();
@@ -53,7 +60,7 @@ export default function AddReward() {
   };
 
   return (
-    <div style={theme.frameWrapper}>
+    <Box className={classes.root}>
       <TextField
         label='Reward'
         value={value}
@@ -70,6 +77,6 @@ export default function AddReward() {
       <Button variant='contained' color='primary' onClick={submit} fullWidth>
         Submit
       </Button>
-    </div>
+    </Box>
   );
 }

@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import {
   Button,
   FormControl,
   FormLabel,
   RadioGroup,
   FormControlLabel,
-  Radio
+  Radio,
+  Box
 } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    width: 280,
+    boxSizing: 'border-box',
+    padding: theme.spacing(1),
+    backgroundColor: theme.palette.background.paper,
+    color: theme.palette.text.primary
+  },
   radioGroup: {
     marginBottom: theme.spacing(2)
   }
@@ -30,7 +38,7 @@ const BlueRadio = withStyles(
 
 export default function Timebox() {
   const classes = useStyles();
-  const theme = useTheme();
+  // const theme = useTheme();
   const [timebox, setTimebox] = useState(5);
   const [t, setT] = useState();
   console.log('timebox');
@@ -51,40 +59,42 @@ export default function Timebox() {
   }
 
   return (
-    <FormControl style={theme.frameWrapper}>
-      <FormLabel component='label'>Timebox</FormLabel>
-      <RadioGroup
-        aria-label='timebox'
-        name='timebox'
-        value={timebox}
-        onChange={handleChange}
-        className={classes.radioGroup}
-      >
-        <FormControlLabel
-          value={5}
-          control={<BlueRadio />}
-          label='5 Work Days'
-        />
-        <FormControlLabel
-          value={10}
-          control={<BlueRadio />}
-          label='10 Work Days'
-        />
-        <FormControlLabel
-          value={15}
-          control={<BlueRadio />}
-          label='15 Work Days'
-        />
-      </RadioGroup>
-      <Button
-        fullWidth
-        variant='contained'
-        color='primary'
-        onClick={confirm}
-        disabled={false}
-      >
-        Confirm
-      </Button>
-    </FormControl>
+    <Box className={classes.root}>
+      <FormControl>
+        <FormLabel component='label'>Timebox</FormLabel>
+        <RadioGroup
+          aria-label='timebox'
+          name='timebox'
+          value={timebox}
+          onChange={handleChange}
+          className={classes.radioGroup}
+        >
+          <FormControlLabel
+            value={5}
+            control={<BlueRadio />}
+            label='5 Work Days'
+          />
+          <FormControlLabel
+            value={10}
+            control={<BlueRadio />}
+            label='10 Work Days'
+          />
+          <FormControlLabel
+            value={15}
+            control={<BlueRadio />}
+            label='15 Work Days'
+          />
+        </RadioGroup>
+        <Button
+          fullWidth
+          variant='contained'
+          color='primary'
+          onClick={confirm}
+          disabled={false}
+        >
+          Confirm
+        </Button>
+      </FormControl>
+    </Box>
   );
 }
