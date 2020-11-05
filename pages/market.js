@@ -200,7 +200,7 @@ export default function Market() {
         console.log(_publishedCards);
       }
     });
-    setCards(cardsMock);
+    // setCards(cardsMock);
     // const snapshot = await db.collection('boards').get();
     // const boardIdCollection = snapshot.docs.reduce((accumulator, doc) => {
     //   accumulator.push(doc.data().boardId);
