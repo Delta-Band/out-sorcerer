@@ -6,6 +6,7 @@ const cardDetailBadges = {
     const context = t.getContext();
     const reward = await t.get(context.card, 'shared', 'reward', 0);
     const published = await t.get(context.card, 'shared', 'published', null);
+    console.log('published: ', published);
     const timebox = await t.get(context.card, 'shared', 'timebox', null);
     const badges = [];
     const formatter = new Intl.NumberFormat('en-US', {
