@@ -178,7 +178,7 @@ export default function Market() {
       console.log('getting cards for board: ', board.boardId);
       ++count;
       const resp = await fetch(
-        `https://api.trello.com/1/boards/${board.boardId}/cards?key=${process.env.TRELLO_API_KEY}&token=${process.env.TRELLO_API_TOKEN}`
+        `https://api.trello.com/1/boards/${board.boardId}/cards?attachments=true&attachment_fields=all&key=${process.env.TRELLO_API_KEY}&token=${process.env.TRELLO_API_TOKEN}`
       );
       if (resp.status >= 400 && resp.status < 600) {
         throw new Error('Bad response from server');
