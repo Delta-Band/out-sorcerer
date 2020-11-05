@@ -99,6 +99,7 @@ function TabPanel(props) {
               const board = boards.find(
                 (board) => board.boardId === card.idBoard
               );
+              console.log('card', card);
               const coverImg = card.cover.scaled
                 ? card.cover.scaled.slice(-1)[0].url
                 : null;
