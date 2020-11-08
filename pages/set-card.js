@@ -33,7 +33,7 @@ const theme = createMuiTheme({
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: 280,
+    width: '100%',
     boxSizing: 'border-box',
     padding: theme.spacing(1)
   },
