@@ -5,17 +5,12 @@ const cardDetailBadges = {
   'card-detail-badges': async function (t, opts) {
     // console.log('initializig card-detail-badges butons');
     const context = t.getContext();
-    const marketName = await t.get('board', 'shared', 'marketName', '');
     // const reward = await t.get(context.card, 'shared', 'reward', 0);
     // const published = await t.get(context.card, 'shared', 'published', null);
     // console.log('published: ', published);
     // const timebox = await t.get(context.card, 'shared', 'timebox', null);
     const db = firebase.firestore();
-    const fireCardRef = db
-      .collection('boards')
-      .doc(marketName)
-      .collection('cards')
-      .doc(context.card);
+    const fireCardRef = db.collection('cards').doc(context.card);
     const fireCard = await fireCardRef.get();
     const fireCardData = fireCard.data();
     const badges = [];
