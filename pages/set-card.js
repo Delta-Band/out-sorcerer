@@ -98,13 +98,7 @@ export default function AddReward() {
 
   useEffect(() => {
     const _t = window.TrelloPowerUp.iframe();
-    setFireCardRef(
-      db
-        .collection('boards')
-        .doc(_t.arg('marketName') || 'delta band')
-        .collection('cards')
-        .doc(_t.arg('cardId') || 'vvVqKVLw')
-    );
+    setFireCardRef(db.collection('cards').doc(_t.arg('cardId')));
   }, []);
 
   useEffect(() => {
@@ -114,10 +108,13 @@ export default function AddReward() {
   }, [fireCardRef]);
 
   async function getCardData() {
+    const _t = window.TrelloPowerUp.iframe();
     const fireCard = await fireCardRef.get();
     const fireCardData = fireCard.data();
     setData({
       ...data,
+      boardMarketName: _t.arg('marketName'),
+      boardId: _t.arg('boardId'),
       ...fireCardData
     });
     if (fireCardData.published) {

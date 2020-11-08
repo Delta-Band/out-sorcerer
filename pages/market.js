@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
-import SwipeableViews from 'react-swipeable-views';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 import firebase from 'firebase';
-import filterAsync from 'node-filter-async';
 import { format } from 'timeago.js';
-import FastAverageColor from 'fast-average-color';
-import fetch from 'node-fetch';
 import StackGrid from 'react-stack-grid';
 import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
 import { CollectionFill as AllIcon } from '@styled-icons/bootstrap/CollectionFill';
@@ -15,26 +11,16 @@ import { StarFill as StarIcon } from '@styled-icons/bootstrap/StarFill';
 import { HandSparkles as ClaimedIcon } from '@styled-icons/fa-solid/HandSparkles';
 import { Handshake as AproovedIcon } from '@styled-icons/fa-solid/Handshake';
 import { MoreVertical as KebabIcon } from '@styled-icons/evaicons-solid/MoreVertical';
-import cardsMock from '../mocks/cards.mock';
 import {
-  Button,
   Box,
   AppBar,
   Tabs,
   Tab,
-  TypeBox,
-  Paper,
-  Grid,
   Card,
   CardHeader,
-  CardMedia,
-  CardActions,
   Avatar,
-  IconButton,
-  Typography
+  IconButton
 } from '@material-ui/core';
-
-const fac = new FastAverageColor();
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -97,20 +83,24 @@ function TabPanel(props) {
           <StackGrid columnWidth={'25%'} className={classes.grid}>
             {cards.map((card) => {
               const board = boards.find(
-                (board) => board.boardId === card.idBoard
+                (board) => board.data().boardId === card.boardId
               );
               console.log('card', card);
-              const coverImg = card.cover.scaled
-                ? card.cover.scaled.slice(-1)[0].url
-                : null;
               // const color = fac.getColorAsync(coverImg);
+              const data = card.data();
+              const coverImg = data.native.cover.scale
+                ? data.native.cover.scale[0].url
+                : null;
               return (
                 <div key={card.id}>
                   <Card className={classes.card}>
                     <CardHeader
                       avatar={
                         <Avatar aria-label='recipe'>
-                          <img src={board.logo} className={classes.avatar} />
+                          <img
+                            src={board.data().boardslogo}
+                            className={classes.avatar}
+                          />
                         </Avatar>
                       }
                       action={
@@ -118,8 +108,8 @@ function TabPanel(props) {
                           <KebabIcon />
                         </IconButton>
                       }
-                      title={board.name}
-                      subheader={format(card.publishDate)}
+                      title={board.id}
+                      subheader={format(data.publishDate)}
                     />
                     {coverImg && (
                       <img
@@ -157,49 +147,15 @@ export default function Market() {
   const theme = useTheme();
   const [tab, setTab] = useState(0);
   const [boards, setBoards] = useState([]);
-  const [t, setT] = useState();
   const [cards, setCards] = useState([]);
   const db = firebase.firestore();
 
-  async function getData(_t) {
-    const snapshot = await db.collection('boards').get();
-    const _boards = snapshot.docs.reduce((accumulator, doc) => {
-      accumulator.push({ ...doc.data(), ...{ name: doc.id } });
-      return accumulator;
-    }, []);
-    setBoards(_boards);
-    getCards(_boards);
-  }
-
-  function getCards(_boards) {
-    let _publishedCards = [];
-    let count = 0;
-    _boards.forEach(async (board) => {
-      console.log('getting cards for board: ', board.boardId);
-      ++count;
-      const resp = await fetch(
-        `https://api.trello.com/1/boards/${board.boardId}/cards?attachments=true&attachment_fields=all&key=${process.env.TRELLO_API_KEY}&token=${process.env.TRELLO_API_TOKEN}`
-      );
-      if (resp.status >= 400 && resp.status < 600) {
-        throw new Error('Bad response from server');
-      } else {
-        const _cards = await resp.json();
-        console.log('cards', _cards);
-        const _published = await filterAsync(_cards, async (_card, index) => {
-          const published = await t.get(_card.id, 'shared', 'published', false);
-          if (published) {
-            _cards[index].publishDate = published;
-          }
-          return published;
-        });
-        _publishedCards = _publishedCards.concat(_published);
-      }
-      console.log(`count is: ${count}, baords length is: ${_boards.length}`);
-      if (count === _boards.length) {
-        setCards(_publishedCards);
-        console.log(_publishedCards);
-      }
-    });
+  async function getCards(_boards) {
+    const querySnapshot = await db
+      .collection('cards')
+      .where('published', '!=', null)
+      .get();
+    setCards(querySnapshot.docs);
     // setCards(cardsMock);
     // const snapshot = await db.collection('boards').get();
     // const boardIdCollection = snapshot.docs.reduce((accumulator, doc) => {
@@ -210,16 +166,17 @@ export default function Market() {
     // console.log(boardIdCollection);
   }
 
-  useEffect(() => {
-    const _t = window.TrelloPowerUp.iframe();
-    setT(_t);
-  }, []);
+  async function getBoards() {
+    const snapshot = await db.collection('boards').get();
+    setBoards(snapshot.docs);
+  }
 
   useEffect(() => {
-    if (t) {
-      getData();
-    }
-  }, [t]);
+    // const _t = window.TrelloPowerUp.iframe();
+    // setT(_t);
+    getCards();
+    getBoards();
+  }, []);
 
   function handleChangeTab(event, newValue) {
     setTab(newValue);
