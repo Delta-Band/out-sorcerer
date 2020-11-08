@@ -116,12 +116,12 @@ export default function AddReward() {
   async function getCardData() {
     const fireCard = await fireCardRef.get();
     const fireCardData = fireCard.data();
-    if (fireCardData) {
+    setData({
+      ...data,
+      ...fireCardData
+    });
+    if (fireCardData.published) {
       setDisableUnpublish(false);
-      setData({
-        ...data,
-        ...fireCardData
-      });
     }
   }
 
