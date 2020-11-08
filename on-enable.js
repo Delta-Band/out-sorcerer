@@ -12,6 +12,7 @@ const OSLists = [
 
 const onEnable = {
   'on-enable': async function (t, options) {
+    console.log('on enable handler');
     const context = t.getContext();
     const userType = await t.get('board', 'shared', 'userType', null);
     if (userType === 'pusher') {
@@ -26,7 +27,7 @@ const onEnable = {
       });
     }
     return t.modal({
-      url: './pages/on-enable.js',
+      url: 'https://out-sorcerer.vercel.app/on-enable',
       height: 500,
       title: 'My Power-Up Overview'
     });
