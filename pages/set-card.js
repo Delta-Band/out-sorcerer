@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import firebase from 'firebase';
+import cx from 'classnames';
 import {
   createMuiTheme,
   ThemeProvider,
@@ -39,6 +40,12 @@ const useStyles = makeStyles((theme) => ({
   },
   marginBottom: {
     marginBottom: theme.spacing(2)
+  },
+  input: {
+    '& input': {
+      paddingTop: 12.5,
+      paddingBottom: 12.5
+    }
   }
 }));
 
@@ -148,7 +155,7 @@ export default function AddReward() {
             }}
             name='reward'
             id='reward-input'
-            className={classes.marginBottom}
+            className={cx(classes.marginBottom, classes.input)}
             fullWidth
             InputProps={{
               inputComponent: NumberFormatCustom

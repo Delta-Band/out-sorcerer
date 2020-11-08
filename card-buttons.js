@@ -16,7 +16,7 @@ const cardButtons = {
           t.popup({
             title: 'Publish to OS-Market',
             url: 'https://out-sorcerer.vercel.app/set-card',
-            height: 342,
+            height: 338,
             args: { marketName, cardId: context.card },
             callback: function (t, opt) {
               console.log('callback fired from parent');
