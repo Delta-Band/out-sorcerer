@@ -1,35 +1,46 @@
 import { format } from 'timeago.js';
+import firebase from 'firebase';
 
 const cardDetailBadges = {
   'card-detail-badges': async function (t, opts) {
-    console.log('initializig card-detail-badges butons');
+    // console.log('initializig card-detail-badges butons');
     const context = t.getContext();
-    const reward = await t.get(context.card, 'shared', 'reward', 0);
-    const published = await t.get(context.card, 'shared', 'published', null);
-    console.log('published: ', published);
-    const timebox = await t.get(context.card, 'shared', 'timebox', null);
+    // const reward = await t.get(context.card, 'shared', 'reward', 0);
+    // const published = await t.get(context.card, 'shared', 'published', null);
+    // console.log('published: ', published);
+    // const timebox = await t.get(context.card, 'shared', 'timebox', null);
+    const db = firebase.firestore();
+    const fireCardRef = db
+      .collection('boards')
+      .doc(context.baord)
+      .collection('cards')
+      .doc(context.card);
+    const fireCard = await fireCardRef.get();
+    const fireCardData = fireCard.data();
     const badges = [];
-    const formatter = new Intl.NumberFormat('en-US', {
+    const currencyFormatter = new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
     });
-    badges.push({
-      title: 'Reward',
-      text: formatter.format(parseInt(reward, 10)),
-      color: reward > 0 ? 'green' : 'red'
-    });
-    badges.push({
-      title: 'Timebox',
-      text: timebox ? `${timebox} Work Days` : 'Required!',
-      color: timebox ? 'green' : 'red'
-    });
-    badges.push({
-      title: 'Published',
-      text: published ? format(published) : '-',
-      color: published ? 'green' : 'red'
-    });
+    if (fireCardData.reward) {
+      badges.push({
+        title: 'Reward',
+        text: currencyFormatter.format(parseInt(fireCardData.reward, 10)),
+        color: 'green'
+      });
+      badges.push({
+        title: 'Timebox',
+        text: `${fireCardData.timebox} Work Days`,
+        color: 'green'
+      });
+      badges.push({
+        title: 'Published',
+        text: format(fireCardData.published),
+        color: 'green'
+      });
+    }
     return badges;
   }
 };

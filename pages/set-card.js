@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import firebase from 'firebase';
 import {
   createMuiTheme,
   ThemeProvider,
@@ -36,10 +37,7 @@ const useStyles = makeStyles((theme) => ({
     boxSizing: 'border-box',
     padding: theme.spacing(1)
   },
-  input: {
-    marginBottom: theme.spacing(2)
-  },
-  radioGroup: {
+  marginBottom: {
     marginBottom: theme.spacing(2)
   }
 }));
@@ -80,26 +78,57 @@ const BlueRadio = withStyles(
 )((props) => <Radio color='default' {...props} />);
 
 export default function AddReward() {
+  const db = firebase.firestore();
   const classes = useStyles();
-  const [reward, setReward] = useState(0);
-  const [timebox, setTimebox] = useState(5);
+  const [fireCardRef, setFireCardRef] = useState();
+  const [disableUnpublish, setDisableUnpublish] = useState(true);
+  const [data, setData] = useState({
+    reward: 0,
+    timebox: 5
+  });
   // const theme = useTheme();
   // theme.palette.type = 'light';
 
   useEffect(() => {
     const _t = window.TrelloPowerUp.iframe();
-    if (_t.arg('data')) {
-      setReward(_t.arg('data').reward);
-      setTimebox(_t.arg('data').timebox);
-    }
+    setFireCardRef(
+      db
+        .collection('boards')
+        .doc(_t.arg('boardId') || 'delta band')
+        .collection('cards')
+        .doc(_t.arg('cardId') || 'vvVqKVLw')
+    );
   }, []);
 
-  async function submit() {
+  useEffect(() => {
+    if (fireCardRef) {
+      getCardData();
+    }
+  }, [fireCardRef]);
+
+  async function getCardData() {
+    const fireCard = await fireCardRef.get();
+    const fireCardData = fireCard.data();
+    if (fireCardData) {
+      setDisableUnpublish(false);
+      setData({
+        ...data,
+        ...fireCardData
+      });
+    }
+  }
+
+  async function publish() {
     const _t = window.TrelloPowerUp.iframe();
-    await _t.arg('ref').set({
-      reward,
-      timebox
-    });
+    await fireCardRef.set({ ...data, published: Date.now() });
+    setDisableUnpublish(false);
+    _t.notifyParent('done');
+  }
+
+  async function unpublish() {
+    setDisableUnpublish(true);
+    const _t = window.TrelloPowerUp.iframe();
+    await fireCardRef.delete();
     _t.notifyParent('done');
   }
 
@@ -109,13 +138,16 @@ export default function AddReward() {
         <Box className={classes.root} display='flex' flexDirection='column'>
           <TextField
             label='Reward'
-            value={reward}
+            value={data.reward}
             onChange={(e) => {
-              setReward(e.target.value);
+              setData({
+                ...data,
+                reward: e.target.value
+              });
             }}
             name='reward'
             id='reward-input'
-            className={classes.input}
+            className={classes.marginBottom}
             fullWidth
             InputProps={{
               inputComponent: NumberFormatCustom
@@ -130,11 +162,14 @@ export default function AddReward() {
           <RadioGroup
             aria-label='timebox'
             name='timebox'
-            value={timebox}
+            value={data.timebox}
             onChange={(e) => {
-              setTimebox(parseInt(e.target.value, 10));
+              setData({
+                ...data,
+                timebox: parseInt(e.target.value, 10)
+              });
             }}
-            className={classes.radioGroup}
+            className={classes.marginBottom}
           >
             <FormControlLabel
               value={5}
@@ -155,10 +190,21 @@ export default function AddReward() {
           <Button
             variant='contained'
             color='primary'
-            onClick={submit}
+            onClick={publish}
             fullWidth
+            disabled={!(data.reward > 0)}
+            className={classes.marginBottom}
           >
             Publish
+          </Button>
+          <Button
+            variant='contained'
+            color='primary'
+            onClick={unpublish}
+            fullWidth
+            disabled={Boolean(disableUnpublish)}
+          >
+            Unpublish
           </Button>
         </Box>
       </FormControl>

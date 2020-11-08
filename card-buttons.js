@@ -1,25 +1,22 @@
-import firebase from 'firebase';
 var LOGO = 'https://out-sorcerer.vercel.app/logo.png';
 
 const cardButtons = {
   'card-buttons': async function (t, options) {
-    const db = firebase.firestore();
     console.log('initializig card butons');
     const context = t.getContext();
     console.log('context:', context);
     const userType = await t.get('board', 'shared', 'userType', 'pusher');
     const items = [];
     if (userType === 'provider') {
-      const fireCardRef = db.collection(context.board).doc(context.card);
-      const fireCardData = await fireCardRef.get();
       items.push({
-        text: fireCardData.reward > 0 ? 'Change Reward' : 'Add Reward',
+        icon: LOGO,
+        text: 'Out Sorcerer',
         callback: function (t, opt) {
           t.popup({
             title: 'Publish to OS-Market',
             url: 'https://out-sorcerer.vercel.app/set-card',
             height: 280,
-            args: { data: fireCardData, ref: fireCardRef },
+            args: { boardId: context.board, cardId: context.card },
             callback: function (t, opt) {
               console.log('callback fired from parent');
               t.closePopup();
@@ -48,18 +45,7 @@ const cardButtons = {
     //   });
     // }
 
-    return [
-      {
-        icon: LOGO,
-        text: 'Out Sorcerer',
-        callback: function (t) {
-          return t.popup({
-            title: 'Out Sorcerer',
-            items: items
-          });
-        }
-      }
-    ];
+    return items;
   }
 };
 
