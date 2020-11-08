@@ -138,6 +138,7 @@ export default function AddReward() {
         <Box className={classes.root} display='flex' flexDirection='column'>
           <TextField
             label='Reward'
+            variant='outlined'
             value={data.reward}
             onChange={(e) => {
               setData({
