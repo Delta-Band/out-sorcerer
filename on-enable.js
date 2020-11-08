@@ -52,7 +52,8 @@ function getBoardLists(boardId) {
     if (resp.status >= 400 && resp.status < 600) {
       reject(new Error('Bad response from server'));
     } else {
-      resolve(resp.json());
+      const lists = await resp.json();
+      resolve(lists);
     }
   });
   return promise;
