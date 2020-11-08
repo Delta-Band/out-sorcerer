@@ -63,6 +63,8 @@ function TabPanel(props) {
   const { cards, boards, value, index, ...other } = props;
   const classes = useStyles();
 
+  if (boards.length === 0) return null;
+
   return (
     <div
       role='tabpanel'
@@ -82,12 +84,12 @@ function TabPanel(props) {
         >
           <StackGrid columnWidth={'25%'} className={classes.grid}>
             {cards.map((card) => {
+              const data = card.data();
               const board = boards.find(
-                (board) => board.data().boardId === card.boardId
+                (board) => board.data().boardId === data.boardId
               );
               console.log('card', card);
               // const color = fac.getColorAsync(coverImg);
-              const data = card.data();
               const coverImg = data.native.cover.scale
                 ? data.native.cover.scale[0].url
                 : null;
@@ -167,8 +169,8 @@ export default function Market() {
   }
 
   async function getBoards() {
-    const snapshot = await db.collection('boards').get();
-    setBoards(snapshot.docs);
+    const querySnapshot = await db.collection('boards').get();
+    setBoards(querySnapshot.docs);
   }
 
   useEffect(() => {
