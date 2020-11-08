@@ -94,7 +94,7 @@ export default function AddReward() {
     setFireCardRef(
       db
         .collection('boards')
-        .doc(_t.arg('boardId') || 'delta band')
+        .doc(_t.arg('marketName') || 'delta band')
         .collection('cards')
         .doc(_t.arg('cardId') || 'vvVqKVLw')
     );
