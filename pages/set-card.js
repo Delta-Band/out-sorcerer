@@ -130,8 +130,7 @@ export default function AddReward() {
     const published = data.published;
     if (published) {
       await fireCardRef.set({ ...data, published: Date.now() });
-    }
-    else (published) {
+    } else {
       await fireCardRef.set({ ...data });
     }
     setDisableUnpublish(false);
