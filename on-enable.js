@@ -17,12 +17,12 @@ const onEnable = {
     const userType = await t.get('board', 'shared', 'userType', null);
     if (userType === 'pusher') {
       const boardLists = await getBoardLists(context.board);
-      OSLists.forEach((list) => {
+      OSLists.reverse().forEach(async (list) => {
         // check if list already esists
         const listExsists = boardLists.find((_lst) => _lst === list);
         if (!listExsists) {
           // list does not exsist so create it!
-          createOSLists(context.board, list);
+          await createOSLists(context.board, list);
         }
       });
     }
