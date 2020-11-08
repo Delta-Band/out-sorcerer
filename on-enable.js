@@ -1,15 +1,5 @@
 import fetch from 'node-fetch';
 
-const OSLists = [
-  'Market',
-  'Starred',
-  'Claim',
-  'Approved',
-  'Client Review',
-  'Done',
-  'Paid'
-];
-
 const onEnable = {
   'on-enable': async function (t, options) {
     console.log('on enable handler');
@@ -17,16 +7,12 @@ const onEnable = {
     const userType = await t.get('board', 'shared', 'userType', null);
     if (userType === 'pusher') {
       const boardLists = await getBoardLists(context.board);
-      OSLists.forEach(async (list) => {
-        // check if list already esists
-        const listExsists = boardLists.find((_lst) => _lst === list);
-        if (!listExsists) {
-          // list does not exsist so create it!
-          console.log('creating list: ', list);
-          await createOSLists(context.board, list);
-          console.log('created list: ', list);
-        }
-      });
+      await createOSLists(context.board, 'Market', boardLists);
+      await createOSLists(context.board, 'Starred', boardLists);
+      await createOSLists(context.board, 'Approved', boardLists);
+      await createOSLists(context.board, 'Client Review', boardLists);
+      await createOSLists(context.board, 'Done', boardLists);
+      await createOSLists(context.board, 'Paid', boardLists);
     }
     return t.modal({
       url: 'https://out-sorcerer.vercel.app/on-enable',
@@ -36,13 +22,22 @@ const onEnable = {
   }
 };
 
-function createOSLists(boardId, listName) {
-  return fetch(
-    `https://api.trello.com/1/boards/${boardId}/lists?&key=${process.env.TRELLO_API_KEY}&token=${process.env.TRELLO_API_TOKEN}&name=${listName}&pos=bottom`,
-    {
-      method: 'POST'
+function createOSLists(boardId, listName, boardLists) {
+  const promise = new Promise(async (resolve, reject) => {
+    const listExsists = boardLists.find((_lst) => _lst === listName);
+    if (listExsists) {
+      resolve();
+    } else {
+      await fetch(
+        `https://api.trello.com/1/boards/${boardId}/lists?&key=${process.env.TRELLO_API_KEY}&token=${process.env.TRELLO_API_TOKEN}&name=${listName}&pos=bottom`,
+        {
+          method: 'POST'
+        }
+      );
+      resolve();
     }
-  );
+  });
+  return promise;
 }
 
 function getBoardLists(boardId) {
