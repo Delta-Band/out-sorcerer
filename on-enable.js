@@ -22,6 +22,7 @@ const onEnable = {
         const listExsists = boardLists.find((_lst) => _lst === list);
         if (!listExsists) {
           // list does not exsist so create it!
+          console.log('creating list: ', list);
           await createOSLists(context.board, list);
           console.log('created list: ', list);
         }
