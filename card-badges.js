@@ -6,13 +6,14 @@ const cardDetailBadges = {
   'card-badges': async function (t, opts) {
     // console.log('initializig card-detail-badges butons');
     const context = t.getContext();
+    const marketName = await t.get('board', 'shared', 'marketName', '');
     // const reward = await t.get(context.card, 'shared', 'reward', 0);
     // const published = await t.get(context.card, 'shared', 'published', false);
     // const timebox = await t.get(context.card, 'shared', 'timebox', null);
     const db = firebase.firestore();
     const fireCardRef = db
       .collection('boards')
-      .doc(context.baord)
+      .doc(marketName)
       .collection('cards')
       .doc(context.card);
     const fireCard = await fireCardRef.get();
