@@ -12,18 +12,13 @@ import { ChevronLeft } from '@styled-icons/boxicons-regular/ChevronLeft';
 import {
   Button,
   TextField,
-  // Radio,
   Tabs,
   Tab,
   AppBar,
   Box,
   Typography,
   InputAdornment
-  // InputLabel,
-  // Select,
-  // MenuItem
 } from '@material-ui/core';
-// import { TRELLO_API_KEY, TRELLO_API_TOKEN } from '../secrets';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,10 +42,6 @@ const useStyles = makeStyles((theme) => ({
   typeBox: {
     cursor: 'pointer',
     transition: '.5s ease-in-out'
-    // '&:hover': {
-    //   borderColor: theme.palette.secondary.main,
-    //   color: theme.palette.secondary.main
-    // }
   },
   active: {
     borderColor: theme.palette.secondary.main,
@@ -137,19 +128,6 @@ function a11yProps(index) {
   };
 }
 
-// const BlueRadio = withStyles(
-//   (theme) => ({
-//     root: {
-//       // color: green[400],
-//       '&$checked': {
-//         color: theme.palette.secondary.main
-//       }
-//     },
-//     checked: {}
-//   }),
-//   { withTheme: true }
-// )((props) => <Radio color='default' {...props} />);
-
 export default function Settings() {
   const classes = useStyles();
   const theme = useTheme();
@@ -163,26 +141,9 @@ export default function Settings() {
   const db = firebase.firestore();
   const [t, setT] = useState();
   const urlPattern = new RegExp(
-    '^(https?:\\/\\/)?' + // protocol
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-      '(\\#[-a-z\\d_]*)?$',
+    '^(https?:\\/\\/)?((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|((\\d{1,3}\\.){3}\\d{1,3}))(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*(\\?[;&a-z\\d%_.~+=-]*)?(\\#[-a-z\\d_]*)?$',
     'i'
   );
-
-  // async function getAdmins(_t) {
-  //   const boardId =
-  //     typeof _t.args === 'function'
-  //       ? _t.args('context').board
-  //       : '5f997e95e7a26e14b2b4c3ca';
-  //   const resp = await fetch(
-  //     `https://api.trello.com/1/boards/${boardId}/members?key=${TRELLO_API_KEY}&token=${TRELLO_API_TOKEN}&filter=admins`
-  //   );
-  //   const admins = await resp.json();
-  //   setAdmins(admins);
-  // }
 
   async function getBoardIds(_t) {
     const snapshot = await db
@@ -432,29 +393,6 @@ export default function Settings() {
                   : 'Should be a URL to a publicly available image'
               }
             />
-            {/* <InputLabel id='demo-simple-select-label'>Age</InputLabel>
-            <Select
-              labelId='demo-simple-select-label'
-              id='handler-simple-select'
-              value={age}
-              onChange={handleHandlerChange}
-            >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
-            </Select> */}
-            {/* <TextField
-              label='Handler Name'
-              value={marketName}
-              onChange={handleMarkeNameChange}
-              name='marketName'
-              id='marketName'
-              className={classes.input}
-              inputProps={{
-                maxLength: 25
-              }}
-              fullWidth
-            /> */}
           </Box>
         </TabPanel>
         <TabPanel
