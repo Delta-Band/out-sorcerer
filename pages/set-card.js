@@ -125,7 +125,7 @@ export default function AddReward() {
   async function publish() {
     const _t = window.TrelloPowerUp.iframe();
     const published = data.published;
-    if (published) {
+    if (!published) {
       await fireCardRef.set({ ...data, published: Date.now() });
     } else {
       await fireCardRef.set({ ...data });
