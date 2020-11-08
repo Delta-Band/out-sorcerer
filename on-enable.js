@@ -44,15 +44,10 @@ function createOSLists(boardId, listName) {
   );
 }
 
-async function getBoardLists(boardId) {
-  const resp = await fetch(
+function getBoardLists(boardId) {
+  return fetch(
     `https://api.trello.com/1/boards/${boardId}/lists?&key=${process.env.TRELLO_API_KEY}&token=${process.env.TRELLO_API_TOKEN}`
   );
-  if (resp.status >= 400 && resp.status < 600) {
-    throw new Error('Bad response from server');
-  } else {
-    return resp.json();
-  }
 }
 
 export default onEnable;
