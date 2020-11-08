@@ -45,9 +45,17 @@ function createOSLists(boardId, listName) {
 }
 
 function getBoardLists(boardId) {
-  return fetch(
-    `https://api.trello.com/1/boards/${boardId}/lists?&key=${process.env.TRELLO_API_KEY}&token=${process.env.TRELLO_API_TOKEN}`
-  );
+  const promise = new Promise(async (resolve, reject) => {
+    const resp = await fetch(
+      `https://api.trello.com/1/boards/${boardId}/lists?&key=${process.env.TRELLO_API_KEY}&token=${process.env.TRELLO_API_TOKEN}`
+    );
+    if (resp.status >= 400 && resp.status < 600) {
+      reject(new Error('Bad response from server'));
+    } else {
+      resolve(resp.json());
+    }
+  });
+  return promise;
 }
 
 export default onEnable;
