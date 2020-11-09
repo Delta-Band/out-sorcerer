@@ -5,10 +5,11 @@ import { format } from 'timeago.js';
 import StackGrid from 'react-stack-grid';
 import Tippy from '@tippyjs/react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { MoreVertical as KebabIcon } from '@styled-icons/evaicons-solid/MoreVertical';
+// import { MoreVertical as KebabIcon } from '@styled-icons/evaicons-solid/MoreVertical';
 import { Organization as OrgIcon } from '@styled-icons/octicons/Organization';
 import { Dollar as RewardIcon } from '@styled-icons/boxicons-regular/Dollar';
 import { BusinessTime as TimeboxIcon } from '@styled-icons/fa-solid/BusinessTime';
+import grey from '@material-ui/core/colors/grey';
 import CardDetails from './card-details';
 import {
   Box,
@@ -22,13 +23,20 @@ import {
 
 const useStyles = makeStyles((theme) => ({
   fullHeight: {
-    height: '100%'
+    height: '100%',
+    boxSizing: 'border-box'
   },
   card: {
     paddingBottom: theme.spacing(1),
+    cursor: 'pointer',
+    boxSizing: 'border-box',
+    border: `1px solid ${grey['800']}`,
     '& .MuiCardHeader-title': {
       textTransform: 'capitalize'
     }
+  },
+  selected: {
+    borderColor: theme.palette.secondary.main
   },
   avatar: {
     objectFit: 'cover',
@@ -36,11 +44,16 @@ const useStyles = makeStyles((theme) => ({
     height: '100%'
   },
   media: {
-    width: '100%'
+    width: `calc(100% - ${theme.spacing(2)}px)`,
+    transform: `translateX(${theme.spacing(1)}px)`,
+    borderRadius: 10,
+    overflow: 'hidden'
   },
   grid: {
     width: '100%',
-    marginBottom: theme.spacing(3)
+    marginBottom: theme.spacing(3),
+    overflow: 'hidden',
+    overflowY: 'auto'
   },
   capitalize: {
     textTransform: 'capitalize'
@@ -79,6 +92,8 @@ function AllCards(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [gridRef, setGridRef] = useState();
+  const [selectedCard, setSelectedCard] = useState(0);
+  const [selectedBoard, setSelectedBoard] = useState();
 
   // useEffect(() => {
   //   if (gridRef && window.TrelloCards) {
@@ -89,8 +104,8 @@ function AllCards(props) {
   //   }
   // }, [gridRef]);
 
-  function onCardClick() {
-    console.log('click');
+  function onCardClick(i) {
+    setSelectedCard(i);
   }
 
   if (boards.length === 0) return null;
@@ -133,17 +148,27 @@ function AllCards(props) {
                   setGridRef(grid);
                 }}
               >
-                {cards.map((card) => {
+                {cards.map((card, i) => {
                   const data = card.data();
                   const board = boards.find(
                     (board) => board.data().boardId === data.boardId
                   );
+                  // if (i === 0 && selectedBoard !== 0) {
+                  //   setSelectedBoard(board);
+                  // }
                   const coverImg = data.native.cover.scaled
                     ? data.native.cover.scaled.slice(-1)[0].url
                     : null;
                   return (
                     <div key={card.id}>
-                      <Card className={classes.card} onClick={onCardClick}>
+                      <Card
+                        className={cx(classes.card, {
+                          [classes.selected]: i === selectedCard
+                        })}
+                        onClick={function () {
+                          setSelectedCard(i);
+                        }}
+                      >
                         <CardHeader
                           avatar={
                             <Tippy
@@ -196,11 +221,11 @@ function AllCards(props) {
                               </Avatar>
                             </Tippy>
                           }
-                          action={
-                            <IconButton aria-label='settings'>
-                              <KebabIcon size={24} />
-                            </IconButton>
-                          }
+                          // action={
+                          //   <IconButton aria-label='settings'>
+                          //     <KebabIcon size={24} />
+                          //   </IconButton>
+                          // }
                           title={board.id}
                           subheader={
                             <Box
@@ -252,7 +277,7 @@ function AllCards(props) {
               </StackGrid>
             )}
           </Box>
-          <CardDetails />
+          <CardDetails card={cards[selectedCard]} boards={boards} />
         </Fragment>
       )}
     </Box>

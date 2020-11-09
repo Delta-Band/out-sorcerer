@@ -32,6 +32,8 @@
     "react-dom": "17.0.1",
     "react-fetch-hook": "^1.8.3",
     "react-ga": "^3.2.0",
+    "react-linkify": "^1.0.0-alpha",
+    "react-markdown": "^5.0.2",
     "react-number-format": "^4.4.1",
     "react-redux": "^7.2.2",
     "react-stack-grid": "^0.7.1",

@@ -14,16 +14,12 @@ const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: '#333',
     color: theme.palette.text.primary,
-    width: '100vw',
-    height: '100vh'
+    width: '100%',
+    height: '100vh',
+    overflow: 'hidden'
   },
   swipeableViews: {
-    height: '100%',
-    overflow: 'hidden',
-    overflowY: 'auto',
-    '& .react-swipeable-view-container': {
-      height: '100%'
-    }
+    height: '100%'
   },
   fullHeight: {
     height: '100%'
