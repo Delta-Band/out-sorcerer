@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 import fetch from 'node-fetch';
 import { format } from 'timeago.js';
-import { currencyFormatter } from '../utils';
+import { currencyFormatter } from './utils';
 
 const cardDetailBadges = {
   'card-badges': async function (t, opts) {
