@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
+    "@tippyjs/react": "^4.2.0",
     "async-map": "^0.2.0",
     "classnames": "^2.2.6",
     "deepmerge": "^4.2.2",

@@ -19,6 +19,7 @@ class MyDocument extends Document {
             href={`/images/favicon.ico?v=${new Date().getTime()}`}
           />
           <script src='https://p.trellocdn.com/power-up.min.js'></script>
+          <script src='https://p.trellocdn.com/embed.min.js'></script>
           {/* <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={imageForSocial} />

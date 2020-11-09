@@ -5,6 +5,8 @@ import { AnimatePresence } from 'framer-motion';
 import { Provider } from 'react-redux';
 import { store } from '../store/store';
 import firebase from 'firebase';
+import 'tippy.js/dist/tippy.css';
+import 'tippy.js/themes/light.css';
 // import { FB_API_KEY } from '../secrets';
 import '../styles/globals.css';
 
@@ -38,7 +40,7 @@ const theme = createMuiTheme({
       lighter: ''
     },
     secondary: {
-      main: '#85ff6e'
+      main: '#fcba03'
     },
     text: {
       dark: '#242424'

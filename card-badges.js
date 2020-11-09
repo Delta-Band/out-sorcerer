@@ -1,6 +1,7 @@
 import firebase from 'firebase';
 import fetch from 'node-fetch';
 import { format } from 'timeago.js';
+import { currencyFormatter } from '../utils';
 
 const cardDetailBadges = {
   'card-badges': async function (t, opts) {
@@ -24,12 +25,6 @@ const cardDetailBadges = {
       fireCardRef.set({ native: _cardData }, { merge: true });
     }
     const badges = [];
-    const currencyFormatter = new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    });
     if (fireCardData.reward) {
       badges.push({
         icon: 'https://out-sorcerer.vercel.app/reward.png',

@@ -1,26 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import cx from 'classnames';
-import PropTypes from 'prop-types';
 import firebase from 'firebase';
-import { format } from 'timeago.js';
-import StackGrid from 'react-stack-grid';
-import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { CollectionFill as AllIcon } from '@styled-icons/bootstrap/CollectionFill';
 import { StarFill as StarIcon } from '@styled-icons/bootstrap/StarFill';
 import { HandSparkles as ClaimedIcon } from '@styled-icons/fa-solid/HandSparkles';
 import { Handshake as AproovedIcon } from '@styled-icons/fa-solid/Handshake';
-import { MoreVertical as KebabIcon } from '@styled-icons/evaicons-solid/MoreVertical';
-import {
-  Box,
-  AppBar,
-  Tabs,
-  Tab,
-  Card,
-  CardHeader,
-  Avatar,
-  IconButton
-} from '@material-ui/core';
+import { Box, AppBar, Tabs, Tab } from '@material-ui/core';
+import { AllCards } from '../components';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,111 +19,16 @@ const useStyles = makeStyles((theme) => ({
   },
   swipeableViews: {
     height: '100%',
+    overflow: 'hidden',
+    overflowY: 'auto',
     '& .react-swipeable-view-container': {
       height: '100%'
     }
   },
   fullHeight: {
     height: '100%'
-  },
-  card: {
-    '& .MuiCardHeader-title': {
-      textTransform: 'capitalize'
-    }
-    // '& .MuiCardMedia-root': {
-    //   backgroundSize: 'contain'
-    // }
-  },
-  avatar: {
-    objectFit: 'cover',
-    width: '100%',
-    height: '100%'
-  },
-  media: {
-    width: '100%'
-  },
-  grid: {
-    width: '100%'
   }
 }));
-
-function TabPanel(props) {
-  const { cards, boards, value, index, ...other } = props;
-  const classes = useStyles();
-
-  if (boards.length === 0) return null;
-
-  return (
-    <div
-      role='tabpanel'
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box
-          p={3}
-          display='flex'
-          className={cx(
-            classes.fullHeight,
-            classes.padingTopCompensationForFooter
-          )}
-        >
-          <StackGrid columnWidth={'25%'} className={classes.grid}>
-            {cards.map((card) => {
-              const data = card.data();
-              const board = boards.find(
-                (board) => board.data().boardId === data.boardId
-              );
-              console.log('card', card);
-              // const color = fac.getColorAsync(coverImg);
-              const coverImg = data.native.cover.scale
-                ? data.native.cover.scale[0].url
-                : null;
-              return (
-                <div key={card.id}>
-                  <Card className={classes.card}>
-                    <CardHeader
-                      avatar={
-                        <Avatar aria-label='recipe'>
-                          <img
-                            src={board.data().boardslogo}
-                            className={classes.avatar}
-                          />
-                        </Avatar>
-                      }
-                      action={
-                        <IconButton aria-label='settings'>
-                          <KebabIcon />
-                        </IconButton>
-                      }
-                      title={board.id}
-                      subheader={format(data.publishDate)}
-                    />
-                    {coverImg && (
-                      <img
-                        className={classes.media}
-                        src={coverImg}
-                        // title={card.name}
-                      />
-                    )}
-                  </Card>
-                </div>
-              );
-            })}
-          </StackGrid>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-TabPanel.propTypes = {
-  cards: PropTypes.arrayOf(PropTypes.object),
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired
-};
 
 function a11yProps(index) {
   return {
@@ -195,6 +88,7 @@ export default function Market() {
           onChange={handleChangeTab}
           indicatorColor='primary'
           textColor='primary'
+          variant='fullWidth'
         >
           <Tab icon={<AllIcon size={25} />} label='All' {...a11yProps(0)} />
           <Tab
@@ -224,8 +118,11 @@ export default function Market() {
           />
         </Tabs>
       </AppBar>
-      <Box className={cx(classes.swipeableViews, classes.fullHeight)}>
-        <TabPanel
+      <Box
+        className={cx(classes.swipeableViews, classes.fullHeight)}
+        display='flex'
+      >
+        <AllCards
           value={tab}
           index={0}
           dir={theme.direction}
@@ -233,7 +130,7 @@ export default function Market() {
           cards={cards}
           boards={boards}
         />
-        <TabPanel
+        {/* <TabPanel
           value={tab}
           index={1}
           dir={theme.direction}
@@ -256,7 +153,7 @@ export default function Market() {
           className={classes.fullHeight}
           cards={cards}
           boards={boards}
-        />
+        /> */}
       </Box>
     </Box>
   );
