@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 import { format } from 'timeago.js';
@@ -16,7 +16,6 @@ import {
   Card,
   CardHeader,
   Avatar,
-  IconButton,
   Button,
   Typography
 } from '@material-ui/core';
@@ -66,7 +65,6 @@ const useStyles = makeStyles((theme) => ({
 function Label(props) {
   const { txt, icon, color } = props;
   const classes = useStyles();
-  const theme = useTheme();
 
   return (
     <Box
