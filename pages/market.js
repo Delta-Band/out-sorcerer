@@ -19,7 +19,9 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden'
   },
   swipeableViews: {
-    height: '100%'
+    height: 'calc(100vh - 71px)',
+    overflow: 'hidden',
+    overflowY: 'auto'
   },
   fullHeight: {
     height: '100%'
