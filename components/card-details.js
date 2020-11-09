@@ -18,9 +18,9 @@ import {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: '100%',
     width: 600,
     boxSizing: 'border-box',
+    height: 'calc(100vh - 71px)',
     '& a': {
       color: theme.palette.secondary.light,
       textDecoration: 'underline'
@@ -83,13 +83,14 @@ function CardDetails(props) {
     : null;
 
   return (
-    <Box className={classes.root} p={3} display='flex'>
+    <Box className={classes.root} display='flex'>
       <Card
         style={{
-          height: 'calc(100vh - 120px)',
+          height: '100%',
           width: '100%',
           overflow: 'hidden',
-          overflowY: 'auto'
+          overflowY: 'auto',
+          borderRadius: 0
         }}
       >
         <CardHeader
