@@ -4,6 +4,7 @@ const boardButtons = {
   'board-buttons': async function (t, options) {
     const context = t.getContext();
     console.log('context: ', context);
+    console.log('userId: ', context.member);
     return [
       {
         icon: {
