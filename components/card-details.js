@@ -1,25 +1,19 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import cx from 'classnames';
+import React, { useEffect, useState } from 'react';
+// import cx from 'classnames';
 import firebase from 'firebase';
-import fetch from 'node-fetch';
 import uniq from 'lodash/uniq';
 import { format } from 'timeago.js';
 import ReactMarkdown from 'react-markdown';
-import Linkify from 'react-linkify';
+// import Linkify from 'react-linkify';
 import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
 import { Dollar as RewardIcon } from '@styled-icons/boxicons-regular/Dollar';
 import { BusinessTime as TimeboxIcon } from '@styled-icons/fa-solid/BusinessTime';
-import { HandSparkles as ClaimedIcon } from '@styled-icons/fa-solid/HandSparkles';
-import { shadows } from '@material-ui/system';
-import Gallery from 'react-photo-gallery';
-import Carousel, { Modal, ModalGateway } from 'react-images';
+// import { HandSparkles as ClaimedIcon } from '@styled-icons/fa-solid/HandSparkles';
 import {
   Box,
   Card,
   CardHeader,
   Avatar,
-  IconButton,
-  Grid,
   Button,
   Switch,
   Typography
@@ -107,59 +101,6 @@ function SectionHeader(props) {
     </Box>
   );
 }
-
-const IOSSwitch = withStyles((theme) => ({
-  root: {
-    width: 42,
-    height: 26,
-    padding: 0,
-    margin: theme.spacing(1)
-  },
-  switchBase: {
-    padding: 1,
-    '&$checked': {
-      transform: 'translateX(16px)',
-      color: theme.palette.common.white,
-      '& + $track': {
-        backgroundColor: '#52d869',
-        opacity: 1,
-        border: 'none'
-      }
-    },
-    '&$focusVisible $thumb': {
-      color: '#52d869',
-      border: '6px solid #fff'
-    }
-  },
-  thumb: {
-    width: 24,
-    height: 24
-  },
-  track: {
-    borderRadius: 26 / 2,
-    border: `1px solid ${theme.palette.grey[400]}`,
-    backgroundColor: theme.palette.grey[50],
-    opacity: 1,
-    transition: theme.transitions.create(['background-color', 'border'])
-  },
-  checked: {},
-  focusVisible: {}
-}))(({ classes, ...props }) => {
-  return (
-    <Switch
-      focusVisibleClassName={classes.focusVisible}
-      disableRipple
-      classes={{
-        root: classes.root,
-        switchBase: classes.switchBase,
-        thumb: classes.thumb,
-        track: classes.track,
-        checked: classes.checked
-      }}
-      {...props}
-    />
-  );
-});
 
 function CardDetails(props) {
   const { card, boards, closeLightbox, user } = props;

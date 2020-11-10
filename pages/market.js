@@ -42,7 +42,7 @@ export default function Market() {
   const [tab, setTab] = useState(0);
   const [boards, setBoards] = useState([]);
   const [cards, setCards] = useState([]);
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState();
   const db = firebase.firestore();
 
   async function getCards(_boards) {
