@@ -51,7 +51,7 @@ export default function Claims() {
       acc.push(() => _axios.get(`members/${uid}`));
       return acc;
     }, []);
-    const results = await _axios.all(requests);
+    const results = await axios.all(requests);
     console.log('results: ', results);
     setClaimers(results);
   }
