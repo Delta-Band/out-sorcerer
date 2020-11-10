@@ -153,12 +153,11 @@ function Cards(props) {
                 }}
               >
                 {cards.map((card, i) => {
-                  const data = card.data();
                   const board = boards.find(
-                    (board) => board.data().boardId === data.boardId
+                    (board) => board.id === card.data().boardId
                   );
-                  const coverImg = data.native.cover.scaled
-                    ? data.native.cover.scaled.slice(-1)[0].url
+                  const coverImg = card.data().native.cover.scaled
+                    ? card.data().native.cover.scaled.slice(-1)[0].url
                     : null;
                   return (
                     <div key={card.id}>
@@ -173,64 +172,21 @@ function Cards(props) {
                       >
                         <CardHeader
                           avatar={
-                            <Tippy
-                              interactive
-                              placement='bottom'
-                              theme='light'
-                              content={
-                                <Box
-                                  display='flex'
-                                  flexDirection='column'
-                                  style={{
-                                    lineHeight: '2em',
-                                    padding: 10
-                                  }}
-                                >
-                                  <Box display='flex' alignItems='center'>
-                                    <OrgIcon
-                                      size={15}
-                                      style={{ transform: 'translateY(-1px)' }}
-                                    />
-                                    <Box width={10} />
-                                    <Box className={classes.capitalize}>
-                                      {board.id}
-                                    </Box>
-                                  </Box>
-                                  <Button
-                                    variant='contained'
-                                    color='secondary'
-                                    fullWidth
-                                    onClick={function () {
-                                      window.open(
-                                        board.data().webPage,
-                                        '_blank'
-                                      );
-                                    }}
-                                    style={{
-                                      marginTop: 5
-                                    }}
-                                  >
-                                    About us
-                                  </Button>
-                                </Box>
-                              }
-                            >
-                              <Avatar aria-label='recipe'>
-                                <img
-                                  src={board.data().logo}
-                                  className={classes.avatar}
-                                />
-                              </Avatar>
-                            </Tippy>
+                            <Avatar aria-label='recipe'>
+                              <img
+                                src={board.data().logo}
+                                className={classes.avatar}
+                              />
+                            </Avatar>
                           }
-                          title={board.id}
+                          title={board.data().name}
                           subheader={
                             <Box
                               display='flex'
                               alignItems='center'
                               style={{ marginTop: 4 }}
                             >
-                              <div>{format(data.published)}</div>
+                              <div>{format(card.data().published)}</div>
                             </Box>
                           }
                         />
@@ -239,19 +195,19 @@ function Cards(props) {
                         )}
                         <Box px={2} py={1}>
                           <Typography className={classes.capitalize}>
-                            {data.native.name}
+                            {card.data().native.name}
                           </Typography>
                         </Box>
                         <Box px={2} py={1} display='flex'>
                           <Label
-                            txt={data.reward}
+                            txt={card.data().reward}
                             icon={<RewardIcon size={18} />}
                             color={theme.palette.secondary.main}
                           />
                           <Label
                             txt={
                               <span style={{ paddingLeft: 4 }}>
-                                {data.timebox}
+                                {card.data().timebox}
                               </span>
                             }
                             icon={<TimeboxIcon size={20} />}
