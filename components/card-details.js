@@ -181,7 +181,7 @@ function CardDetails(props) {
                 {claimed ? 'claimed' : 'claim'}
               </Button>
             }
-            title={board.id}
+            title={board.data().name}
             subheader={
               <Box display='flex' alignItems='center' style={{ marginTop: 4 }}>
                 {/* <PublishedIcon
