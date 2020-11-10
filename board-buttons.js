@@ -15,6 +15,9 @@ const boardButtons = {
           t.modal({
             url: 'https://out-sorcerer.vercel.app/market',
             fullscreen: true,
+            args: {
+              userId: context.member
+            },
             callback: function (t, opt) {
               console.log('modal closed');
               // t.closeModal();

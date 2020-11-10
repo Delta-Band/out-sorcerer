@@ -42,7 +42,7 @@ export default function Market() {
   const [tab, setTab] = useState(0);
   const [boards, setBoards] = useState([]);
   const [cards, setCards] = useState([]);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState([]);
   const db = firebase.firestore();
 
   async function getCards(_boards) {
@@ -59,22 +59,11 @@ export default function Market() {
     setBoards(querySnapshot.docs);
   }
 
-  async function getUser() {
-    const resp = await fetch(
-      `https://api.trello.com/1/members/me?&key=${process.env.TRELLO_API_KEY}&token=${process.env.TRELLO_API_TOKEN}`,
-      {
-        method: 'GET'
-      }
-    );
-    const user = await resp.json();
-    console.log('user: ', user);
-    setUser(user);
-  }
-
   useEffect(() => {
+    const _t = window.TrelloPowerUp.iframe();
     getCards();
     getBoards();
-    getUser();
+    setUser(_t.arg('userId'));
   }, []);
 
   function handleChangeTab(event, newValue) {
