@@ -20,6 +20,7 @@ const settings = {
     const board = await _axios.get(`boards/${context.board}`);
     const user = await _axios.get(`member/${context.member}`);
     console.log('board', board);
+    console.log('user', user);
     // console.log('webPage', webPage);
     // console.log('logo', logo);
     return t.modal({
