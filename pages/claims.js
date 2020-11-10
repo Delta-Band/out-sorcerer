@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import cx from 'classnames';
 import {
   createMuiTheme,
   ThemeProvider,
-  makeStyles,
-  withStyles
+  makeStyles
 } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 
 const _axios = axios.create({
   baseURL: 'https://api.trello.com/1/',
@@ -45,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Claims() {
   const db = firebase.firestore();
   const [claimers, setClaimers] = useState([]);
+  const classes = useStyles();
 
   async function getClaimers(claims) {
     const requests = claims.reduce((acc, uid) => {
@@ -63,7 +62,7 @@ export default function Claims() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Typography>Claimers</Typography>
+      <Box className={classes.root}>Claimers</Box>
     </ThemeProvider>
   );
 }
