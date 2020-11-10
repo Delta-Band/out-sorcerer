@@ -36,25 +36,27 @@ const cardDetailBadges = {
         text: format(fireCardData.published),
         color: 'green'
       });
-      badges.push({
-        title: 'Claims',
-        text: fireCardData.claims.length,
-        color: fireCardData.claims.length > 0 ? 'purple' : 'red',
-        callback: function (t, opt) {
-          t.popup({
-            title: 'Claims',
-            url: 'https://out-sorcerer.vercel.app/claims',
-            height: 338,
-            args: {
-              claims: fireCardData.claims
-            },
-            callback: function (t, opt) {
-              t.closePopup();
-              t.set('card', 'shared', 'lastUpdate', Date.now());
-            }
-          });
-        }
-      });
+      if (fireCardData.claims.length > 0) {
+        badges.push({
+          title: 'Claims',
+          text: fireCardData.claims.length,
+          color: 'purple',
+          callback: function (t, opt) {
+            t.popup({
+              title: 'Claims',
+              url: 'https://out-sorcerer.vercel.app/claims',
+              height: 338,
+              args: {
+                claims: fireCardData.claims
+              },
+              callback: function (t, opt) {
+                t.closePopup();
+                t.set('card', 'shared', 'lastUpdate', Date.now());
+              }
+            });
+          }
+        });
+      }
     }
     return badges;
   }
