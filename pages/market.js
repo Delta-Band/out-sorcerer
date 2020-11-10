@@ -67,6 +67,7 @@ export default function Market() {
       }
     );
     const user = await resp.json();
+    console.log('user: ', user);
     setUser(user);
   }
 
