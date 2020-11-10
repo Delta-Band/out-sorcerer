@@ -1,32 +1,45 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import cx from 'classnames';
+import firebase from 'firebase';
+import fetch from 'node-fetch';
+import uniq from 'lodash/uniq';
 import { format } from 'timeago.js';
 import ReactMarkdown from 'react-markdown';
 import Linkify from 'react-linkify';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
 import { Dollar as RewardIcon } from '@styled-icons/boxicons-regular/Dollar';
 import { BusinessTime as TimeboxIcon } from '@styled-icons/fa-solid/BusinessTime';
+import { HandSparkles as ClaimedIcon } from '@styled-icons/fa-solid/HandSparkles';
+import { shadows } from '@material-ui/system';
+import Gallery from 'react-photo-gallery';
+import Carousel, { Modal, ModalGateway } from 'react-images';
 import {
   Box,
   Card,
   CardHeader,
   Avatar,
   IconButton,
+  Grid,
   Button,
+  Switch,
   Typography
 } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: 600,
+    width: '100vw',
     boxSizing: 'border-box',
-    height: 'calc(100vh - 71px)',
+    height: '100vh',
     '& a': {
       color: theme.palette.secondary.light,
-      textDecoration: 'underline'
+      textDecoration: 'underline',
+      outline: '0 !important'
     },
     '& p, & h1, & h2, & h3, & h4, & h5, & h6': {
       marginTop: 0
+    },
+    '& .react-photo-gallery--gallery img': {
+      objectFit: 'cover'
     }
   },
   avatar: {
@@ -47,6 +60,8 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(3)
   }
 }));
+
+const cardWidth = 600;
 
 function Label(props) {
   const { txt, icon, color } = props;
@@ -71,77 +86,221 @@ function Label(props) {
   );
 }
 
-function CardDetails(props) {
-  const { card, boards } = props;
+function SectionHeader(props) {
+  const { txt } = props;
   const classes = useStyles();
   const theme = useTheme();
+
+  return (
+    <Box
+      px={2}
+      mx={2}
+      py={1}
+      borderRadius='borderRadius'
+      style={{
+        textAlign: 'center',
+        padding: theme.spacing(1),
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
+      }}
+    >
+      <Typography className={classes.capitalize}>{txt}</Typography>
+    </Box>
+  );
+}
+
+const IOSSwitch = withStyles((theme) => ({
+  root: {
+    width: 42,
+    height: 26,
+    padding: 0,
+    margin: theme.spacing(1)
+  },
+  switchBase: {
+    padding: 1,
+    '&$checked': {
+      transform: 'translateX(16px)',
+      color: theme.palette.common.white,
+      '& + $track': {
+        backgroundColor: '#52d869',
+        opacity: 1,
+        border: 'none'
+      }
+    },
+    '&$focusVisible $thumb': {
+      color: '#52d869',
+      border: '6px solid #fff'
+    }
+  },
+  thumb: {
+    width: 24,
+    height: 24
+  },
+  track: {
+    borderRadius: 26 / 2,
+    border: `1px solid ${theme.palette.grey[400]}`,
+    backgroundColor: theme.palette.grey[50],
+    opacity: 1,
+    transition: theme.transitions.create(['background-color', 'border'])
+  },
+  checked: {},
+  focusVisible: {}
+}))(({ classes, ...props }) => {
+  return (
+    <Switch
+      focusVisibleClassName={classes.focusVisible}
+      disableRipple
+      classes={{
+        root: classes.root,
+        switchBase: classes.switchBase,
+        thumb: classes.thumb,
+        track: classes.track,
+        checked: classes.checked
+      }}
+      {...props}
+    />
+  );
+});
+
+function CardDetails(props) {
+  const { card, boards, closeLightbox, user } = props;
+  const db = firebase.firestore();
+  const classes = useStyles();
+  const theme = useTheme();
+  const [claimed, setClaimed] = useState(false);
+
   const board = boards.find(
     (board) => board.data().boardId === card.data().boardId
   );
-  const coverImg = card.data().native.cover.scaled
-    ? card.data().native.cover.scaled.slice(-1)[0].url
-    : null;
+
+  const galleryImages = card.data().native.attachments.reduce((acc, itm) => {
+    acc.push(itm.url);
+    return acc;
+  }, []);
+
+  async function toggleClaim() {
+    let claims = card.data().claims;
+    if (claimed) {
+      claims = claims.filter((c) => c !== user.id);
+    } else {
+      claims = uniq(card.data().claims.concat([user.id]));
+    }
+    db.collection('cards').doc(card.id).set({ claims }, { merge: true });
+  }
+
+  useEffect(() => {
+    const claimed = user && card.data().claims.includes(user.id);
+    setClaimed(claimed);
+  }, [card.data().claims.length]);
 
   return (
-    <Box className={classes.root} display='flex'>
+    <Box
+      className={classes.root}
+      display='flex'
+      justifyContent='center'
+      p={3}
+      onClick={closeLightbox}
+    >
       <Card
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
         style={{
           height: '100%',
-          width: '100%',
-          overflow: 'hidden',
-          overflowY: 'auto',
-          borderRadius: 0
+          width: cardWidth,
+          borderRadius: 0,
+          display: 'flex',
+          flexDirection: 'column'
         }}
       >
-        <CardHeader
-          avatar={
-            <Avatar aria-label='recipe'>
-              <img src={board.data().logo} className={classes.avatar} />
-            </Avatar>
-          }
-          // action={
-          //   <IconButton aria-label='settings'>
-          //     <KebabIcon size={24} />
-          //   </IconButton>
-          // }
-          title={board.id}
-          subheader={
-            <Box display='flex' alignItems='center' style={{ marginTop: 4 }}>
-              {/* <PublishedIcon
+        <Box
+          borderBottom={1}
+          boxShadow={4}
+          zIndex={1}
+          style={{
+            borderColor: theme.palette.secondary.dark
+          }}
+        >
+          <CardHeader
+            avatar={
+              <Avatar aria-label='recipe'>
+                <img src={board.data().logo} className={classes.avatar} />
+              </Avatar>
+            }
+            action={
+              <Button
+                size='meduim'
+                variant={claimed ? 'outlined' : 'contained'}
+                color='primary'
+                style={{
+                  transform: 'translate(-6px, 12px)',
+                  width: 130,
+                  height: 36
+                }}
+                onClick={() => {
+                  toggleClaim();
+                }}
+              >
+                {claimed ? 'claimed' : 'claim'}
+              </Button>
+            }
+            title={board.id}
+            subheader={
+              <Box display='flex' alignItems='center' style={{ marginTop: 4 }}>
+                {/* <PublishedIcon
                             size={18}
                             style={{ transform: 'translateY(-1px)' }}
                           />
                           <Box width={10} /> */}
-              <div>{format(card.data().published)}</div>
-            </Box>
-          }
-        />
-        {coverImg && (
-          <img
-            className={classes.media}
-            src={coverImg}
-            // title={card.name}
-          />
-        )}
-        <Box px={2} py={1}>
-          <Typography className={classes.capitalize}>
-            {card.data().native.name}
-          </Typography>
-        </Box>
-        <Box px={2} py={1} display='flex'>
-          <Label
-            txt={card.data().reward}
-            icon={<RewardIcon size={18} />}
-            color={theme.palette.secondary.main}
-          />
-          <Label
-            txt={<span style={{ paddingLeft: 4 }}>{card.data().timebox}</span>}
-            icon={<TimeboxIcon size={20} />}
-            color={theme.palette.secondary.dark}
+                <div>{format(card.data().published)}</div>
+              </Box>
+            }
           />
         </Box>
-        <Box p={2}>
-          <ReactMarkdown>{card.data().native.desc}</ReactMarkdown>
+        <Box
+          py={2}
+          style={{
+            overflow: 'hidden',
+            overflowY: 'auto',
+            height: '100%'
+          }}
+        >
+          <SectionHeader txt={card.data().native.name} />
+          <Box px={2} py={1} display='flex'>
+            <Label
+              txt={card.data().reward}
+              icon={<RewardIcon size={18} />}
+              color={theme.palette.secondary.main}
+            />
+            <Label
+              txt={
+                <span style={{ paddingLeft: 4 }}>{card.data().timebox}</span>
+              }
+              icon={<TimeboxIcon size={20} />}
+              color={theme.palette.secondary.dark}
+            />
+          </Box>
+          <Box p={2}>
+            <ReactMarkdown>{card.data().native.desc}</ReactMarkdown>
+            {!card.data().native.desc && (
+              <Typography>There is no description for this card.</Typography>
+            )}
+          </Box>
+          <SectionHeader txt='Attachments' />
+          <Box px={2} py={1}>
+            {galleryImages.map((imgSrc) => (
+              <img
+                key={imgSrc}
+                src={imgSrc}
+                style={{
+                  marginBottom: theme.spacing(1),
+                  width: '100%'
+                }}
+              />
+            ))}
+            {galleryImages.length === 0 && (
+              <Typography>There are no attachments on this card.</Typography>
+            )}
+          </Box>
         </Box>
       </Card>
     </Box>

@@ -1,14 +1,16 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useCallback } from 'react';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 import { format } from 'timeago.js';
 import StackGrid from 'react-stack-grid';
 import Tippy from '@tippyjs/react';
+import { HandSparkles as ClaimedIcon } from '@styled-icons/fa-solid/HandSparkles';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 // import { MoreVertical as KebabIcon } from '@styled-icons/evaicons-solid/MoreVertical';
 import { Organization as OrgIcon } from '@styled-icons/octicons/Organization';
 import { Dollar as RewardIcon } from '@styled-icons/boxicons-regular/Dollar';
 import { BusinessTime as TimeboxIcon } from '@styled-icons/fa-solid/BusinessTime';
+import { Modal, ModalGateway } from 'react-images';
 import grey from '@material-ui/core/colors/grey';
 import CardDetails from './card-details';
 import {
@@ -85,13 +87,15 @@ function Label(props) {
   );
 }
 
-function AllCards(props) {
-  const { cards, boards, value, index, ...other } = props;
+function Cards(props) {
+  const { user, cards, boards, value, index, ...other } = props;
   const classes = useStyles();
   const theme = useTheme();
   const [gridRef, setGridRef] = useState();
-  const [selectedCard, setSelectedCard] = useState(0);
-  const [selectedBoard, setSelectedBoard] = useState();
+  // const [currentImage, setCurrentImage] = useState(0);
+  const [viewerIsOpen, setViewerIsOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState();
+  // const [selectedBoard, setSelectedBoard] = useState();
 
   // useEffect(() => {
   //   if (gridRef && window.TrelloCards) {
@@ -102,9 +106,13 @@ function AllCards(props) {
   //   }
   // }, [gridRef]);
 
-  function onCardClick(i) {
-    setSelectedCard(i);
-  }
+  const openLightbox = useCallback((event) => {
+    setViewerIsOpen(true);
+  }, []);
+
+  const closeLightbox = () => {
+    setViewerIsOpen(false);
+  };
 
   if (boards.length === 0) return null;
 
@@ -116,9 +124,6 @@ function AllCards(props) {
       aria-labelledby={`simple-tab-${index}`}
       display='flex'
       justifyContent='space-between'
-      // style={{
-      //   width: '100%'
-      // }}
       {...other}
     >
       {value === index && (
@@ -130,14 +135,14 @@ function AllCards(props) {
               classes.padingTopCompensationForFooter
             )}
             style={{
-              width: 'calc(100vw - 600px)'
+              width: '100vw'
             }}
           >
             {boards.length === 0 ? (
               'Loading...'
             ) : (
               <StackGrid
-                columnWidth='33.33%'
+                columnWidth='20%'
                 className={classes.grid}
                 enableSSR
                 horizontal
@@ -151,9 +156,6 @@ function AllCards(props) {
                   const board = boards.find(
                     (board) => board.data().boardId === data.boardId
                   );
-                  // if (i === 0 && selectedBoard !== 0) {
-                  //   setSelectedBoard(board);
-                  // }
                   const coverImg = data.native.cover.scaled
                     ? data.native.cover.scaled.slice(-1)[0].url
                     : null;
@@ -165,6 +167,7 @@ function AllCards(props) {
                         })}
                         onClick={function () {
                           setSelectedCard(i);
+                          openLightbox();
                         }}
                       >
                         <CardHeader
@@ -219,11 +222,6 @@ function AllCards(props) {
                               </Avatar>
                             </Tippy>
                           }
-                          // action={
-                          //   <IconButton aria-label='settings'>
-                          //     <KebabIcon size={24} />
-                          //   </IconButton>
-                          // }
                           title={board.id}
                           subheader={
                             <Box
@@ -231,21 +229,12 @@ function AllCards(props) {
                               alignItems='center'
                               style={{ marginTop: 4 }}
                             >
-                              {/* <PublishedIcon
-                            size={18}
-                            style={{ transform: 'translateY(-1px)' }}
-                          />
-                          <Box width={10} /> */}
                               <div>{format(data.published)}</div>
                             </Box>
                           }
                         />
                         {coverImg && (
-                          <img
-                            className={classes.media}
-                            src={coverImg}
-                            // title={card.name}
-                          />
+                          <img className={classes.media} src={coverImg} />
                         )}
                         <Box px={2} py={1}>
                           <Typography className={classes.capitalize}>
@@ -265,8 +254,14 @@ function AllCards(props) {
                               </span>
                             }
                             icon={<TimeboxIcon size={20} />}
-                            color={theme.palette.secondary.dark}
+                            color={theme.palette.secondary.main}
                           />
+                          {card.data().claims.includes(user.id) && (
+                            <ClaimedIcon
+                              size={20}
+                              color={theme.palette.secondary.main}
+                            />
+                          )}
                         </Box>
                       </Card>
                     </div>
@@ -275,17 +270,28 @@ function AllCards(props) {
               </StackGrid>
             )}
           </Box>
-          <CardDetails card={cards[selectedCard]} boards={boards} />
+          <ModalGateway>
+            {viewerIsOpen ? (
+              <Modal>
+                <CardDetails
+                  card={cards[selectedCard]}
+                  boards={boards}
+                  closeLightbox={closeLightbox}
+                  user={user}
+                />
+              </Modal>
+            ) : null}
+          </ModalGateway>
         </Fragment>
       )}
     </Box>
   );
 }
 
-AllCards.propTypes = {
+Cards.propTypes = {
   cards: PropTypes.arrayOf(PropTypes.object),
   index: PropTypes.any.isRequired,
   value: PropTypes.any.isRequired
 };
 
-export default AllCards;
+export default Cards;

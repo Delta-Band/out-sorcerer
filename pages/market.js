@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import cx from 'classnames';
+import fetch from 'node-fetch';
 import firebase from 'firebase';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { CollectionFill as AllIcon } from '@styled-icons/bootstrap/CollectionFill';
@@ -8,7 +9,7 @@ import { StarFill as StarIcon } from '@styled-icons/bootstrap/StarFill';
 import { HandSparkles as ClaimedIcon } from '@styled-icons/fa-solid/HandSparkles';
 import { Handshake as AproovedIcon } from '@styled-icons/fa-solid/Handshake';
 import { Box, AppBar, Tabs, Tab } from '@material-ui/core';
-import { AllCards } from '../components';
+import { Cards } from '../components';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,22 +42,16 @@ export default function Market() {
   const [tab, setTab] = useState(0);
   const [boards, setBoards] = useState([]);
   const [cards, setCards] = useState([]);
+  const [user, setUser] = useState();
   const db = firebase.firestore();
 
   async function getCards(_boards) {
-    const querySnapshot = await db
+    await db
       .collection('cards')
       .where('published', '!=', null)
-      .get();
-    setCards(querySnapshot.docs);
-    // setCards(cardsMock);
-    // const snapshot = await db.collection('boards').get();
-    // const boardIdCollection = snapshot.docs.reduce((accumulator, doc) => {
-    //   accumulator.push(doc.data().boardId);
-    //   return accumulator;
-    // }, []);
-    // setBoards(boardIdCollection);
-    // console.log(boardIdCollection);
+      .onSnapshot(function (querySnapshot) {
+        setCards(querySnapshot.docs);
+      });
   }
 
   async function getBoards() {
@@ -64,11 +59,21 @@ export default function Market() {
     setBoards(querySnapshot.docs);
   }
 
+  async function getUser() {
+    const resp = await fetch(
+      `https://api.trello.com/1/members/me?&key=${process.env.TRELLO_API_KEY}&token=${process.env.TRELLO_API_TOKEN}`,
+      {
+        method: 'GET'
+      }
+    );
+    const user = await resp.json();
+    setUser(user);
+  }
+
   useEffect(() => {
-    // const _t = window.TrelloPowerUp.iframe();
-    // setT(_t);
     getCards();
     getBoards();
+    getUser();
   }, []);
 
   function handleChangeTab(event, newValue) {
@@ -120,13 +125,25 @@ export default function Market() {
         className={cx(classes.swipeableViews, classes.fullHeight)}
         display='flex'
       >
-        <AllCards
+        <Cards
           value={tab}
           index={0}
           dir={theme.direction}
           className={classes.fullHeight}
           cards={cards}
           boards={boards}
+          user={user}
+        />
+        <Cards
+          value={tab}
+          index={2}
+          dir={theme.direction}
+          className={classes.fullHeight}
+          cards={cards.filter(
+            (card) => user && card.data().claims.includes(user.id)
+          )}
+          boards={boards}
+          user={user}
         />
         {/* <TabPanel
           value={tab}

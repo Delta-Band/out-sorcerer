@@ -91,7 +91,8 @@ export default function AddReward() {
   const [disableUnpublish, setDisableUnpublish] = useState(true);
   const [data, setData] = useState({
     reward: 0,
-    timebox: 5
+    timebox: 5,
+    claims: []
   });
   // const theme = useTheme();
   // theme.palette.type = 'light';
