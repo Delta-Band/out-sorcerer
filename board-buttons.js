@@ -5,6 +5,7 @@ const boardButtons = {
     const context = t.getContext();
     console.log('context: ', context);
     console.log('userId: ', context.member);
+    const userType = await t.get('board', 'shared', 'userType', 'pusher');
     return [
       {
         icon: {
@@ -17,7 +18,8 @@ const boardButtons = {
             url: 'https://out-sorcerer.vercel.app/market',
             fullscreen: true,
             args: {
-              userId: context.member
+              userId: context.member,
+              userType
             },
             callback: function (t, opt) {
               // console.log('modal closed');

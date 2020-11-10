@@ -169,6 +169,9 @@ function CardDetails(props) {
                 size='meduim'
                 variant={claimed ? 'outlined' : 'contained'}
                 color='primary'
+                disabled={
+                  window.TrelloPowerUp.iframe().arg('userType') === 'provider'
+                }
                 style={{
                   transform: 'translate(-6px, 12px)',
                   width: 130,
