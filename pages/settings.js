@@ -186,11 +186,11 @@ export default function Settings() {
         },
         { merge: true }
       );
-    await t.set('board', 'shared', 'userType', userType);
-    await t.set('board', 'shared', 'webPage', webPage);
-    await t.set('board', 'shared', 'logo', logo);
-    t.notifyParent('done');
+    t.set('board', 'shared', 'userType', userType);
+    t.set('board', 'shared', 'webPage', webPage);
+    t.set('board', 'shared', 'logo', logo);
     setSaved(true);
+    t.notifyParent('done');
   }
 
   function handleChangeTabOnSwipe(index) {
