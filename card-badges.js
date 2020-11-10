@@ -42,8 +42,8 @@ const cardDetailBadges = {
         color: 'green'
       });
       badges.push({
-        text: `Claims: ${fireCardData.clames.length}`,
-        color: fireCardData.clames.length > 0 ? 'purple' : 'red'
+        text: `Claims: ${fireCardData.claims.length}`,
+        color: fireCardData.claims.length > 0 ? 'purple' : 'red'
       });
     }
     return badges;

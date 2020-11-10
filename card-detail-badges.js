@@ -38,8 +38,8 @@ const cardDetailBadges = {
       });
       badges.push({
         title: 'Claims',
-        text: fireCardData.clames.length,
-        color: fireCardData.clames.length > 0 ? 'purple' : 'red'
+        text: fireCardData.claims.length,
+        color: fireCardData.claims.length > 0 ? 'purple' : 'red'
       });
     }
     return badges;
