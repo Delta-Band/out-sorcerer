@@ -37,7 +37,7 @@ const settings = {
       },
       callback: function (t, opt) {
         console.log('callback fired from parent');
-        // t.closeModal();
+        t.closeModal();
       }
     });
   }

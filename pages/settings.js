@@ -171,6 +171,7 @@ export default function Settings() {
   }, [userType, logo, webPage]);
 
   async function save() {
+    console.log(t.arg('user').id);
     await db
       .collection(userType === 'provider' ? 'boards' : 'pushers')
       .doc(userType === 'provider' ? t.arg('board').id : t.arg('user').id)
@@ -185,9 +186,10 @@ export default function Settings() {
         },
         { merge: true }
       );
-    t.set('board', 'shared', 'userType', userType);
-    t.set('board', 'shared', 'webPage', webPage);
-    t.set('board', 'shared', 'logo', logo);
+    await t.set('board', 'shared', 'userType', userType);
+    await t.set('board', 'shared', 'webPage', webPage);
+    await t.set('board', 'shared', 'logo', logo);
+    t.notifyParent('done');
     setSaved(true);
   }
 
