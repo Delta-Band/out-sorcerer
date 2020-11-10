@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import cx from 'classnames';
-import fetch from 'node-fetch';
 import firebase from 'firebase';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { CollectionFill as AllIcon } from '@styled-icons/bootstrap/CollectionFill';

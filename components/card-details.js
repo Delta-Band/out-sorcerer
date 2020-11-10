@@ -5,7 +5,7 @@ import uniq from 'lodash/uniq';
 import { format } from 'timeago.js';
 import ReactMarkdown from 'react-markdown';
 // import Linkify from 'react-linkify';
-import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Dollar as RewardIcon } from '@styled-icons/boxicons-regular/Dollar';
 import { BusinessTime as TimeboxIcon } from '@styled-icons/fa-solid/BusinessTime';
 // import { HandSparkles as ClaimedIcon } from '@styled-icons/fa-solid/HandSparkles';
@@ -15,7 +15,6 @@ import {
   CardHeader,
   Avatar,
   Button,
-  Switch,
   Typography
 } from '@material-ui/core';
 
