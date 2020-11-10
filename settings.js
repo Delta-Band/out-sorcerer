@@ -4,11 +4,9 @@ const settings = {
     const context = t.getContext();
     const userType = await t.get('board', 'shared', 'userType', 'pusher');
     const webPage = await t.get('board', 'shared', 'webPage', '');
-    const marketName = await t.get('board', 'shared', 'marketName', '');
     const logo = await t.get('board', 'shared', 'logo', '');
     // console.log('userType', userType);
     // console.log('webPage', webPage);
-    // console.log('marketName', marketName);
     // console.log('logo', logo);
     return t.modal({
       title: 'Out-Sourcer Settings',
@@ -18,8 +16,9 @@ const settings = {
         userType,
         context,
         webPage,
-        marketName,
-        logo
+        logo,
+        userId: context.member,
+        boardId: context.board
       },
       callback: function (t, opt) {
         console.log('callback fired from parent');

@@ -109,13 +109,10 @@ export default function AddReward() {
   }, [fireCardRef]);
 
   async function getCardData() {
-    const _t = window.TrelloPowerUp.iframe();
     const fireCard = await fireCardRef.get();
     const fireCardData = fireCard.data();
     setData({
       ...data,
-      boardMarketName: _t.arg('marketName'),
-      boardId: _t.arg('boardId'),
       ...fireCardData
     });
     if (fireCardData.published) {

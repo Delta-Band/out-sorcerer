@@ -16,8 +16,7 @@ import {
   Tab,
   AppBar,
   Box,
-  Typography,
-  InputAdornment
+  Typography
 } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -132,11 +131,9 @@ export default function Settings() {
   const classes = useStyles();
   const theme = useTheme();
   const [userType, setUserType] = useState('pusher');
-  const [marketName, setMarketName] = useState('');
   const [webPage, setWebPage] = useState('');
   const [logo, setLogo] = useState('');
   const [saved, setSaved] = useState(false);
-  const [usedMarketNames, setUsedMarketNames] = useState([]);
   const [tab, setTab] = useState(0);
   const db = firebase.firestore();
   const [t, setT] = useState();
@@ -145,26 +142,12 @@ export default function Settings() {
     'i'
   );
 
-  async function getBoardIds(_t) {
-    const snapshot = await db
-      .collection(_t.arg('userType') === 'provider' ? 'boards' : 'pushers')
-      .get();
-    const _usedMarketNames = snapshot.docs.reduce((accumulator, doc) => {
-      accumulator.push(doc.id);
-      return accumulator;
-    }, []);
-    setUsedMarketNames(_usedMarketNames);
-  }
-
   useEffect(() => {
     const _t = window.TrelloPowerUp.iframe();
     setT(_t);
     setUserType(_t.arg('userType') || 'pusher');
-    setMarketName(_t.arg('marketName') || '');
     setWebPage(_t.arg('webPage') || '');
     setLogo(_t.arg('logo') || '');
-    // getAdmins(_t);
-    getBoardIds(_t);
   }, []);
 
   useEffect(() => {
@@ -172,15 +155,12 @@ export default function Settings() {
       return;
     }
     if (t.arg('userType') !== userType) {
-      setMarketName('');
       setWebPage('');
       setLogo('');
     } else {
-      setMarketName(t.arg('marketName') || '');
       setWebPage(t.arg('webPage') || '');
       setLogo(t.arg('logo') || '');
     }
-    getBoardIds(t);
   }, [userType]);
 
   useEffect(() => {
@@ -188,30 +168,22 @@ export default function Settings() {
       return;
     }
     setSaved(false);
-  }, [userType, marketName, logo, webPage]);
+  }, [userType, logo, webPage]);
 
   async function save() {
-    if (t.arg('marketName')) {
-      // delete old document
-      await db
-        .collection(t.arg('userType') === 'provider' ? 'boards' : 'pushers')
-        .doc(t.arg('marketName').toLowerCase())
-        .delete();
-    }
-    // create new document
     await db
       .collection(userType === 'provider' ? 'boards' : 'pushers')
-      .doc(marketName.toLowerCase().trim())
+      .doc(
+        t.arg('userType') === 'provider' ? t.arg('boardId') : t.arg('userId')
+      )
       .set(
         {
           webPage,
-          logo,
-          boardId: t.arg('context').board
+          logo
         },
         { merge: true }
       );
     t.set('board', 'shared', 'userType', userType);
-    t.set('board', 'shared', 'marketName', marketName.trim());
     t.set('board', 'shared', 'webPage', webPage);
     t.set('board', 'shared', 'logo', logo);
     setSaved(true);
@@ -223,10 +195,6 @@ export default function Settings() {
 
   function handleChangeTab(event, newValue) {
     setTab(newValue);
-  }
-
-  function handleMarkeNameChange(event) {
-    setMarketName(event.target.value.replace(/\s\s+/g, ' '));
   }
 
   function handleWebPageChange(event) {
@@ -241,13 +209,8 @@ export default function Settings() {
     if (!t) {
       return false;
     }
-    const found = usedMarketNames.find(
-      (name) => name === marketName.toLowerCase()
-    );
     const hasChanged =
-      !found ||
       t.arg('userType') !== userType ||
-      t.arg('marketName') !== marketName ||
       t.arg('webPage') !== webPage ||
       t.arg('logo') !== logo;
     // console.log('hasChanged', hasChanged);
@@ -255,20 +218,9 @@ export default function Settings() {
   }
 
   function isValid() {
-    const isValid =
-      marketName.trim().length > 3 &&
-      urlPattern.test(webPage) &&
-      urlPattern.test(logo);
+    const isValid = urlPattern.test(webPage) && urlPattern.test(logo);
     // console.log('isValid', isValid);
     return isValid;
-  }
-
-  function marketNameTaken() {
-    if (!t || t.arg('marketName') === marketName.trim()) return false;
-    const found = usedMarketNames.find(
-      (name) => name === marketName.toLowerCase()
-    );
-    return found;
   }
 
   return (
@@ -324,37 +276,6 @@ export default function Settings() {
           className={classes.fullHeight}
         >
           <Box width={350}>
-            <TextField
-              label='Market Name'
-              value={marketName}
-              onChange={handleMarkeNameChange}
-              name='marketName'
-              id='marketName'
-              className={classes.input}
-              inputProps={{
-                maxLength: 25,
-                startAdornment: (
-                  <InputAdornment position='start'>
-                    {userType === 'pusher' ? <PusherIcon /> : <ProviderIcon />}
-                  </InputAdornment>
-                )
-              }}
-              fullWidth
-              error={
-                marketNameTaken() ||
-                (marketName.length < 4 && marketName.length > 0)
-              }
-              helperText={
-                marketName.length < 4 && marketName.length > 0
-                  ? 'Should be at least 4 charecters'
-                  : marketNameTaken()
-                  ? 'Market Name taken.'
-                  : userType === 'pusher'
-                  ? 'This is your unique user-name for the Out-Sourcerer market'
-                  : 'This is your unique board name for the Out-Sourcerer market'
-              }
-            />
-            <br />
             <TextField
               label={
                 userType === 'pusher'

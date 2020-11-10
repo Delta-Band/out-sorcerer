@@ -5,7 +5,6 @@ const cardButtons = {
     const context = t.getContext();
     // console.log('context:', context);
     const userType = await t.get('board', 'shared', 'userType', 'pusher');
-    const marketName = await t.get('board', 'shared', 'marketName', '');
     const items = [];
     if (userType === 'provider') {
       items.push({
@@ -16,7 +15,7 @@ const cardButtons = {
             title: 'Publish to OS-Market',
             url: 'https://out-sorcerer.vercel.app/set-card',
             height: 338,
-            args: { marketName, cardId: context.card, boardId: context.board },
+            args: { cardId: context.card, boardId: context.board },
             callback: function (t, opt) {
               console.log('callback fired from parent');
               t.closePopup();
