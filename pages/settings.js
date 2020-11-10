@@ -191,11 +191,13 @@ export default function Settings() {
   }, [userType, marketName, logo, webPage]);
 
   async function save() {
-    // delete old document
-    await db
-      .collection(t.arg('userType') === 'provider' ? 'boards' : 'pushers')
-      .doc(t.arg('marketName').toLowerCase())
-      .delete();
+    if (t.arg('marketName')) {
+      // delete old document
+      await db
+        .collection(t.arg('userType') === 'provider' ? 'boards' : 'pushers')
+        .doc(t.arg('marketName').toLowerCase())
+        .delete();
+    }
     // create new document
     await db
       .collection(userType === 'provider' ? 'boards' : 'pushers')
