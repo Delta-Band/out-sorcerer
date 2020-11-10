@@ -17,7 +17,7 @@ const settings = {
     const userType = await t.get('board', 'shared', 'userType', 'pusher');
     const webPage = await t.get('board', 'shared', 'webPage', '');
     const logo = await t.get('board', 'shared', 'logo', '');
-    const board = await _axios.get(`boards/${context.board}`).data();
+    const board = await _axios.get(`boards/${context.board}`);
     console.log('board', board);
     // console.log('webPage', webPage);
     // console.log('logo', logo);
@@ -31,7 +31,7 @@ const settings = {
         webPage,
         logo,
         userId: context.member,
-        board: board
+        board: board.data
       },
       callback: function (t, opt) {
         console.log('callback fired from parent');
