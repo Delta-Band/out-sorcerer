@@ -18,6 +18,7 @@ const settings = {
     const webPage = await t.get('board', 'shared', 'webPage', '');
     const logo = await t.get('board', 'shared', 'logo', '');
     const board = await _axios.get(`boards/${context.board}`);
+    const user = await _axios.get(`member/${context.member}`);
     console.log('board', board);
     // console.log('webPage', webPage);
     // console.log('logo', logo);
@@ -30,7 +31,7 @@ const settings = {
         context,
         webPage,
         logo,
-        userId: context.member,
+        user: user,
         board: board.data
       },
       callback: function (t, opt) {
