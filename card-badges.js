@@ -21,7 +21,6 @@ const cardDetailBadges = {
       throw new Error('Bad response from server');
     } else {
       const _cardData = await resp.json();
-      console.log('_cardData', _cardData);
       fireCardRef.set({ native: _cardData }, { merge: true });
     }
     const badges = [];
