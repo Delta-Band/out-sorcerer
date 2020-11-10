@@ -36,6 +36,11 @@ const cardDetailBadges = {
         text: format(fireCardData.published),
         color: 'green'
       });
+      badges.push({
+        title: 'Claims',
+        text: fireCardData.clames.length,
+        color: fireCardData.clames.length > 0 ? 'purple' : 'red'
+      });
     }
     return badges;
   }
