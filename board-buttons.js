@@ -6,29 +6,31 @@ const boardButtons = {
     console.log('context: ', context);
     console.log('userId: ', context.member);
     const userType = await t.get('board', 'shared', 'userType', 'pusher');
-    return [
-      {
-        icon: {
-          dark: LOGO,
-          light: LOGO
-        },
-        text: 'OS Market',
-        callback: function (t, opt) {
-          t.modal({
-            url: 'https://out-sorcerer.vercel.app/market',
-            fullscreen: true,
-            args: {
-              userId: context.member,
-              userType
+    return userType === 'pusher'
+      ? [
+          {
+            icon: {
+              dark: LOGO,
+              light: LOGO
             },
+            text: 'OS Market',
             callback: function (t, opt) {
-              // console.log('modal closed');
-              // t.closeModal();
+              t.modal({
+                url: 'https://out-sorcerer.vercel.app/market',
+                fullscreen: true,
+                args: {
+                  userId: context.member,
+                  userType
+                },
+                callback: function (t, opt) {
+                  // console.log('modal closed');
+                  // t.closeModal();
+                }
+              });
             }
-          });
-        }
-      }
-    ];
+          }
+        ]
+      : [];
   }
 };
 
