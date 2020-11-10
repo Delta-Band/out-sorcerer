@@ -256,7 +256,7 @@ function Cards(props) {
                             icon={<TimeboxIcon size={20} />}
                             color={theme.palette.secondary.main}
                           />
-                          {card.data().claims.includes(user.id) && (
+                          {card.data().claims.includes(user) && (
                             <ClaimedIcon
                               size={20}
                               color={theme.palette.secondary.main}

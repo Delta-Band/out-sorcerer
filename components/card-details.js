@@ -180,15 +180,15 @@ function CardDetails(props) {
   async function toggleClaim() {
     let claims = card.data().claims;
     if (claimed) {
-      claims = claims.filter((c) => c !== user.id);
+      claims = claims.filter((c) => c !== user);
     } else {
-      claims = uniq(card.data().claims.concat([user.id]));
+      claims = uniq(card.data().claims.concat([user]));
     }
     db.collection('cards').doc(card.id).set({ claims }, { merge: true });
   }
 
   useEffect(() => {
-    const claimed = user && card.data().claims.includes(user.id);
+    const claimed = user && card.data().claims.includes(user);
     setClaimed(claimed);
   }, [card.data().claims.length]);
 

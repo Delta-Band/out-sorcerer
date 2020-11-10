@@ -130,7 +130,7 @@ export default function Market() {
           dir={theme.direction}
           className={classes.fullHeight}
           cards={cards.filter(
-            (card) => user && card.data().claims.includes(user.id)
+            (card) => user && card.data().claims.includes(user)
           )}
           boards={boards}
           user={user}
