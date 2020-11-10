@@ -2,6 +2,7 @@ const settings = {
   'show-settings': async function (t, opts) {
     console.log('initializig card-detail-badges butons');
     const context = t.getContext();
+    console.log('context: ', context);
     const userType = await t.get('board', 'shared', 'userType', 'pusher');
     const webPage = await t.get('board', 'shared', 'webPage', '');
     const logo = await t.get('board', 'shared', 'logo', '');
