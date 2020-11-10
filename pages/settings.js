@@ -181,7 +181,7 @@ export default function Settings() {
           name:
             t.arg('userType') === 'provider'
               ? t.arg('board').name
-              : t.arg('user').name
+              : t.arg('user').fullName
         },
         { merge: true }
       );
