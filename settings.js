@@ -32,7 +32,7 @@ const settings = {
         context,
         webPage,
         logo,
-        user: user,
+        user: user.data,
         board: board.data
       },
       callback: function (t, opt) {
