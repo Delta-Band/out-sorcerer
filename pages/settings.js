@@ -190,7 +190,7 @@ export default function Settings() {
     t.set('board', 'shared', 'webPage', webPage);
     t.set('board', 'shared', 'logo', logo);
     setSaved(true);
-    t.notifyParent('done');
+    t.closeModal();
   }
 
   function handleChangeTabOnSwipe(index) {
