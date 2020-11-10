@@ -133,7 +133,6 @@ export default function Settings() {
   const [userType, setUserType] = useState('pusher');
   const [webPage, setWebPage] = useState('');
   const [logo, setLogo] = useState('');
-  const [saved, setSaved] = useState(false);
   const [tab, setTab] = useState(0);
   const db = firebase.firestore();
   const [t, setT] = useState();
@@ -163,13 +162,6 @@ export default function Settings() {
     }
   }, [userType]);
 
-  useEffect(() => {
-    if (!t) {
-      return;
-    }
-    setSaved(false);
-  }, [userType, logo, webPage]);
-
   async function save() {
     console.log(t.arg('user').id);
     await t.set('board', 'shared', 'userType', userType);
@@ -189,7 +181,6 @@ export default function Settings() {
         },
         { merge: true }
       );
-    setSaved(true);
     t.closeModal();
   }
 
@@ -218,9 +209,6 @@ export default function Settings() {
       t.arg('webPage') !== webPage ||
       t.arg('logo') !== logo;
     // console.log('hasChanged', hasChanged);
-    if (hasChanged && saved) {
-      setSaved(false);
-    }
     return hasChanged;
   }
 
@@ -339,9 +327,9 @@ export default function Settings() {
           variant='contained'
           color='primary'
           onClick={save}
-          disabled={!hasChanged() || !isValid() || saved}
+          disabled={!hasChanged() || !isValid()}
         >
-          {saved ? 'SAVED' : 'SAVE'}
+          SAVE
         </Button>
         <Box width={30}></Box>
         <Button
