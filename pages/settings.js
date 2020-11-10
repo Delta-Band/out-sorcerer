@@ -173,9 +173,7 @@ export default function Settings() {
   async function save() {
     await db
       .collection(userType === 'provider' ? 'boards' : 'pushers')
-      .doc(
-        t.arg('userType') === 'provider' ? t.arg('board').id : t.arg('user').id
-      )
+      .doc(userType === 'provider' ? t.arg('board').id : t.arg('user').id)
       .set(
         {
           webPage,
