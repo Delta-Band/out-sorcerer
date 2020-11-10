@@ -34,10 +34,6 @@ const settings = {
         logo,
         user: user.data,
         board: board.data
-      },
-      callback: function (t, opt) {
-        console.log('callback fired from parent');
-        t.closeModal();
       }
     });
   }
