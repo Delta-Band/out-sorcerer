@@ -174,12 +174,13 @@ export default function Settings() {
     await db
       .collection(userType === 'provider' ? 'boards' : 'pushers')
       .doc(
-        t.arg('userType') === 'provider' ? t.arg('boardId') : t.arg('userId')
+        t.arg('userType') === 'provider' ? t.arg('board').id : t.arg('userId')
       )
       .set(
         {
           webPage,
-          logo
+          logo,
+          name: t.arg('board').name
         },
         { merge: true }
       );

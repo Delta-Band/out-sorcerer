@@ -1,3 +1,14 @@
+import axios from 'axios';
+
+const _axios = axios.create({
+  baseURL: 'https://api.trello.com/1/',
+  timeout: 1000,
+  params: {
+    key: process.env.TRELLO_API_KEY,
+    token: process.env.TRELLO_API_TOKEN
+  }
+});
+
 const settings = {
   'show-settings': async function (t, opts) {
     console.log('initializig card-detail-badges butons');
@@ -6,7 +17,8 @@ const settings = {
     const userType = await t.get('board', 'shared', 'userType', 'pusher');
     const webPage = await t.get('board', 'shared', 'webPage', '');
     const logo = await t.get('board', 'shared', 'logo', '');
-    // console.log('userType', userType);
+    const board = await _axios.get(`boards/${context.board}`).data;
+    console.log('board', board);
     // console.log('webPage', webPage);
     // console.log('logo', logo);
     return t.modal({
@@ -19,7 +31,7 @@ const settings = {
         webPage,
         logo,
         userId: context.member,
-        boardId: context.board
+        board: board
       },
       callback: function (t, opt) {
         console.log('callback fired from parent');
