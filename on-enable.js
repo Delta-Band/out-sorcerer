@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 
 const onEnable = {
   'on-enable': async function (t, options) {
-    console.log('on enable handler');
+    // console.log('on enable handler');
     const context = t.getContext();
     const userType = await t.get('board', 'shared', 'userType', null);
     if (userType === 'pusher') {

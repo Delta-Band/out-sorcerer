@@ -2,9 +2,8 @@ var LOGO = 'https://out-sorcerer.vercel.app/logo.png';
 
 const cardButtons = {
   'card-buttons': async function (t, options) {
-    console.log('initializig card butons');
     const context = t.getContext();
-    console.log('context:', context);
+    // console.log('context:', context);
     const userType = await t.get('board', 'shared', 'userType', 'pusher');
     const marketName = await t.get('board', 'shared', 'marketName', '');
     const items = [];

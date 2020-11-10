@@ -3,7 +3,7 @@ var LOGO = 'https://out-sorcerer.vercel.app/logo.png';
 const boardButtons = {
   'board-buttons': async function (t, options) {
     const context = t.getContext();
-    console.log('context: ', context);
+    // console.log('context: ', context);
     return [
       {
         icon: {
@@ -19,7 +19,7 @@ const boardButtons = {
               userId: context.member
             },
             callback: function (t, opt) {
-              console.log('modal closed');
+              // console.log('modal closed');
               // t.closeModal();
             }
           });

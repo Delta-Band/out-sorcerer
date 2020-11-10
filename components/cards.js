@@ -89,7 +89,7 @@ function Label(props) {
 
 function Cards(props) {
   const { user, cards, boards, value, index, ...other } = props;
-  console.log('user: ', user);
+  // console.log('user: ', user);
   const classes = useStyles();
   const theme = useTheme();
   const [gridRef, setGridRef] = useState();
