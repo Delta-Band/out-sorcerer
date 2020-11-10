@@ -180,7 +180,7 @@ export default function Settings() {
           webPage,
           logo,
           name:
-            t.arg('userType') === 'provider'
+            userType === 'provider'
               ? t.arg('board').name
               : t.arg('user').fullName
         },
