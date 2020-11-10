@@ -108,9 +108,7 @@ function CardDetails(props) {
   const theme = useTheme();
   const [claimed, setClaimed] = useState(false);
 
-  const board = boards.find(
-    (board) => board.data().boardId === card.data().boardId
-  );
+  const board = boards.find((board) => board.id === card.data().boardId);
 
   const galleryImages = card.data().native.attachments.reduce((acc, itm) => {
     acc.push(itm.url);
