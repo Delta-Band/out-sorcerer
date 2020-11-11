@@ -136,7 +136,7 @@ export default function Market() {
                 <AllIcon size={25} />
               </StyledBadge>
             }
-            label='All'
+            label='Market'
             {...a11yProps(0)}
           />
           <Tab
