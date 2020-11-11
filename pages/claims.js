@@ -94,7 +94,7 @@ export default function Claims() {
   }
 
   useEffect(() => {
-    const _t = window.TrelloPowerUp.iframe();
+    // const _t = window.TrelloPowerUp.iframe();
     // setCardData(_t.arg('fireCardData'));
     // getClaimers(_t.arg('fireCardData').claims);
   }, []);
