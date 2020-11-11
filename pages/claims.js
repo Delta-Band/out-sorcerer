@@ -108,7 +108,7 @@ export default function Claims() {
     <ThemeProvider theme={theme}>
       <Box className={classes.root}>
         <List dense>
-          {claimers.map((claimer) => (
+          {/* {claimers.map((claimer) => (
             <ListItem key={claimer.id}>
               <ListItemAvatar>
                 <Avatar src={claimer.avatarUrl} alt={claimer.fullName} />
@@ -144,7 +144,7 @@ export default function Claims() {
                 </Button>
               </ListItemSecondaryAction>
             </ListItem>
-          ))}
+          ))} */}
         </List>
       </Box>
     </ThemeProvider>
