@@ -51,9 +51,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Claims() {
   const [claimers, setClaimers] = useState([]);
-  const [cardData, setCardData] = useState({
-    contractedTo: null
-  });
+  // const [cardData, setCardData] = useState({
+  //   contractedTo: null
+  // });
   const classes = useStyles();
 
   async function getClaimers(claims) {
@@ -71,27 +71,27 @@ export default function Claims() {
     );
   }
 
-  async function approveClaimer(claimerId) {
-    const _t = window.TrelloPowerUp.iframe();
-    await _t.arg('fireCardRef').set(
-      {
-        contractedTo: claimerId
-      },
-      { merge: true }
-    );
-    _t.set('card', 'shared', 'lastUpdate', Date.now());
-  }
+  // async function approveClaimer(claimerId) {
+  //   const _t = window.TrelloPowerUp.iframe();
+  //   await _t.arg('fireCardRef').set(
+  //     {
+  //       contractedTo: claimerId
+  //     },
+  //     { merge: true }
+  //   );
+  //   _t.set('card', 'shared', 'lastUpdate', Date.now());
+  // }
 
-  async function revokeClaimer(claimerId) {
-    const _t = window.TrelloPowerUp.iframe();
-    await _t.arg('fireCardRef').set(
-      {
-        contractedTo: null
-      },
-      { merge: true }
-    );
-    _t.set('card', 'shared', 'lastUpdate', Date.now());
-  }
+  // async function revokeClaimer(claimerId) {
+  //   const _t = window.TrelloPowerUp.iframe();
+  //   await _t.arg('fireCardRef').set(
+  //     {
+  //       contractedTo: null
+  //     },
+  //     { merge: true }
+  //   );
+  //   _t.set('card', 'shared', 'lastUpdate', Date.now());
+  // }
 
   useEffect(() => {
     // const _t = window.TrelloPowerUp.iframe();
@@ -107,6 +107,7 @@ export default function Claims() {
   return (
     <ThemeProvider theme={theme}>
       <Box className={classes.root}>
+        Hello
         {/* <List dense>
           {claimers.map((claimer) => (
             <ListItem key={claimer.id}>
