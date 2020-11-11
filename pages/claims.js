@@ -18,7 +18,10 @@ import {
   ListItemSecondaryAction,
   Button,
   IconButton,
-  Grid
+  Grid,
+  Card,
+  CardHeader,
+  Typography
 } from '@material-ui/core';
 
 const _axios = axios.create({
@@ -113,46 +116,86 @@ export default function Claims() {
       <Box className={classes.root}>
         Hello
         {claimers.map((claimer) => (
-          <Grid container key={claimer.id}>
-            <Grid item>
-              <Avatar
-                src={`${claimer.avatarUrl}/60.png`}
-                alt={claimer.fullName}
-              />
-            </Grid>
-            <Grid item>{claimer.fullName}</Grid>
-            <Grid item>
-              <IconButton arial-label='linkedin'>
-                <LinkedinIcon size={20} />
-              </IconButton>
-            </Grid>
-            <Grid item>
-              <IconButton arial-label='linkedin'>
-                <EmailIcon size={20} />
-              </IconButton>
-            </Grid>
-            <Grid item>
-              <Button
-                edge='end'
-                aria-label='delete'
-                variant='contained'
-                size='small'
-                color='primary'
-                disabled={contractedTo && contractedTo !== claimer.id}
-                onClick={() => {
-                  if (contractedTo === claimer.id) {
-                    revokeClaimer(claimer.id);
-                  } else {
-                    approveClaimer(claimer.id);
-                  }
-                }}
-              >
-                {contractedTo && contractedTo === claimer.id
-                  ? 'Revoke'
-                  : 'Aproove'}
-              </Button>
-            </Grid>
-          </Grid>
+          <Card key={claimer.id}>
+            <CardHeader
+              avatar={
+                <Avatar
+                  src={`${claimer.avatarUrl}/60.png`}
+                  alt={claimer.fullName}
+                />
+              }
+              action={
+                <Button
+                  edge='end'
+                  aria-label='delete'
+                  variant='contained'
+                  size='small'
+                  color='primary'
+                  style={{
+                    transform: 'translate(-6px, 12px)'
+                  }}
+                  disabled={contractedTo && contractedTo !== claimer.id}
+                  onClick={() => {
+                    if (contractedTo === claimer.id) {
+                      revokeClaimer(claimer.id);
+                    } else {
+                      approveClaimer(claimer.id);
+                    }
+                  }}
+                >
+                  {contractedTo && contractedTo === claimer.id
+                    ? 'Revoke'
+                    : 'Aproove'}
+                </Button>
+              }
+              title={claimer.fullName}
+              subheader={
+                <Box displa='flex' justifyContent='center'>
+                  <a>Linkedin</a>
+                </Box>
+              }
+            />
+          </Card>
+          // <Grid container key={claimer.id}>
+          //   <Grid item>
+          //     <Avatar
+          //       src={`${claimer.avatarUrl}/60.png`}
+          //       alt={claimer.fullName}
+          //     />
+          //   </Grid>
+          //   <Grid item>{claimer.fullName}</Grid>
+          //   <Grid item>
+          //     <IconButton arial-label='linkedin'>
+          //       <LinkedinIcon size={20} />
+          //     </IconButton>
+          //   </Grid>
+          //   <Grid item>
+          //     <IconButton arial-label='linkedin'>
+          //       <EmailIcon size={20} />
+          //     </IconButton>
+          //   </Grid>
+          //   <Grid item>
+          //     <Button
+          //       edge='end'
+          //       aria-label='delete'
+          //       variant='contained'
+          //       size='small'
+          //       color='primary'
+          //       disabled={contractedTo && contractedTo !== claimer.id}
+          //       onClick={() => {
+          //         if (contractedTo === claimer.id) {
+          //           revokeClaimer(claimer.id);
+          //         } else {
+          //           approveClaimer(claimer.id);
+          //         }
+          //       }}
+          //     >
+          //       {contractedTo && contractedTo === claimer.id
+          //         ? 'Revoke'
+          //         : 'Aproove'}
+          //     </Button>
+          //   </Grid>
+          // </Grid>
           // <ListItem key={claimer.id}>
           //   <ListItemAvatar style={{ padding: 0 }}>
           //     <Avatar
