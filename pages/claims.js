@@ -137,6 +137,7 @@ export default function Claims() {
                 aria-label='delete'
                 variant='contained'
                 size='small'
+                color='primary'
                 disabled={contractedTo && contractedTo !== claimer.id}
                 onClick={() => {
                   if (contractedTo === claimer.id) {
