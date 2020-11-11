@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import firebase from 'firebase';
-import {LinkedinWithCircle as LinkedinIcon} from '@styled-icons/entypo-social/LinkedinWithCircle';
-import {Email as EmailIcon} from '@styled-icons/material/Email';
+import { LinkedinWithCircle as LinkedinIcon } from '@styled-icons/entypo-social/LinkedinWithCircle';
+import { Email as EmailIcon } from '@styled-icons/material/Email';
 import axios from 'axios';
 import {
   createMuiTheme,
@@ -17,7 +17,7 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   Button,
-  IconButton
+  IconButton,
   Grid
 } from '@material-ui/core';
 
@@ -120,21 +120,19 @@ export default function Claims() {
                 alt={claimer.fullName}
               />
             </Grid>
+            <Grid item>{claimer.fullName}</Grid>
             <Grid item>
-            {claimer.fullName}
+              <IconButton arial-label='linkedin'>
+                <LinkedinIcon size={20} />
+              </IconButton>
             </Grid>
             <Grid item>
-            <IconButton arial-label='linkedin'>
-              <LinkedinIcon size={20} />
-            </IconButton>
+              <IconButton arial-label='linkedin'>
+                <EmailIcon size={20} />
+              </IconButton>
             </Grid>
             <Grid item>
-            <IconButton arial-label='linkedin'>
-              <EmailIcon size={20} />
-            </IconButton>
-            </Grid>
-            <Grid item>
-            <Button
+              <Button
                 edge='end'
                 aria-label='delete'
                 variant='contained'
