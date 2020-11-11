@@ -100,16 +100,20 @@ export default function Market() {
     console.log(lists);
     let found = lists.find((ls) => ls.name === 'OS Approved');
     if (!found) {
+      console.log('OS Approved list not found - creating...');
       // OS Approved list isn't found so create it.
       found = await axiosInstance.post(`/boards/${_t.arg('boardId')}/lists`, {
         name: 'OS Approved'
       });
     }
+    console.log('OS Approved list created');
+    console.log('Adding card to board');
     await axiosInstance.post(`/cards`, {
       idList: found.id,
       idCardSource: card.id,
       keepFromSource: 'all'
     });
+    console.log('Card added');
     await db
       .collection('cards')
       .doc(card.id)
