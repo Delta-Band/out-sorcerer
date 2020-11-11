@@ -121,7 +121,12 @@ export default function Claims() {
       <Box className={classes.root}>
         Hello
         {claimers.map((claimer) => (
-          <Card key={claimer.id}>
+          <Card
+            key={claimer.id}
+            style={{
+              marginBottom: theme.spacing(1)
+            }}
+          >
             <CardHeader
               avatar={
                 <Avatar
