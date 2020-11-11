@@ -152,7 +152,6 @@ function CardDetails(props) {
                 }
                 style={{
                   transform: 'translate(-6px, 12px)',
-                  width: 130,
                   height: 36
                 }}
                 onClick={() => {
