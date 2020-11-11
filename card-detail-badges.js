@@ -47,7 +47,7 @@ const cardDetailBadges = {
               url: 'https://out-sorcerer.vercel.app/claims',
               height: 338,
               args: {
-                fireCardRef: fireCardRef,
+                // fireCardRef: fireCardRef,
                 fireCardData: fireCardData
               },
               callback: function (t, opt) {
