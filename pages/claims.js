@@ -3,6 +3,7 @@ import firebase from 'firebase';
 import { LinkedinWithCircle as LinkedinIcon } from '@styled-icons/entypo-social/LinkedinWithCircle';
 import { Email as EmailIcon } from '@styled-icons/material/Email';
 import axios from 'axios';
+import axiosInstance from '../axios.config';
 import {
   createMuiTheme,
   ThemeProvider,
@@ -23,15 +24,6 @@ import {
   CardHeader,
   Typography
 } from '@material-ui/core';
-
-const _axios = axios.create({
-  baseURL: 'https://api.trello.com/1/',
-  timeout: 1000,
-  params: {
-    key: process.env.TRELLO_API_KEY,
-    token: process.env.TRELLO_API_TOKEN
-  }
-});
 
 const theme = createMuiTheme({
   palette: {
@@ -65,7 +57,7 @@ export default function Claims() {
 
   async function getClaimers(claims) {
     const requests = claims.reduce((acc, uid) => {
-      acc.push(() => _axios.get(`members/${uid}`));
+      acc.push(() => axiosInstance.get(`members/${uid}`));
       return acc;
     }, []);
     const results = await axios.all(requests.map((request) => request()));
@@ -119,7 +111,6 @@ export default function Claims() {
   return (
     <ThemeProvider theme={theme}>
       <Box className={classes.root}>
-        Hello
         {claimers.map((claimer) => (
           <Card
             key={claimer.id}

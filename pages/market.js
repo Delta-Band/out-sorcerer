@@ -8,6 +8,7 @@ import { StarFill as StarIcon } from '@styled-icons/bootstrap/StarFill';
 import { HandSparkles as ClaimedIcon } from '@styled-icons/fa-solid/HandSparkles';
 import { Handshake as AproovedIcon } from '@styled-icons/fa-solid/Handshake';
 import { Box, AppBar, Tabs, Tab } from '@material-ui/core';
+import uniq from 'lodash/uniq';
 import { Cards } from '../components';
 
 const useStyles = makeStyles((theme) => ({
@@ -69,6 +70,18 @@ export default function Market() {
     setTab(newValue);
   }
 
+  async function claim(card) {
+    let claims = card.data().claims;
+    claims = uniq(card.data().claims.concat([user]));
+    db.collection('cards').doc(card.id).set({ claims }, { merge: true });
+  }
+
+  async function unclaim(card) {
+    let claims = card.data().claims;
+    claims = claims.filter((c) => c !== user);
+    db.collection('cards').doc(card.id).set({ claims }, { merge: true });
+  }
+
   return (
     <Box className={classes.root} display='flex' flexDirection='column'>
       <Head>
@@ -119,9 +132,15 @@ export default function Market() {
           index={0}
           dir={theme.direction}
           className={classes.fullHeight}
-          cards={cards}
+          cards={cards.filter(
+            (card) => user && !card.data().claims.includes(user)
+          )}
           boards={boards}
           user={user}
+          action={{
+            cb: claim,
+            text: 'Claim'
+          }}
         />
         <Cards
           value={tab}
@@ -133,6 +152,10 @@ export default function Market() {
           )}
           boards={boards}
           user={user}
+          action={{
+            cb: unclaim,
+            text: 'Unclaim'
+          }}
         />
         {/* <TabPanel
           value={tab}

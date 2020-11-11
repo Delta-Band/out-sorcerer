@@ -1,13 +1,4 @@
-import axios from 'axios';
-
-const _axios = axios.create({
-  baseURL: 'https://api.trello.com/1/',
-  timeout: 1000,
-  params: {
-    key: process.env.TRELLO_API_KEY,
-    token: process.env.TRELLO_API_TOKEN
-  }
-});
+import axiosInstance from './axios.config';
 
 const settings = {
   'show-settings': async function (t, opts) {
@@ -17,8 +8,8 @@ const settings = {
     const userType = await t.get('board', 'shared', 'userType', 'pusher');
     const webPage = await t.get('board', 'shared', 'webPage', '');
     const logo = await t.get('board', 'shared', 'logo', '');
-    const board = await _axios.get(`boards/${context.board}`);
-    const user = await _axios.get(`member/${context.member}`);
+    const board = await axiosInstance.get(`boards/${context.board}`);
+    const user = await axiosInstance.get(`member/${context.member}`);
     console.log('board', board.data);
     console.log('user', user.data);
     // console.log('webPage', webPage);

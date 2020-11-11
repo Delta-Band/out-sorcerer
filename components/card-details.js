@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from 'react';
-// import cx from 'classnames';
-import firebase from 'firebase';
-import uniq from 'lodash/uniq';
+import React from 'react';
 import { format } from 'timeago.js';
 import ReactMarkdown from 'react-markdown';
-// import Linkify from 'react-linkify';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Dollar as RewardIcon } from '@styled-icons/boxicons-regular/Dollar';
 import { BusinessTime as TimeboxIcon } from '@styled-icons/fa-solid/BusinessTime';
-// import { HandSparkles as ClaimedIcon } from '@styled-icons/fa-solid/HandSparkles';
 import {
   Box,
   Card,
@@ -102,11 +97,9 @@ function SectionHeader(props) {
 }
 
 function CardDetails(props) {
-  const { card, boards, closeLightbox, user } = props;
-  const db = firebase.firestore();
+  const { action, card, boards, closeLightbox } = props;
   const classes = useStyles();
   const theme = useTheme();
-  const [claimed, setClaimed] = useState(false);
 
   const board = boards.find((board) => board.id === card.data().boardId);
 
@@ -114,21 +107,6 @@ function CardDetails(props) {
     acc.push(itm.url);
     return acc;
   }, []);
-
-  async function toggleClaim() {
-    let claims = card.data().claims;
-    if (claimed) {
-      claims = claims.filter((c) => c !== user);
-    } else {
-      claims = uniq(card.data().claims.concat([user]));
-    }
-    db.collection('cards').doc(card.id).set({ claims }, { merge: true });
-  }
-
-  useEffect(() => {
-    const claimed = user && card.data().claims.includes(user);
-    setClaimed(claimed);
-  }, [card.data().claims.length]);
 
   return (
     <Box
@@ -167,7 +145,7 @@ function CardDetails(props) {
             action={
               <Button
                 size='meduim'
-                variant={claimed ? 'outlined' : 'contained'}
+                variant='contained'
                 color='primary'
                 disabled={
                   window.TrelloPowerUp.iframe().arg('userType') === 'provider'
@@ -178,10 +156,11 @@ function CardDetails(props) {
                   height: 36
                 }}
                 onClick={() => {
-                  toggleClaim();
+                  action.cb(card);
+                  closeLightbox();
                 }}
               >
-                {claimed ? 'claimed' : 'claim'}
+                {action.txt}
               </Button>
             }
             title={board.data().name}

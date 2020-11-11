@@ -88,7 +88,7 @@ function Label(props) {
 }
 
 function Cards(props) {
-  const { user, cards, boards, value, index, ...other } = props;
+  const { action, user, cards, boards, value, index, ...other } = props;
   // console.log('user: ', user);
   const classes = useStyles();
   const theme = useTheme();
@@ -235,6 +235,7 @@ function Cards(props) {
                   boards={boards}
                   closeLightbox={closeLightbox}
                   user={user}
+                  action={action}
                 />
               </Modal>
             ) : null}
