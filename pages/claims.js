@@ -136,7 +136,10 @@ export default function Claims() {
                   size='small'
                   color='primary'
                   style={{
-                    transform: 'translate(-6px, 12px)'
+                    transform: 'translate(-6px, 12px)',
+                    width: 85,
+                    paddingTop: 7,
+                    height: 30
                   }}
                   disabled={contractedTo && contractedTo !== claimer.id}
                   onClick={() => {
