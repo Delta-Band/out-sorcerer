@@ -160,7 +160,7 @@ function CardDetails(props) {
                   closeLightbox();
                 }}
               >
-                {action.txt}
+                {action.text}
               </Button>
             }
             title={board.data().name}
