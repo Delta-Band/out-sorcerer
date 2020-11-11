@@ -95,17 +95,13 @@ export default function Market() {
 
   async function addToBoard(card) {
     const _t = window.TrelloPowerUp.iframe();
-    await db
-      .collection('cards')
-      .doc(card.id)
-      .set({ commited: true }, { merge: true });
-    let lists = await axiosInstance.get(`/boards/${_t.arg('baordId')}/lists`);
+    let lists = await axiosInstance.get(`/boards/${_t.arg('boardId')}/lists`);
     lists = lists.data;
     console.log(lists);
     let found = lists.find((ls) => ls.name === 'OS Approved');
     if (!found) {
       // OS Approved list isn't found so create it.
-      found = await axiosInstance.post(`/boards/${_t.arg('baordId')}/lists`, {
+      found = await axiosInstance.post(`/boards/${_t.arg('boardId')}/lists`, {
         name: 'OS Approved'
       });
     }
@@ -114,6 +110,10 @@ export default function Market() {
       idCardSource: card.id,
       keepFromSource: 'all'
     });
+    await db
+      .collection('cards')
+      .doc(card.id)
+      .set({ commited: true }, { merge: true });
     // let claims = card.data().claims;
     // claims = claims.filter((c) => c !== user);
     // db.collection('cards').doc(card.id).set({ claims }, { merge: true });
