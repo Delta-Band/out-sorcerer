@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
 import cx from 'classnames';
 import firebase from 'firebase';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
 import { CollectionFill as AllIcon } from '@styled-icons/bootstrap/CollectionFill';
 import { StarFill as StarIcon } from '@styled-icons/bootstrap/StarFill';
 import { HandSparkles as ClaimedIcon } from '@styled-icons/fa-solid/HandSparkles';
 import { Handshake as AproovedIcon } from '@styled-icons/fa-solid/Handshake';
-import { Box, AppBar, Tabs, Tab } from '@material-ui/core';
+import { Box, AppBar, Tabs, Tab, Badge } from '@material-ui/core';
 import uniq from 'lodash/uniq';
 import { Cards } from '../components';
 
@@ -35,6 +35,16 @@ function a11yProps(index) {
     'aria-controls': `simple-tabpanel-${index}`
   };
 }
+
+const StyledBadge = withStyles((theme) => ({
+  badge: {
+    right: -5,
+    transform: 'translate(100%, -8px)',
+    top: 13,
+    border: `2px solid ${theme.palette.grey[900]}`,
+    padding: '0 4px'
+  }
+}))(Badge);
 
 export default function Market() {
   const classes = useStyles();
@@ -82,6 +92,14 @@ export default function Market() {
     db.collection('cards').doc(card.id).set({ claims }, { merge: true });
   }
 
+  const unclaimedCards = useCallback((_cards) => {
+    return _cards.filter((card) => user && !card.data().claims.includes(user));
+  }, []);
+
+  const claimedCards = useCallback((_cards) => {
+    return _cards.filter((card) => user && card.data().claims.includes(user));
+  }, []);
+
   return (
     <Box className={classes.root} display='flex' flexDirection='column'>
       <Head>
@@ -95,28 +113,56 @@ export default function Market() {
           textColor='primary'
           variant='fullWidth'
         >
-          <Tab icon={<AllIcon size={25} />} label='All' {...a11yProps(0)} />
           <Tab
-            icon={<StarIcon size={25} />}
+            icon={
+              <StyledBadge
+                badgeContent={unclaimedCards(cards).length}
+                color='secondary'
+              >
+                <AllIcon size={25} />
+              </StyledBadge>
+            }
+            label='All'
+            {...a11yProps(0)}
+          />
+          <Tab
+            icon={
+              <StyledBadge badgeContent={0} color='secondary'>
+                <StarIcon size={25} />
+              </StyledBadge>
+            }
             label='Starred'
             {...a11yProps(1)}
           />
           <Tab
             icon={
-              <ClaimedIcon
-                size={28}
-                style={{ marginBottom: '0px', transform: 'translateY(-3px)' }}
-              />
+              <StyledBadge
+                badgeContent={claimedCards(cards).length}
+                color='secondary'
+              >
+                <ClaimedIcon
+                  size={28}
+                  style={{ marginBottom: '0px', transform: 'translateY(-3px)' }}
+                />
+              </StyledBadge>
             }
             label='Claimed'
             {...a11yProps(2)}
           />
           <Tab
             icon={
-              <AproovedIcon
-                size={32}
-                style={{ marginBottom: '-2px', transform: 'translateY(-2px)' }}
-              />
+              <StyledBadge
+                badgeContent={claimedCards(cards).length}
+                color='secondary'
+              >
+                <AproovedIcon
+                  size={32}
+                  style={{
+                    marginBottom: '-2px',
+                    transform: 'translateY(-2px)'
+                  }}
+                />
+              </StyledBadge>
             }
             label='Approved'
             {...a11yProps(3)}
@@ -132,9 +178,7 @@ export default function Market() {
           index={0}
           dir={theme.direction}
           className={classes.fullHeight}
-          cards={cards.filter(
-            (card) => user && !card.data().claims.includes(user)
-          )}
+          cards={unclaimedCards(cards)}
           boards={boards}
           user={user}
           action={{
@@ -147,9 +191,7 @@ export default function Market() {
           index={2}
           dir={theme.direction}
           className={classes.fullHeight}
-          cards={cards.filter(
-            (card) => user && card.data().claims.includes(user)
-          )}
+          cards={claimedCards(cards)}
           boards={boards}
           user={user}
           action={{
