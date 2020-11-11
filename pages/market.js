@@ -71,9 +71,9 @@ export default function Market() {
 
   useEffect(() => {
     const _t = window.TrelloPowerUp.iframe();
+    setUser(_t.arg('userId'));
     getCards();
     getBoards();
-    setUser(_t.arg('userId'));
   }, []);
 
   function handleChangeTab(event, newValue) {
