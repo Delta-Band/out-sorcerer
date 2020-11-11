@@ -105,6 +105,7 @@ export default function Claims() {
     db.collection('cards')
       .doc(_t.arg('cardId'))
       .onSnapshot((snapshot) => {
+        console.log(snapshot.data());
         setContractedTo(snapshot.data().contractedTo);
         getClaimers(snapshot.data().claims);
       });
