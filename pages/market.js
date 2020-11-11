@@ -10,6 +10,7 @@ import { Handshake as AproovedIcon } from '@styled-icons/fa-solid/Handshake';
 import { Box, AppBar, Tabs, Tab, Badge } from '@material-ui/core';
 import uniq from 'lodash/uniq';
 import { Cards } from '../components';
+import axiosInstance from '../axios.config';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -93,7 +94,26 @@ export default function Market() {
   }
 
   async function addToBoard(card) {
-    console.log('adding card to board: ', card);
+    const _t = window.TrelloPowerUp.iframe();
+    await db
+      .collection('cards')
+      .doc(card.id)
+      .set({ commited: true }, { merge: true });
+    let lists = await axiosInstance.get(`/boards/${_t.arg('baordId')}/lists`);
+    lists = lists.data;
+    console.log(lists);
+    let found = lists.find((ls) => ls.name === 'OS Approved');
+    if (!found) {
+      // OS Approved list isn't found so create it.
+      found = await axiosInstance.post(`/boards/${_t.arg('baordId')}/lists`, {
+        name: 'OS Approved'
+      });
+    }
+    await axiosInstance.post(`/cards`, {
+      idList: found.id,
+      idCardSource: card.id,
+      keepFromSource: 'all'
+    });
     // let claims = card.data().claims;
     // claims = claims.filter((c) => c !== user);
     // db.collection('cards').doc(card.id).set({ claims }, { merge: true });

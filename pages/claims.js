@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import firebase from 'firebase';
-import { LinkedinWithCircle as LinkedinIcon } from '@styled-icons/entypo-social/LinkedinWithCircle';
-import { Email as EmailIcon } from '@styled-icons/material/Email';
+// import { LinkedinWithCircle as LinkedinIcon } from '@styled-icons/entypo-social/LinkedinWithCircle';
+// import { Email as EmailIcon } from '@styled-icons/material/Email';
 import axios from 'axios';
 import axiosInstance from '../axios.config';
 import {
@@ -9,21 +9,7 @@ import {
   ThemeProvider,
   makeStyles
 } from '@material-ui/core/styles';
-import {
-  Box,
-  List,
-  ListItem,
-  ListItemAvatar,
-  Avatar,
-  ListItemText,
-  ListItemSecondaryAction,
-  Button,
-  IconButton,
-  Grid,
-  Card,
-  CardHeader,
-  Typography
-} from '@material-ui/core';
+import { Box, Avatar, Button, Card, CardHeader } from '@material-ui/core';
 
 const theme = createMuiTheme({
   palette: {
@@ -160,85 +146,6 @@ export default function Claims() {
               }
             />
           </Card>
-          // <Grid container key={claimer.id}>
-          //   <Grid item>
-          //     <Avatar
-          //       src={`${claimer.avatarUrl}/60.png`}
-          //       alt={claimer.fullName}
-          //     />
-          //   </Grid>
-          //   <Grid item>{claimer.fullName}</Grid>
-          //   <Grid item>
-          //     <IconButton arial-label='linkedin'>
-          //       <LinkedinIcon size={20} />
-          //     </IconButton>
-          //   </Grid>
-          //   <Grid item>
-          //     <IconButton arial-label='linkedin'>
-          //       <EmailIcon size={20} />
-          //     </IconButton>
-          //   </Grid>
-          //   <Grid item>
-          //     <Button
-          //       edge='end'
-          //       aria-label='delete'
-          //       variant='contained'
-          //       size='small'
-          //       color='primary'
-          //       disabled={contractedTo && contractedTo !== claimer.id}
-          //       onClick={() => {
-          //         if (contractedTo === claimer.id) {
-          //           revokeClaimer(claimer.id);
-          //         } else {
-          //           approveClaimer(claimer.id);
-          //         }
-          //       }}
-          //     >
-          //       {contractedTo && contractedTo === claimer.id
-          //         ? 'Revoke'
-          //         : 'Aproove'}
-          //     </Button>
-          //   </Grid>
-          // </Grid>
-          // <ListItem key={claimer.id}>
-          //   <ListItemAvatar style={{ padding: 0 }}>
-          //     <Avatar
-          //       src={`${claimer.avatarUrl}/60.png`}
-          //       alt={claimer.fullName}
-          //     />
-          //   </ListItemAvatar>
-          //   <ListItemText
-          //     primary={claimer.fullName}
-          //     secondary={
-          //       <Box>
-          //         <a>Linkedin</a>
-          //         <a href={`mailto:${claimer.email}`}>Email</a>
-          //       </Box>
-          //     }
-          //   />
-          //   <ListItemSecondaryAction
-          //     style={{
-          //       transfrom: 'none'
-          //     }}
-          //   >
-          //     <Button
-          //       edge='end'
-          //       aria-label='delete'
-          //       disabled={contractedTo && contractedTo !== claimer.id}
-          //       onClick={() => {
-          //         if (contractedTo === claimer.id) {
-          //           revokeClaimer(claimer.id);
-          //         } else {
-          //           approveClaimer(claimer.id);
-          //         }
-          //       }}
-          //     >
-          //       {contractedTo && contractedTo === claimer.id
-          //         ? 'Revoke'
-          //         : 'Aproove'}
-          //     </Button>
-          //   </ListItemSecondaryAction>
-          // </ListItem>
         ))}
       </Box>
     </ThemeProvider>

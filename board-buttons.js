@@ -20,6 +20,7 @@ const boardButtons = {
                 fullscreen: true,
                 args: {
                   userId: context.member,
+                  boardId: context.board,
                   userType
                 },
                 callback: function (t, opt) {
