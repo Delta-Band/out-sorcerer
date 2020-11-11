@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import firebase from 'firebase';
 import axios from 'axios';
 import {
   createMuiTheme,
@@ -51,7 +50,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Claims() {
-  const db = firebase.firestore();
   const [claimers, setClaimers] = useState([]);
   const [cardData, setCardData] = useState({
     contractedTo: null
