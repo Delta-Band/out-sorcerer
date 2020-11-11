@@ -6,7 +6,16 @@ import {
   ThemeProvider,
   makeStyles
 } from '@material-ui/core/styles';
-import { Box } from '@material-ui/core';
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemAvatar,
+  Avatar,
+  ListItemText,
+  ListItemSecondaryAction,
+  Button
+} from '@material-ui/core';
 
 const _axios = axios.create({
   baseURL: 'https://api.trello.com/1/',
@@ -44,6 +53,9 @@ const useStyles = makeStyles((theme) => ({
 export default function Claims() {
   const db = firebase.firestore();
   const [claimers, setClaimers] = useState([]);
+  const [cardData, setCardData] = useState({
+    contractedTo: null
+  });
   const classes = useStyles();
 
   async function getClaimers(claims) {
@@ -53,17 +65,92 @@ export default function Claims() {
     }, []);
     const results = await axios.all(requests.map((request) => request()));
     console.log('results: ', results);
-    setClaimers(results);
+    setClaimers(
+      results.reduce((acc, itm) => {
+        acc.push(itm.data);
+        return acc;
+      }, [])
+    );
+  }
+
+  async function approveClaimer(claimerId) {
+    const _t = window.TrelloPowerUp.iframe();
+    await _t.arg('fireCardRef').set(
+      {
+        contractedTo: claimerId
+      },
+      { merge: true }
+    );
+    _t.set('card', 'shared', 'lastUpdate', Date.now());
+  }
+
+  async function revokeClaimer(claimerId) {
+    const _t = window.TrelloPowerUp.iframe();
+    await _t.arg('fireCardRef').set(
+      {
+        contractedTo: null
+      },
+      { merge: true }
+    );
+    _t.set('card', 'shared', 'lastUpdate', Date.now());
   }
 
   useEffect(() => {
     const _t = window.TrelloPowerUp.iframe();
     getClaimers(_t.arg('claims'));
+    setCardData(_t.arg('fireCardData'));
   }, []);
 
   return (
     <ThemeProvider theme={theme}>
-      <Box className={classes.root}>Claimers</Box>
+      <Box className={classes.root}>
+        <List dense>
+          {claimers.map((claimer) => (
+            <ListItem key={claimer.id}>
+              <ListItemAvatar>
+                <Avatar src={claimer.avatarUrl} alt={claimer.fullName} />
+              </ListItemAvatar>
+              <ListItemText
+                primary={claimer.fullName}
+                secondary={
+                  <Box>
+                    <a
+                      href={
+                        db.collection('puhsers').doc(claimer.id).get().data()
+                          .webPage
+                      }
+                    >
+                      Linkedin
+                    </a>
+                    <a href={`mailto:${claimer.email}`}>Email</a>
+                  </Box>
+                }
+              />
+              <ListItemSecondaryAction>
+                <Button
+                  edge='end'
+                  aria-label='delete'
+                  disabled={
+                    cardData.contractedTo &&
+                    cardData.contractedTo !== claimer.id
+                  }
+                  onClick={() => {
+                    if (cardData.contractedTo === claimer.id) {
+                      revokeClaimer(claimer.id);
+                    } else {
+                      approveClaimer(claimer.id);
+                    }
+                  }}
+                >
+                  {cardData.contractedTo && cardData.contractedTo === claimer.id
+                    ? 'Revoke'
+                    : 'Aproove'}
+                </Button>
+              </ListItemSecondaryAction>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
     </ThemeProvider>
   );
 }

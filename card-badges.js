@@ -23,9 +23,9 @@ const cardDetailBadges = {
       const _cardData = await resp.json();
       fireCardRef.set({ native: _cardData }, { merge: true });
     }
-    fireCardRef.onSnapshot(() => {
-      t.set('card', 'shared', 'updated', Date.now());
-    });
+    // fireCardRef.onSnapshot(() => {
+    //   t.set('card', 'shared', 'updated', Date.now());
+    // });
     const badges = [];
     if (fireCardData.reward) {
       badges.push({
