@@ -108,6 +108,7 @@ export default function Market() {
     }
     console.log('OS Approved list created');
     console.log('Adding card to board');
+    console.log(found);
     await axiosInstance.post(`/cards`, {
       idList: found.id,
       idCardSource: card.id,
