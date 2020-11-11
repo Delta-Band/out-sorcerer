@@ -102,8 +102,12 @@ export default function Claims() {
 
   useEffect(() => {
     const _t = window.TrelloPowerUp.iframe();
-    getClaimers(_t.arg('fireCardData').claims);
-    setContractedTo(_t.arg('contractedTo'));
+    db.collection('cards')
+      .doc(_t.arg('cardId'))
+      .onSnapshot((snapshot) => {
+        setContractedTo(snapshot.data().contractedTo);
+        getClaimers(snapshot.data().claims);
+      });
   }, []);
 
   // const getWebPage = useCallback(async (claimerId) => {
