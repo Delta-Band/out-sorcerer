@@ -99,21 +99,19 @@ export default function Market() {
     // db.collection('cards').doc(card.id).set({ claims }, { merge: true });
   }
 
-  const unclaimedCards = useCallback((_cards) => {
-    console.log('unclaimedCards for user: ', user);
-    console.log('cards: ', _cards);
-    if (!user) return [];
-    return _cards.filter((card) => !card.data().claims.includes(user));
+  const unclaimedCards = useCallback((_cards, _user) => {
+    if (!_user) return [];
+    return _cards.filter((card) => !card.data().claims.includes(_user));
   }, []);
 
-  const claimedCards = useCallback((_cards) => {
-    if (!user) return [];
-    return _cards.filter((card) => card.data().claims.includes(user));
+  const claimedCards = useCallback((_cards, _user) => {
+    if (!_user) return [];
+    return _cards.filter((card) => card.data().claims.includes(_user));
   }, []);
 
-  const approvedCards = useCallback((_cards) => {
-    if (!user) return [];
-    return _cards.filter((card) => card.data().contractedTo === user);
+  const approvedCards = useCallback((_cards, _user) => {
+    if (!_user) return [];
+    return _cards.filter((card) => card.data().contractedTo === _user);
   }, []);
 
   return (
@@ -132,7 +130,7 @@ export default function Market() {
           <Tab
             icon={
               <StyledBadge
-                badgeContent={unclaimedCards(cards).length}
+                badgeContent={unclaimedCards(cards, user).length}
                 color='secondary'
               >
                 <AllIcon size={25} />
@@ -153,7 +151,7 @@ export default function Market() {
           <Tab
             icon={
               <StyledBadge
-                badgeContent={claimedCards(cards).length}
+                badgeContent={claimedCards(cards, user).length}
                 color='secondary'
               >
                 <ClaimedIcon
@@ -168,7 +166,7 @@ export default function Market() {
           <Tab
             icon={
               <StyledBadge
-                badgeContent={approvedCards(cards).length}
+                badgeContent={approvedCards(cards, user).length}
                 color='secondary'
               >
                 <AproovedIcon
@@ -194,7 +192,7 @@ export default function Market() {
           index={0}
           dir={theme.direction}
           className={classes.fullHeight}
-          cards={unclaimedCards(cards)}
+          cards={unclaimedCards(cards, user)}
           boards={boards}
           user={user}
           action={{
@@ -207,7 +205,7 @@ export default function Market() {
           index={2}
           dir={theme.direction}
           className={classes.fullHeight}
-          cards={claimedCards(cards)}
+          cards={claimedCards(cards, user)}
           boards={boards}
           user={user}
           action={{
@@ -220,7 +218,7 @@ export default function Market() {
           index={3}
           dir={theme.direction}
           className={classes.fullHeight}
-          cards={approvedCards(cards)}
+          cards={approvedCards(cards, user)}
           boards={boards}
           user={user}
           action={{
