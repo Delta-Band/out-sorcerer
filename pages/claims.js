@@ -95,8 +95,8 @@ export default function Claims() {
 
   useEffect(() => {
     const _t = window.TrelloPowerUp.iframe();
-    getClaimers(_t.arg('claims'));
     setCardData(_t.arg('fireCardData'));
+    getClaimers(_t.arg('fireCardData').claims);
   }, []);
 
   // const getWebPage = useCallback(async (claimerId) => {
@@ -107,8 +107,8 @@ export default function Claims() {
   return (
     <ThemeProvider theme={theme}>
       <Box className={classes.root}>
-        <List dense>
-          {/* {claimers.map((claimer) => (
+        {/* <List dense>
+          {claimers.map((claimer) => (
             <ListItem key={claimer.id}>
               <ListItemAvatar>
                 <Avatar src={claimer.avatarUrl} alt={claimer.fullName} />
@@ -144,8 +144,8 @@ export default function Claims() {
                 </Button>
               </ListItemSecondaryAction>
             </ListItem>
-          ))} */}
-        </List>
+          ))}
+        </List> */}
       </Box>
     </ThemeProvider>
   );
