@@ -102,15 +102,18 @@ export default function Market() {
   const unclaimedCards = useCallback((_cards) => {
     console.log('unclaimedCards for user: ', user);
     console.log('cards: ', _cards);
-    return _cards.filter((card) => user && !card.data().claims.includes(user));
+    if (!user) return [];
+    return _cards.filter((card) => !card.data().claims.includes(user));
   }, []);
 
   const claimedCards = useCallback((_cards) => {
-    return _cards.filter((card) => user && card.data().claims.includes(user));
+    if (!user) return [];
+    return _cards.filter((card) => card.data().claims.includes(user));
   }, []);
 
   const approvedCards = useCallback((_cards) => {
-    return _cards.filter((card) => user && card.data().contractedTo === user);
+    if (!user) return [];
+    return _cards.filter((card) => card.data().contractedTo === user);
   }, []);
 
   return (
