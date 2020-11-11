@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import firebase from 'firebase';
 import axios from 'axios';
 import {
@@ -101,6 +101,11 @@ export default function Claims() {
     setCardData(_t.arg('fireCardData'));
   }, []);
 
+  const getWebPage = useCallback(async (claimerId) => {
+    const webPage = await db.collection('puhsers').doc(claimerId).get().data();
+    return webPage;
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <Box className={classes.root}>
@@ -114,14 +119,7 @@ export default function Claims() {
                 primary={claimer.fullName}
                 secondary={
                   <Box>
-                    <a
-                      href={
-                        db.collection('puhsers').doc(claimer.id).get().data()
-                          .webPage
-                      }
-                    >
-                      Linkedin
-                    </a>
+                    <a href={getWebPage(claimer.id)}>Linkedin</a>
                     <a href={`mailto:${claimer.email}`}>Email</a>
                   </Box>
                 }
