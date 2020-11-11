@@ -47,12 +47,12 @@ const cardDetailBadges = {
               url: 'https://out-sorcerer.vercel.app/claims',
               height: 338,
               args: {
-                // fireCardRef: fireCardRef,
-                fireCardData: fireCardData
+                cardId: context.card,
+                fireCardData: fireCardData,
+                contractedTo: fireCardData.contractedTo
               },
               callback: function (t, opt) {
-                t.closePopup();
-                t.set('card', 'shared', 'lastUpdate', Date.now());
+                // t.closePopup();
               }
             });
           }

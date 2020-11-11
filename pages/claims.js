@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import firebase from 'firebase';
 import axios from 'axios';
 import {
   createMuiTheme,
@@ -50,10 +51,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Claims() {
+  const db = firebase.firestore();
   const [claimers, setClaimers] = useState([]);
-  // const [cardData, setCardData] = useState({
-  //   contractedTo: null
-  // });
+  const [contractedTo, setContractedTo] = useState([]);
   const classes = useStyles();
 
   async function getClaimers(claims) {
@@ -71,32 +71,32 @@ export default function Claims() {
     );
   }
 
-  // async function approveClaimer(claimerId) {
-  //   const _t = window.TrelloPowerUp.iframe();
-  //   await _t.arg('fireCardRef').set(
-  //     {
-  //       contractedTo: claimerId
-  //     },
-  //     { merge: true }
-  //   );
-  //   _t.set('card', 'shared', 'lastUpdate', Date.now());
-  // }
+  async function approveClaimer(claimerId) {
+    const _t = window.TrelloPowerUp.iframe();
+    await db.collection('cards').doc(_t.arg('cardId')).set(
+      {
+        contractedTo: claimerId
+      },
+      { merge: true }
+    );
+    _t.set('card', 'shared', 'lastUpdate', Date.now());
+  }
 
-  // async function revokeClaimer(claimerId) {
-  //   const _t = window.TrelloPowerUp.iframe();
-  //   await _t.arg('fireCardRef').set(
-  //     {
-  //       contractedTo: null
-  //     },
-  //     { merge: true }
-  //   );
-  //   _t.set('card', 'shared', 'lastUpdate', Date.now());
-  // }
+  async function revokeClaimer(claimerId) {
+    const _t = window.TrelloPowerUp.iframe();
+    await db.collection('cards').doc(_t.arg('cardId')).set(
+      {
+        contractedTo: null
+      },
+      { merge: true }
+    );
+    _t.set('card', 'shared', 'lastUpdate', Date.now());
+  }
 
   useEffect(() => {
-    // const _t = window.TrelloPowerUp.iframe();
-    // setCardData(_t.arg('fireCardData'));
-    // getClaimers(_t.arg('fireCardData').claims);
+    const _t = window.TrelloPowerUp.iframe();
+    getClaimers(_t.arg('fireCardData').claims);
+    setContractedTo(_t.arg('contractedTo'));
   }, []);
 
   // const getWebPage = useCallback(async (claimerId) => {
@@ -108,7 +108,7 @@ export default function Claims() {
     <ThemeProvider theme={theme}>
       <Box className={classes.root}>
         Hello
-        {/* <List dense>
+        <List dense>
           {claimers.map((claimer) => (
             <ListItem key={claimer.id}>
               <ListItemAvatar>
@@ -127,26 +127,23 @@ export default function Claims() {
                 <Button
                   edge='end'
                   aria-label='delete'
-                  disabled={
-                    cardData.contractedTo &&
-                    cardData.contractedTo !== claimer.id
-                  }
+                  disabled={contractedTo && contractedTo !== claimer.id}
                   onClick={() => {
-                    if (cardData.contractedTo === claimer.id) {
+                    if (contractedTo === claimer.id) {
                       revokeClaimer(claimer.id);
                     } else {
                       approveClaimer(claimer.id);
                     }
                   }}
                 >
-                  {cardData.contractedTo && cardData.contractedTo === claimer.id
+                  {contractedTo && contractedTo === claimer.id
                     ? 'Revoke'
                     : 'Aproove'}
                 </Button>
               </ListItemSecondaryAction>
             </ListItem>
           ))}
-        </List> */}
+        </List>
       </Box>
     </ThemeProvider>
   );
