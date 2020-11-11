@@ -92,12 +92,23 @@ export default function Market() {
     db.collection('cards').doc(card.id).set({ claims }, { merge: true });
   }
 
+  async function addToBoard(card) {
+    console.log('adding card to board: ', card);
+    // let claims = card.data().claims;
+    // claims = claims.filter((c) => c !== user);
+    // db.collection('cards').doc(card.id).set({ claims }, { merge: true });
+  }
+
   const unclaimedCards = useCallback((_cards) => {
     return _cards.filter((card) => user && !card.data().claims.includes(user));
   }, []);
 
   const claimedCards = useCallback((_cards) => {
     return _cards.filter((card) => user && card.data().claims.includes(user));
+  }, []);
+
+  const approvedCards = useCallback((_cards) => {
+    return _cards.filter((card) => user && card.data().contractedTo === user);
   }, []);
 
   return (
@@ -152,7 +163,7 @@ export default function Market() {
           <Tab
             icon={
               <StyledBadge
-                badgeContent={claimedCards(cards).length}
+                badgeContent={approvedCards(cards).length}
                 color='secondary'
               >
                 <AproovedIcon
@@ -197,6 +208,19 @@ export default function Market() {
           action={{
             cb: unclaim,
             text: 'Unclaim'
+          }}
+        />
+        <Cards
+          value={tab}
+          index={3}
+          dir={theme.direction}
+          className={classes.fullHeight}
+          cards={approvedCards(cards)}
+          boards={boards}
+          user={user}
+          action={{
+            cb: addToBoard,
+            text: 'Add to board'
           }}
         />
         {/* <TabPanel
