@@ -122,38 +122,35 @@ export default function Market() {
         .delete(`/tokens/${process.env.TRELLO_API_TOKEN}/webhooks/${wh}`)
         .then(console.log);
     });
-    // // Create webhook for syncing to pusher card
-    // const publisherHook = await axiosInstance.post(
-    //   `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks/`,
-    //   {
-    //     description: 'Sync Card',
-    //     callbackURL: `https://us-central1-out-sorcerer.cloudfunctions.net/transaction?syncToCard=${newCard.id}`,
-    //     idModel: card.id
-    //   }
-    // );
-    // // Create webhook for syncing to publisher card
-    // const pusherHook = await axiosInstance.post(
-    //   `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks/`,
-    //   {
-    //     description: 'Sync Card',
-    //     callbackURL: `https://us-central1-out-sorcerer.cloudfunctions.net/transaction?syncToCard=${card.id}`,
-    //     idModel: newCard.id
-    //   }
-    // );
-    // // Set fireCard "commited" field to true.
-    // await db
-    //   .collection('cards')
-    //   .doc(card.id)
-    //   .set(
-    //     {
-    //       commited: true,
-    //       webHooks: [publisherHook.id, pusherHook.id]
-    //     },
-    //     { merge: true }
-    //   );
-    // let claims = card.data().claims;
-    // claims = claims.filter((c) => c !== user);
-    // db.collection('cards').doc(card.id).set({ claims }, { merge: true });
+    // Create webhook for syncing to pusher card
+    const publisherHook = await axiosInstance.post(
+      `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks/`,
+      {
+        description: 'Sync Card',
+        callbackURL: `https://us-central1-out-sorcerer.cloudfunctions.net/transaction?syncToCard=${newCard.id}&initiator=provider`,
+        idModel: card.id
+      }
+    );
+    // Create webhook for syncing to publisher card
+    const pusherHook = await axiosInstance.post(
+      `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks/`,
+      {
+        description: 'Sync Card',
+        callbackURL: `https://us-central1-out-sorcerer.cloudfunctions.net/transaction?syncToCard=${card.id}&initiator=pusher`,
+        idModel: newCard.id
+      }
+    );
+    // Set fireCard "commited" field to true.
+    await db
+      .collection('cards')
+      .doc(card.id)
+      .set(
+        {
+          commited: true,
+          webHooks: [publisherHook.id, pusherHook.id]
+        },
+        { merge: true }
+      );
   }
 
   const unclaimedCards = useCallback((_cards, _user) => {
