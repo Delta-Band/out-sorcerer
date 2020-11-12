@@ -9,6 +9,7 @@ import { HandSparkles as ClaimedIcon } from '@styled-icons/fa-solid/HandSparkles
 import { Handshake as AproovedIcon } from '@styled-icons/fa-solid/Handshake';
 import { Box, AppBar, Tabs, Tab, Badge } from '@material-ui/core';
 import uniq from 'lodash/uniq';
+import axios from 'axios';
 import { Cards } from '../components';
 import axiosInstance from '../axios.config';
 
@@ -117,11 +118,16 @@ export default function Market() {
     });
     console.log('Card added');
     // delete previous webkooks
-    card.data().webHooks.forEach((wh) => {
-      axiosInstance
-        .delete(`/tokens/${process.env.TRELLO_API_TOKEN}/webhooks/${wh}`)
-        .then(console.log);
-    });
+    const requests = card.data().webHooks.reduce((acc, wh) => {
+      acc.push(() =>
+        axiosInstance.delete(
+          `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks/${wh}`
+        )
+      );
+      return acc;
+    }, []);
+    const deleteResp = await axios.all(requests.map((request) => request()));
+    console.log('deleteResp', deleteResp);
     // Create webhook for syncing to pusher card
     const publisherHook = await axiosInstance.post(
       `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks/`,
