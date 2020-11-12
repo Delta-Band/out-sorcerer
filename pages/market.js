@@ -117,6 +117,10 @@ export default function Market() {
       keepFromSource: 'all'
     });
     console.log('Card added');
+    const webhooks = await axiosInstance.get(
+      `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks`
+    );
+    console.log(webhooks);
     // delete previous webkooks
     const requests = card.data().webHooks.reduce((acc, wh) => {
       acc.push(() =>
