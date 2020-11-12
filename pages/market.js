@@ -141,6 +141,8 @@ export default function Market() {
       }
     );
     // Set fireCard "commited" field to true.
+    console.log('publisherHook.id', publisherHook.id);
+    console.log('pusherHook.id', pusherHook.id);
     await db
       .collection('cards')
       .doc(card.id)
