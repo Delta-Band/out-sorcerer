@@ -118,9 +118,9 @@ export default function Market() {
     console.log('Card added');
     // delete previous webkooks
     card.data().webHooks.forEach((wh) => {
-      axiosInstance.delete(
-        `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks/${wh}`
-      );
+      axiosInstance
+        .delete(`/tokens/${process.env.TRELLO_API_TOKEN}/webhooks/${wh}`)
+        .then(console.log);
     });
     // // Create webhook for syncing to pusher card
     // const publisherHook = await axiosInstance.post(
