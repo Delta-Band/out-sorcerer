@@ -110,27 +110,47 @@ export default function Market() {
     console.log('Adding card to board');
     console.log(found);
     // Add card to board
-    await axiosInstance.post(`/cards`, {
+    const newCard = await axiosInstance.post(`/cards`, {
       idList: found.id,
       idCardSource: card.id,
       keepFromSource: 'all'
     });
     console.log('Card added');
-    // Create webhook for syncing with original card
-    await axiosInstance.post(
-      `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks/`,
-      {
-        description: 'Sync Card',
-        callbackURL:
-          'https://us-central1-out-sorcerer.cloudfunctions.net/transaction',
-        idModel: card.id
-      }
-    );
-    // Set fireCard "commited" field to true.
-    await db
-      .collection('cards')
-      .doc(card.id)
-      .set({ commited: true }, { merge: true });
+    // delete previous webkooks
+    card.data().webHooks.forEach((wh) => {
+      axiosInstance.delete(
+        `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks/${wh}`
+      );
+    });
+    // // Create webhook for syncing to pusher card
+    // const publisherHook = await axiosInstance.post(
+    //   `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks/`,
+    //   {
+    //     description: 'Sync Card',
+    //     callbackURL: `https://us-central1-out-sorcerer.cloudfunctions.net/transaction?syncToCard=${newCard.id}`,
+    //     idModel: card.id
+    //   }
+    // );
+    // // Create webhook for syncing to publisher card
+    // const pusherHook = await axiosInstance.post(
+    //   `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks/`,
+    //   {
+    //     description: 'Sync Card',
+    //     callbackURL: `https://us-central1-out-sorcerer.cloudfunctions.net/transaction?syncToCard=${card.id}`,
+    //     idModel: newCard.id
+    //   }
+    // );
+    // // Set fireCard "commited" field to true.
+    // await db
+    //   .collection('cards')
+    //   .doc(card.id)
+    //   .set(
+    //     {
+    //       commited: true,
+    //       webHooks: [publisherHook.id, pusherHook.id]
+    //     },
+    //     { merge: true }
+    //   );
     // let claims = card.data().claims;
     // claims = claims.filter((c) => c !== user);
     // db.collection('cards').doc(card.id).set({ claims }, { merge: true });
