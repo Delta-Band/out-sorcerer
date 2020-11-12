@@ -109,12 +109,24 @@ export default function Market() {
     console.log('OS Approved list created');
     console.log('Adding card to board');
     console.log(found);
+    // Add card to board
     await axiosInstance.post(`/cards`, {
       idList: found.id,
       idCardSource: card.id,
       keepFromSource: 'all'
     });
     console.log('Card added');
+    // Create webhook for syncing with original card
+    await axiosInstance.post(
+      `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks/`,
+      {
+        description: 'Sync Card',
+        callbackURL:
+          'http://localhost:5001/out-sorcerer/us-central1/transaction',
+        idModel: card.id
+      }
+    );
+    // Set fireCard "commited" field to true.
     await db
       .collection('cards')
       .doc(card.id)
