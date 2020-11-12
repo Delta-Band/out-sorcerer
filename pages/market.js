@@ -116,7 +116,7 @@ export default function Market() {
       idCardSource: card.id,
       keepFromSource: 'all'
     });
-    console.log('Card added');
+    console.log('Card added', newCard);
     const webhooks = await axiosInstance.get(
       `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks`
     );
