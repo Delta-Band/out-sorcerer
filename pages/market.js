@@ -122,7 +122,7 @@ export default function Market() {
       {
         description: 'Sync Card',
         callbackURL:
-          'http://localhost:5001/out-sorcerer/us-central1/transaction',
+          'https://us-central1-out-sorcerer.cloudfunctions.net/transaction',
         idModel: card.id
       }
     );
