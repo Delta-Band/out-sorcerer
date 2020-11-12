@@ -116,7 +116,7 @@ export default function Market() {
       idCardSource: card.id,
       keepFromSource: 'all'
     });
-    console.log('Card added', newCard);
+    console.log('Card added', newCard.data);
     const webhooks = await axiosInstance.get(
       `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks`
     );
@@ -137,7 +137,7 @@ export default function Market() {
       `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks/`,
       {
         description: 'Sync Card',
-        callbackURL: `https://us-central1-out-sorcerer.cloudfunctions.net/transaction?syncToCard=${newCard.id}&initiator=provider`,
+        callbackURL: `https://us-central1-out-sorcerer.cloudfunctions.net/transaction?syncToCard=${newCard.data.id}&initiator=provider`,
         idModel: card.id
       }
     );
@@ -147,19 +147,19 @@ export default function Market() {
       {
         description: 'Sync Card',
         callbackURL: `https://us-central1-out-sorcerer.cloudfunctions.net/transaction?syncToCard=${card.id}&initiator=pusher`,
-        idModel: newCard.id
+        idModel: newCard.data.id
       }
     );
     // Set fireCard "commited" field to true.
-    console.log('publisherHook.id', publisherHook.id);
-    console.log('pusherHook.id', pusherHook.id);
+    console.log('publisherHook.id', publisherHook.data);
+    console.log('pusherHook.id', pusherHook.data);
     await db
       .collection('cards')
       .doc(card.id)
       .set(
         {
           commited: true,
-          webHooks: [publisherHook.id, pusherHook.id]
+          webHooks: [publisherHook.data.id, pusherHook.data.id]
         },
         { merge: true }
       );
