@@ -17,10 +17,12 @@ const showAuth = {
       return /^[0-9a-f]{64}$/.test(token);
     };
 
-    const storageHandler = function (evt) {
+    const storageHandler = function (evt, authorizeWindow) {
+      console.log('storageHandler evt:', evt);
+      console.log('storageHandler authorizeWindow:', authorizeWindow);
       if (evt.key === 'token' && evt.newValue) {
         // Do something with the token here, then...
-        // authorizeWindow.close();
+        authorizeWindow.close();
         window.removeEventListener('storage', storageHandler);
       }
     };
@@ -35,7 +37,9 @@ const showAuth = {
         // can't call window.close() in your new window
         // (such as the case when your authorization page
         // is rendered inside an iframe).
-        window.addEventListener('storage', storageHandler);
+        window.addEventListener('storage', function (e) {
+          storageHandler(e, authorizeWindow);
+        });
       }
     };
     // return t.popup({
@@ -56,7 +60,7 @@ const showAuth = {
       .then(function () {
         // now that the token is stored, we can close this popup
         // you might alternatively choose to open a new popup
-        return t.closePopup();
+        // return t.closePopup();
       });
   }
 };
