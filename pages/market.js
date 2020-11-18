@@ -150,7 +150,8 @@ export default function Market() {
       },
       {
         syncToCard: newCard.data.id,
-        initiator: 'provider'
+        initiator: 'provider',
+        userToken: token
       }
     );
     // Create webhook for syncing to publisher card
@@ -163,7 +164,8 @@ export default function Market() {
       },
       {
         syncToCard: card.id,
-        initiator: 'pusher'
+        initiator: 'pusher',
+        userToken: token
       }
     );
     // Set fireCard "commited" field to true.
