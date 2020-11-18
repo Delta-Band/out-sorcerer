@@ -13,7 +13,7 @@ const tokenLooksValid = function (token) {
 export const getToken = async function (t) {
   let token = await t.get('organization', 'private', 'token');
   if (!tokenLooksValid(token)) {
-    token = t.get('board', 'private', 'token');
+    token = await t.get('board', 'private', 'token');
   }
   return token;
 };
