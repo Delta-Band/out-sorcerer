@@ -7,6 +7,7 @@ import settings from './settings';
 import boardButtons from './board-buttons';
 import onEnable from './on-enable';
 import showAuth from './show-auth';
+import authStatus from './auth-status';
 
 const powerUpConfig = {
   // Start adding handlers for your capabilities here!
@@ -16,7 +17,8 @@ const powerUpConfig = {
   ...settings,
   ...boardButtons,
   ...onEnable,
-  ...showAuth
+  ...showAuth,
+  ...authStatus
 };
 
 export default powerUpConfig;

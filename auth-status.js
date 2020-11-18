@@ -1,6 +1,6 @@
 import { getToken } from './utils';
 
-const showAuth = {
+const authStatus = {
   'authorization-status': async function (t, opts) {
     // return a promise that resolves to the object with
     // a property 'authorized' being true/false
@@ -13,4 +13,4 @@ const showAuth = {
   }
 };
 
-export default showAuth;
+export default authStatus;
