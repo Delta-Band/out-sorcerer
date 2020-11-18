@@ -7,9 +7,7 @@ const authStatus = {
     // you can also return the object synchronously if you know
     // the answer synchronously
     let token = await getToken(t);
-    return new window.TrelloPowerUp.Promise((resolve) =>
-      resolve({ authorized: Boolean(token) })
-    );
+    return { authorized: Boolean(token) };
   }
 };
 
