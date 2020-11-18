@@ -12,6 +12,7 @@ const cardDetailBadges = {
     const context = t.getContext();
     const userType = await t.get('board', 'shared', 'userType', 'pusher');
     if (userType === 'provider') {
+      console.log('provider card id: ', context.card);
       // const reward = await t.get(context.card, 'shared', 'reward', 0);
       // const published = await t.get(context.card, 'shared', 'published', false);
       // const timebox = await t.get(context.card, 'shared', 'timebox', null);
