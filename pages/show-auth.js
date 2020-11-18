@@ -93,15 +93,7 @@ export default function ShowAuth() {
             t.authorize(oauthUrl, authorizeOpts)
               .then(function (token) {
                 console.log('new token: ', token);
-                return t
-                  .set('organization', 'private', 'token', token)
-                  .catch(t.NotHandled, function () {
-                    // fall back to storing at board level
-                    console.log(
-                      "can't set token for organiztion so set for the board"
-                    );
-                    return t.set('board', 'private', 'token', token);
-                  });
+                return t.set('member', 'private', 'authToken', token);
               })
               .then(function () {
                 // now that the token is stored, we can close this popup
