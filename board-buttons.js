@@ -1,5 +1,5 @@
-var LOGO = 'https://out-sorcerer.vercel.app/logo.png';
 import { getToken } from './utils';
+var LOGO = 'https://out-sorcerer.vercel.app/logo.png';
 
 const boardButtons = {
   'board-buttons': async function (t, options) {
