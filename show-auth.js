@@ -63,7 +63,7 @@ const showAuth = {
       .then(function () {
         // now that the token is stored, we can close this popup
         // you might alternatively choose to open a new popup
-        // return t.closePopup();
+        return t.closePopup();
       });
   }
 };
