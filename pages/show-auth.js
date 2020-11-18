@@ -81,9 +81,11 @@ export default function ShowAuth() {
         className={classes.root}
         display='flex'
         flexDirection='column'
-        height='100%'
-        justifyConten='center'
+        justifyContent='center'
         alignItems='center'
+        style={{
+          height: '100%'
+        }}
       >
         <Button
           variant='contained'
