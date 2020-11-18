@@ -42,10 +42,11 @@ export default function ShowAuth() {
     return /^[0-9a-f]{64}$/.test(token);
   };
 
-  const storageHandler = function (evt, authorizeWindow) {
-    console.log('storageHandler evt:', evt);
-    console.log('storageHandler authorizeWindow:', authorizeWindow);
+  const storageHandler = async function (evt, authorizeWindow) {
     authorizeWindow.close();
+    let token = authorizeWindow.location.hash.split('=')[1];
+    const t = window.TrelloPowerUp.iframe();
+    await t.set('member', 'private', 'authToken', token);
     window.removeEventListener('storage', storageHandler);
   };
 
@@ -54,7 +55,6 @@ export default function ShowAuth() {
     width: 580,
     validToken: tokenLooksValid,
     windowCallback: function (authorizeWindow) {
-      console.log('authorizeWindow: ', authorizeWindow);
       // This callback gets called with the handle to the
       // authorization window. This can be useful if you
       // can't call window.close() in your new window
@@ -65,15 +65,6 @@ export default function ShowAuth() {
       });
     }
   };
-
-  // useEffect(() => {
-  //   const _t = window.TrelloPowerUp.iframe();
-  // }, []);
-
-  // const getWebPage = useCallback(async (claimerId) => {
-  //   const webPage = await db.collection('puhsers').doc(claimerId).get().data();
-  //   return webPage;
-  // }, []);
 
   return (
     <ThemeProvider theme={theme}>
