@@ -9,10 +9,24 @@ const cardDetailBadges = {
     // const published = await t.get(context.card, 'shared', 'published', null);
     // console.log('published: ', published);
     // const timebox = await t.get(context.card, 'shared', 'timebox', null);
+    console.log('card id: ', context.card);
+    const userType = await t.get('board', 'shared', 'userType', 'pusher');
     const db = firebase.firestore();
-    const fireCardRef = db.collection('cards').doc(context.card);
+    let fireCardRef;
+    if (userType === 'provider') {
+      fireCardRef = db.collection('cards').doc(context.card);
+    } else {
+      const providerCardId = await t.get(
+        'card',
+        'private',
+        'providerCardId',
+        null
+      );
+      fireCardRef = db.collection('cards').doc(providerCardId);
+    }
     const fireCard = await fireCardRef.get();
     const fireCardData = fireCard.data();
+
     const badges = [];
     const currencyFormatter = new Intl.NumberFormat('en-US', {
       style: 'currency',

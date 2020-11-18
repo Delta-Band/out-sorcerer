@@ -137,6 +137,8 @@ export default function Market() {
         }
       }
     );
+    // store provider card id
+    _t.set(newCard.data.id, 'private', 'providerCardId', card.id);
     console.log('Card added', newCard.data);
     const webhooks = await _axios.get(`/tokens/${token}/webhooks`);
     console.log('active webhooks: ', webhooks);
