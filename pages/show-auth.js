@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 export default function ShowAuth() {
   const classes = useStyles();
 
-  const oauthUrl = `https://trello.com/1/authorize?expiration=never&name=Out-Sorcerer&scope=read,write,account&key=${process.env.TRELLO_API_KEY}&callback_method=fragment&return_url=https://trello.com`;
+  const oauthUrl = `https://trello.com/1/authorize?expiration=never&name=Out-Sorcerer&scope=read,write,account&key=${process.env.TRELLO_API_KEY}&callback_method=fragment&return_url=https://out-sorcerer.vercel.app/show-auth`;
 
   const tokenLooksValid = function (token) {
     return /^[0-9a-f]{64}$/.test(token);
