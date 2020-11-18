@@ -1,15 +1,24 @@
-import axiosInstance from './axios.config';
+import _axios from './axios.config';
+import { getToken } from './utils';
 
 const settings = {
   'show-settings': async function (t, opts) {
-    console.log('initializig card-detail-badges butons');
+    let token = getToken(t);
     const context = t.getContext();
     console.log('context: ', context);
     const userType = await t.get('board', 'shared', 'userType', 'pusher');
     const webPage = await t.get('board', 'shared', 'webPage', '');
     const logo = await t.get('board', 'shared', 'logo', '');
-    const board = await axiosInstance.get(`boards/${context.board}`);
-    const user = await axiosInstance.get(`member/${context.member}`);
+    const board = await _axios.get(`boards/${context.board}`, {
+      paramas: {
+        token
+      }
+    });
+    const user = await _axios.get(`member/${context.member}`, {
+      paramas: {
+        token
+      }
+    });
     console.log('board', board.data);
     console.log('user', user.data);
     // console.log('webPage', webPage);

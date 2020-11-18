@@ -11,7 +11,8 @@ import { Box, AppBar, Tabs, Tab, Badge } from '@material-ui/core';
 import uniq from 'lodash/uniq';
 import axios from 'axios';
 import { Cards } from '../components';
-import axiosInstance from '../axios.config';
+import _axios from '../axios.config';
+import { getToken } from '../utils';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -96,58 +97,73 @@ export default function Market() {
 
   async function addToBoard(card) {
     const _t = window.TrelloPowerUp.iframe();
-    let lists = await axiosInstance.get(`/boards/${_t.arg('boardId')}/lists`);
+    let token = getToken(_t);
+    let lists = await _axios.get(`/boards/${_t.arg('boardId')}/lists`);
     lists = lists.data;
     console.log(lists);
     let found = lists.find((ls) => ls.name === 'OS Approved');
     if (!found) {
       console.log('OS Approved list not found - creating...');
       // OS Approved list isn't found so create it.
-      found = await axiosInstance.post(`/boards/${_t.arg('boardId')}/lists`, {
-        name: 'OS Approved'
-      });
+      found = await _axios.post(
+        `/boards/${_t.arg('boardId')}/lists`,
+        {
+          name: 'OS Approved'
+        },
+        {
+          token
+        }
+      );
     }
     console.log('OS Approved list created');
     console.log('Adding card to board');
     console.log(found);
     // Add card to board
-    const newCard = await axiosInstance.post(`/cards`, {
-      idList: found.id,
-      idCardSource: card.id,
-      keepFromSource: 'all'
-    });
-    console.log('Card added', newCard.data);
-    const webhooks = await axiosInstance.get(
-      `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks`
+    const newCard = await _axios.post(
+      `/cards`,
+      {
+        idList: found.id,
+        idCardSource: card.id,
+        keepFromSource: 'all'
+      },
+      {
+        token
+      }
     );
+    console.log('Card added', newCard.data);
+    const webhooks = await _axios.get(`/tokens/${token}/webhooks`);
     console.log('active webhooks: ', webhooks);
     // delete previous webkooks
     const requests = card.data().webHooks.reduce((acc, wh) => {
-      acc.push(() =>
-        axiosInstance.delete(
-          `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks/${wh}`
-        )
-      );
+      acc.push(() => _axios.delete(`/tokens/${token}/webhooks/${wh}`));
       return acc;
     }, []);
     const deleteResp = await axios.all(requests.map((request) => request()));
     console.log('deleteResp', deleteResp);
     // Create webhook for syncing to pusher card
-    const publisherHook = await axiosInstance.post(
-      `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks/`,
+    const publisherHook = await _axios.post(
+      `/tokens/${token}/webhooks/`,
       {
         description: 'Sync Card',
-        callbackURL: `https://us-central1-out-sorcerer.cloudfunctions.net/transaction?syncToCard=${newCard.data.id}&initiator=provider`,
+        callbackURL: `https://us-central1-out-sorcerer.cloudfunctions.net/transaction`,
         idModel: card.id
+      },
+      {
+        syncToCard: newCard.data.id,
+        initiator: 'provider'
       }
     );
     // Create webhook for syncing to publisher card
-    const pusherHook = await axiosInstance.post(
-      `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks/`,
+    const pusherHook = await _axios.post(
+      `/tokens/${token}/webhooks/`,
       {
         description: 'Sync Card',
-        callbackURL: `https://us-central1-out-sorcerer.cloudfunctions.net/transaction?syncToCard=${card.id}&initiator=pusher`,
+        callbackURL: `https://us-central1-out-sorcerer.cloudfunctions.net/transaction`,
         idModel: newCard.data.id
+      },
+      {
+        syncToCard: card.id,
+        initiator: 'pusher'
       }
     );
     // Set fireCard "commited" field to true.
