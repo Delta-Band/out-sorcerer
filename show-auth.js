@@ -32,6 +32,7 @@ const showAuth = {
       width: 580,
       validToken: tokenLooksValid,
       windowCallback: function (authorizeWindow) {
+        console.log('authorizeWindow: ', authorizeWindow);
         // This callback gets called with the handle to the
         // authorization window. This can be useful if you
         // can't call window.close() in your new window
