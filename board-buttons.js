@@ -6,7 +6,7 @@ const boardButtons = {
     const context = t.getContext();
     console.log('context: ', context);
     console.log('userId: ', context.member);
-    let token = await getToken(t);
+    const token = await getToken(t);
     console.log('token: ', token);
     const userType = await t.get('board', 'shared', 'userType', 'pusher');
     return userType === 'pusher'
@@ -24,7 +24,8 @@ const boardButtons = {
                 args: {
                   userId: context.member,
                   boardId: context.board,
-                  userType
+                  userType,
+                  token
                 },
                 callback: function (t, opt) {
                   // console.log('modal closed');

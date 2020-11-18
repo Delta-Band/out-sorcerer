@@ -97,7 +97,7 @@ export default function Market() {
 
   async function addToBoard(card) {
     const _t = window.TrelloPowerUp.iframe();
-    let token = getToken(_t);
+    let token = _t.arg('token');
     console.log('token: ', token);
     let lists = await _axios.get(`/boards/${_t.arg('boardId')}/lists`, {
       params: { token }
