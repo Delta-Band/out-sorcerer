@@ -114,7 +114,9 @@ export default function Market() {
           name: 'OS Approved'
         },
         {
-          token
+          params: {
+            token
+          }
         }
       );
     }
@@ -130,7 +132,9 @@ export default function Market() {
         keepFromSource: 'all'
       },
       {
-        token
+        params: {
+          token
+        }
       }
     );
     console.log('Card added', newCard.data);
