@@ -84,13 +84,6 @@ export default function ShowAuth() {
         <Button
           variant='contained'
           color='primary'
-          disabled={
-            window.TrelloPowerUp.iframe().arg('userType') === 'provider'
-          }
-          style={{
-            transform: 'translate(-6px, 12px)',
-            height: 36
-          }}
           onClick={() => {
             const t = window.TrelloPowerUp.iframe();
             t.authorize(oauthUrl, authorizeOpts)
