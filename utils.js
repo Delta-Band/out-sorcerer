@@ -6,11 +6,12 @@ export const currencyFormatter = new Intl.NumberFormat('en-US', {
 });
 
 const tokenLooksValid = function (token) {
+  console.log('token is valid: ', /^[0-9a-f]{64}$/.test(token));
   return /^[0-9a-f]{64}$/.test(token);
 };
 
-export const getToken = function (t) {
-  let token = t.get('organization', 'private', 'token');
+export const getToken = async function (t) {
+  let token = await t.get('organization', 'private', 'token');
   if (!tokenLooksValid(token)) {
     token = t.get('board', 'private', 'token');
   }
