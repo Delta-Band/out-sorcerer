@@ -6,7 +6,7 @@ import _axios from './axios.config';
 const cardDetailBadges = {
   'card-badges': async function (t, opts) {
     // console.log('initializig card-detail-badges butons');
-    let token = getToken(t);
+    let token = await getToken(t);
     console.log('token: ', token);
     const context = t.getContext();
     // const reward = await t.get(context.card, 'shared', 'reward', 0);
