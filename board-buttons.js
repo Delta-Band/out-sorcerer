@@ -1,10 +1,13 @@
 var LOGO = 'https://out-sorcerer.vercel.app/logo.png';
+import { getToken } from './utils';
 
 const boardButtons = {
   'board-buttons': async function (t, options) {
     const context = t.getContext();
     console.log('context: ', context);
     console.log('userId: ', context.member);
+    let token = getToken(t);
+    console.log('token: ', token);
     const userType = await t.get('board', 'shared', 'userType', 'pusher');
     return userType === 'pusher'
       ? [
