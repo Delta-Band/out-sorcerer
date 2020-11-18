@@ -38,26 +38,26 @@ const showAuth = {
         window.addEventListener('storage', storageHandler);
       }
     };
-    return t.popup({
-      title: 'My Auth Popup',
-      url: 'https://out-sorcerer.vercel.app/claims',
-      height: 338
-    });
-    // return t
-    //   .authorize(oauthUrl, authorizeOpts)
-    //   .then(function (token) {
-    //     return t
-    //       .set('organization', 'private', 'token', token)
-    //       .catch(t.NotHandled, function () {
-    //         // fall back to storing at board level
-    //         return t.set('board', 'private', 'token', token);
-    //       });
-    //   })
-    //   .then(function () {
-    //     // now that the token is stored, we can close this popup
-    //     // you might alternatively choose to open a new popup
-    //     return t.closePopup();
-    //   });
+    // return t.popup({
+    //   title: 'My Auth Popup',
+    //   url: 'https://out-sorcerer.vercel.app/claims',
+    //   height: 338
+    // });
+    return t
+      .authorize(oauthUrl, authorizeOpts)
+      .then(function (token) {
+        return t
+          .set('organization', 'private', 'token', token)
+          .catch(t.NotHandled, function () {
+            // fall back to storing at board level
+            return t.set('board', 'private', 'token', token);
+          });
+      })
+      .then(function () {
+        // now that the token is stored, we can close this popup
+        // you might alternatively choose to open a new popup
+        return t.closePopup();
+      });
   }
 };
 
