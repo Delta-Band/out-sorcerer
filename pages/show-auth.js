@@ -48,6 +48,7 @@ export default function ShowAuth() {
     const t = window.TrelloPowerUp.iframe();
     await t.set('member', 'private', 'authToken', token);
     window.removeEventListener('storage', storageHandler);
+    t.closePopup();
   };
 
   var authorizeOpts = {
@@ -83,17 +84,17 @@ export default function ShowAuth() {
           color='primary'
           onClick={() => {
             const t = window.TrelloPowerUp.iframe();
-            t.authorize(oauthUrl, authorizeOpts)
-              .then(function (token) {
-                console.log('new token: ', token);
-                return t.set('member', 'private', 'authToken', token);
-              })
-              .then(function () {
-                // now that the token is stored, we can close this popup
-                // you might alternatively choose to open a new popup
-                // t.closeModal();
-                t.closePopup();
-              });
+            t.authorize(oauthUrl, authorizeOpts);
+            // .then(function (token) {
+            //   console.log('new token: ', token);
+            //   return t.set('member', 'private', 'authToken', token);
+            // })
+            // .then(function () {
+            //   // now that the token is stored, we can close this popup
+            //   // you might alternatively choose to open a new popup
+            //   // t.closeModal();
+            //   t.closePopup();
+            // });
           }}
         >
           Authorize
