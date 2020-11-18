@@ -54,6 +54,11 @@ const cardDetailBadges = {
           });
         }
       }
+    } else {
+      // delete pusher cards (cleanup for dev effects)
+      const db = firebase.firestore();
+      const fireCardRef = db.collection('cards').doc(context.card);
+      fireCardRef.delete();
     }
     return badges;
   }
