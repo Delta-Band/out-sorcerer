@@ -45,11 +45,8 @@ export default function ShowAuth() {
   const storageHandler = function (evt, authorizeWindow) {
     console.log('storageHandler evt:', evt);
     console.log('storageHandler authorizeWindow:', authorizeWindow);
-    if (evt.key === 'token' && evt.newValue) {
-      // Do something with the token here, then...
-      authorizeWindow.close();
-      window.removeEventListener('storage', storageHandler);
-    }
+    authorizeWindow.close();
+    window.removeEventListener('storage', storageHandler);
   };
 
   var authorizeOpts = {
