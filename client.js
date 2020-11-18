@@ -6,6 +6,7 @@ import cardBadges from './card-badges';
 import settings from './settings';
 import boardButtons from './board-buttons';
 import onEnable from './on-enable';
+import showAuth from './show-auth';
 
 const powerUpConfig = {
   // Start adding handlers for your capabilities here!
@@ -14,7 +15,8 @@ const powerUpConfig = {
   ...cardBadges,
   ...settings,
   ...boardButtons,
-  ...onEnable
+  ...onEnable,
+  ...showAuth
 };
 
 export default powerUpConfig;
