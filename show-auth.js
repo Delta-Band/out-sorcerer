@@ -11,7 +11,7 @@ const showAuth = {
     // APPNAME and RETURNURL
     // You can do that with the encodeURIComponent(string) function
     // encodeURIComponent('Hello World') -> "Hello%20World"
-    const oauthUrl = `https://trello.com/1/authorize?expiration=never&name=Out-Sorcerer&scope=read,write,account&key=${process.env.TRELLO_API_KEY}&callback_method=fragment`;
+    const oauthUrl = `https://trello.com/1/authorize?expiration=never&name=Out-Sorcerer&scope=read,write,account&key=${process.env.TRELLO_API_KEY}&callback_method=postMessage&return_url=https://trello.com`;
 
     const tokenLooksValid = function (token) {
       return /^[0-9a-f]{64}$/.test(token);
