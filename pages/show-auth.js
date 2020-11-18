@@ -77,7 +77,14 @@ export default function ShowAuth() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box className={classes.root}>
+      <Box
+        className={classes.root}
+        display='flex'
+        flexDirection='column'
+        height='100%'
+        justifyConten='center'
+        alignItems='center'
+      >
         <Button
           variant='contained'
           color='primary'
