@@ -56,6 +56,7 @@ const cardDetailBadges = {
       }
     } else {
       // delete pusher cards (cleanup for dev effects)
+      console.log('deletting pusher card: ', context.card);
       const db = firebase.firestore();
       const fireCardRef = db.collection('cards').doc(context.card);
       fireCardRef.delete();
