@@ -143,9 +143,9 @@ export default function Market() {
     const webhooks = await _axios.get(`/tokens/${token}/webhooks`);
     console.log('active webhooks: ', webhooks);
     // delete previous webkooks
-    const requests = card.data().webHooks.reduce((acc, wh) => {
+    const requests = webhooks.reduce((acc, wh) => {
       console.log('webhook: ', wh);
-      acc.push(() => _axios.delete(`/tokens/${token}/webhooks/${wh}`));
+      acc.push(() => _axios.delete(wh.config.url));
       return acc;
     }, []);
     const deleteResp = await axios.all(requests.map((request) => request()));
