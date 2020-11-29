@@ -143,7 +143,7 @@ export default function Market() {
     const webhooks = await _axios.get(`/tokens/${token}/webhooks`);
     console.log('active webhooks: ', webhooks);
     // delete previous webkooks
-    const requests = webhooks.reduce((acc, wh) => {
+    const requests = webhooks.data.reduce((acc, wh) => {
       console.log('webhook: ', wh);
       acc.push(() => _axios.delete(wh.config.url));
       return acc;
