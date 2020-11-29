@@ -143,7 +143,7 @@ export default function Market() {
     console.log('active webhooks: ', webhooks);
     // delete previous webkooks
     const requests = webhooks.data.reduce((acc, wh) => {
-      acc.push(() => _axios.delete(`/tokens/${token}/webhooks/${wh.id}`));
+      acc.push(() => _axios.delete(`${webhooks.config.url}/${wh.id}`));
       return acc;
     }, []);
     const deleteResp = await axios.all(requests.map((request) => request()));
@@ -153,13 +153,8 @@ export default function Market() {
       `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks`,
       {
         description: 'Sync Card',
-        callbackURL: `https://us-central1-out-sorcerer.cloudfunctions.net/transaction`,
+        callbackURL: `https://us-central1-out-sorcerer.cloudfunctions.net/transaction?syncToCard=${newCard.data.id}&initiator=provider&userToken=${token}`,
         idModel: card.id
-      },
-      {
-        syncToCard: newCard.data.id,
-        initiator: 'provider',
-        userToken: token
       }
     );
     // Create webhook for syncing to publisher card
@@ -167,13 +162,8 @@ export default function Market() {
       `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks`,
       {
         description: 'Sync Card',
-        callbackURL: `https://us-central1-out-sorcerer.cloudfunctions.net/transaction`,
+        callbackURL: `https://us-central1-out-sorcerer.cloudfunctions.net/transaction?syncToCard=${card.id}&initiator=pusher&userToken=${token}`,
         idModel: newCard.data.id
-      },
-      {
-        syncToCard: card.id,
-        initiator: 'pusher',
-        userToken: token
       }
     );
     // Set fireCard "commited" field to true.
