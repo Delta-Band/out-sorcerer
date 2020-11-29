@@ -121,8 +121,7 @@ export default function Market() {
       );
     }
     console.log('OS Approved list created');
-    console.log('Adding card to board');
-    console.log(found);
+    console.log('Adding catd to board id:', found);
     // Add card to board
     const newCard = await _axios.post(
       `/cards`,
@@ -145,6 +144,7 @@ export default function Market() {
     // delete previous webkooks
     const requests = webhooks.data.reduce((acc, wh) => {
       console.log('webhook: ', wh);
+      console.log('webhook: ', wh.config.url);
       acc.push(() => _axios.delete(wh.config.url));
       return acc;
     }, []);
@@ -152,7 +152,7 @@ export default function Market() {
     console.log('deleteResp', deleteResp);
     // Create webhook for syncing to pusher card
     const publisherHook = await _axios.post(
-      `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks/`,
+      `/tokens/${token}/webhooks/`,
       {
         description: 'Sync Card',
         callbackURL: `https://us-central1-out-sorcerer.cloudfunctions.net/transaction`,
@@ -166,7 +166,7 @@ export default function Market() {
     );
     // Create webhook for syncing to publisher card
     const pusherHook = await _axios.post(
-      `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks/`,
+      `/tokens/${token}/webhooks/`,
       {
         description: 'Sync Card',
         callbackURL: `https://us-central1-out-sorcerer.cloudfunctions.net/transaction`,
