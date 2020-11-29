@@ -31,13 +31,9 @@ const cardDetailBadges = {
 
     const fireCard = await fireCardRef.get();
     const fireCardData = fireCard.data();
-    const card = await _axios.get(`cards/${context.card}`, {
-      parmas: {
-        attachments: true,
-        attachment_fields: 'all',
-        token
-      }
-    });
+    const card = await _axios.get(
+      `cards/${context.card}?attachments=true&attachment_fields=all&token=${token}`
+    );
     fireCardRef.set({ native: card.data }, { merge: true });
     // fireCardRef.onSnapshot(() => {
     //   t.set('card', 'shared', 'updated', Date.now());

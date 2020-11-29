@@ -99,9 +99,9 @@ export default function Market() {
     const _t = window.TrelloPowerUp.iframe();
     let token = _t.arg('token');
     console.log('token: ', token);
-    let lists = await _axios.get(`/boards/${_t.arg('boardId')}/lists`, {
-      params: { token }
-    });
+    let lists = await _axios.get(
+      `/boards/${_t.arg('boardId')}/lists?token=${token}`
+    );
     lists = lists.data;
     console.log(lists);
     let found = lists.find((ls) => ls.name === 'OS Approved');
@@ -140,7 +140,9 @@ export default function Market() {
     // store provider card id
     _t.set(newCard.data.id, 'private', 'providerCardId', card.id);
     console.log('Card added', newCard.data);
-    const webhooks = await _axios.get(`/tokens/${token}/webhooks`);
+    const webhooks = await _axios.get(
+      `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks`
+    );
     console.log('active webhooks: ', webhooks);
     // delete previous webkooks
     const requests = card.data().webHooks.reduce((acc, wh) => {
