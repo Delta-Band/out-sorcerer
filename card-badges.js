@@ -8,7 +8,8 @@ const cardDetailBadges = {
     // console.log('initializig card-detail-badges butons');
     const badges = [];
     let token = await getToken(t);
-    console.log('token: ', token);
+    console.log('usetToken: ', token);
+    console.log('TRELLO_API_TOKEN: ', process.env.TRELLO_API_TOKEN);
     const context = t.getContext();
     const userType = await t.get('board', 'shared', 'userType', 'pusher');
     const db = firebase.firestore();

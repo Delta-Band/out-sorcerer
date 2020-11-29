@@ -7,7 +7,7 @@ const boardButtons = {
     console.log('context: ', context);
     console.log('userId: ', context.member);
     const token = await getToken(t);
-    console.log('token: ', token);
+    console.log('userToken: ', token);
     const userType = await t.get('board', 'shared', 'userType', 'pusher');
     return userType === 'pusher'
       ? [
