@@ -152,7 +152,7 @@ export default function Market() {
     console.log('deleteResp', deleteResp);
     // Create webhook for syncing to pusher card
     const publisherHook = await _axios.post(
-      `/tokens/${token}/webhooks`,
+      `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks`,
       {
         description: 'Sync Card',
         callbackURL: `https://us-central1-out-sorcerer.cloudfunctions.net/transaction`,
@@ -166,7 +166,7 @@ export default function Market() {
     );
     // Create webhook for syncing to publisher card
     const pusherHook = await _axios.post(
-      `/tokens/${token}/webhooks`,
+      `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks`,
       {
         description: 'Sync Card',
         callbackURL: `https://us-central1-out-sorcerer.cloudfunctions.net/transaction`,
