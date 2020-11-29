@@ -140,22 +140,18 @@ export default function Market() {
     // store provider card id
     _t.set(newCard.data.id, 'private', 'providerCardId', card.id);
     console.log('Card added', newCard.data);
-    const webhooks = await _axios.get(
-      `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks`
-    );
+    const webhooks = await _axios.get(`/tokens/${token}/webhooks`);
     console.log('active webhooks: ', webhooks);
     // delete previous webkooks
     const requests = card.data().webHooks.reduce((acc, wh) => {
-      acc.push(() =>
-        _axios.delete(`/tokens/${process.env.TRELLO_API_TOKEN}/webhooks/${wh}`)
-      );
+      acc.push(() => _axios.delete(`/tokens/${token}/webhooks/${wh}`));
       return acc;
     }, []);
     const deleteResp = await axios.all(requests.map((request) => request()));
     console.log('deleteResp', deleteResp);
     // Create webhook for syncing to pusher card
     const publisherHook = await _axios.post(
-      `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks/`,
+      `/tokens/${token}/webhooks/`,
       {
         description: 'Sync Card',
         callbackURL: `https://us-central1-out-sorcerer.cloudfunctions.net/transaction`,
@@ -169,7 +165,7 @@ export default function Market() {
     );
     // Create webhook for syncing to publisher card
     const pusherHook = await _axios.post(
-      `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks/`,
+      `/tokens/${token}/webhooks/`,
       {
         description: 'Sync Card',
         callbackURL: `https://us-central1-out-sorcerer.cloudfunctions.net/transaction`,
