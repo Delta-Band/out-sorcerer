@@ -121,7 +121,7 @@ export default function Market() {
       );
     }
     console.log('OS Approved list created');
-    console.log('Adding catd to board id:', found);
+    console.log('Adding card to board id:', found);
     // Add card to board
     const newCard = await _axios.post(
       `/cards`,
@@ -143,9 +143,7 @@ export default function Market() {
     console.log('active webhooks: ', webhooks);
     // delete previous webkooks
     const requests = webhooks.data.reduce((acc, wh) => {
-      console.log('webhook: ', wh);
-      console.log('webhook: ', wh.config.url);
-      acc.push(() => _axios.delete(wh.config.url));
+      acc.push(() => _axios.delete(`/tokens/${token}/webhooks/${wh.id}`));
       return acc;
     }, []);
     const deleteResp = await axios.all(requests.map((request) => request()));
