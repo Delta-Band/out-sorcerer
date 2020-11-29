@@ -144,6 +144,7 @@ export default function Market() {
     console.log('active webhooks: ', webhooks);
     // delete previous webkooks
     const requests = card.data().webHooks.reduce((acc, wh) => {
+      console.log('webhook: ', wh);
       acc.push(() => _axios.delete(`/tokens/${token}/webhooks/${wh}`));
       return acc;
     }, []);
