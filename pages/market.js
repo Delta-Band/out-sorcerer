@@ -12,7 +12,7 @@ import uniq from 'lodash/uniq';
 import axios from 'axios';
 import { Cards } from '../components';
 import _axios from '../axios.config';
-import { getToken } from '../utils';
+// import { getToken } from '../utils';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -144,14 +144,16 @@ export default function Market() {
     console.log('active webhooks: ', webhooks);
     // delete previous webkooks
     const requests = card.data().webHooks.reduce((acc, wh) => {
-      acc.push(() => _axios.delete(`/tokens/${token}/webhooks/${wh}`));
+      acc.push(() =>
+        _axios.delete(`/tokens/${process.env.TRELLO_API_TOKEN}/webhooks/${wh}`)
+      );
       return acc;
     }, []);
     const deleteResp = await axios.all(requests.map((request) => request()));
     console.log('deleteResp', deleteResp);
     // Create webhook for syncing to pusher card
     const publisherHook = await _axios.post(
-      `/tokens/${token}/webhooks/`,
+      `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks/`,
       {
         description: 'Sync Card',
         callbackURL: `https://us-central1-out-sorcerer.cloudfunctions.net/transaction`,
@@ -165,7 +167,7 @@ export default function Market() {
     );
     // Create webhook for syncing to publisher card
     const pusherHook = await _axios.post(
-      `/tokens/${token}/webhooks/`,
+      `/tokens/${process.env.TRELLO_API_TOKEN}/webhooks/`,
       {
         description: 'Sync Card',
         callbackURL: `https://us-central1-out-sorcerer.cloudfunctions.net/transaction`,
