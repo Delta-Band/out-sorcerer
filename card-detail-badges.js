@@ -22,6 +22,7 @@ const cardDetailBadges = {
         'providerCardId',
         null
       );
+      console.log('providerCardId: ', providerCardId);
       fireCardRef = db.collection('cards').doc(providerCardId);
     }
     const fireCard = await fireCardRef.get();
